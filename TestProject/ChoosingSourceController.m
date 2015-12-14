@@ -8,13 +8,12 @@
 
 #import "ChoosingSourceController.h"
 #import "ImageController.h"
-#import "TravelModel.h"
 
 @interface ChoosingSourceController()
 
-@property (nonatomic) UIButton* libraryButton;
-@property (nonatomic) UIButton* cameraButton;
-@property (nonatomic) UIButton* cancelButton;
+@property (nonatomic, retain) UIButton* libraryButton;
+@property (nonatomic, retain) UIButton* cameraButton;
+@property (nonatomic, retain) UIButton* cancelButton;
 @property (nonatomic) int padding;
 @end
 
@@ -90,6 +89,7 @@
     [self.navigationController pushViewController: [[ImageController alloc] initWithSetting:YES :self.model] animated: YES];
 }
 -(void) goToPreviousView: (UIButton*) sender {
+    [DataSource.sharedDataSource removeTravelItem:self.model];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

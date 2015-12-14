@@ -11,9 +11,9 @@
 
 @interface ListViewController ()
 
-@property (nonatomic) UITableView* tableView;
+@property (nonatomic, retain) UITableView* tableView;
 
-@property (nonatomic) TravelCollection* travelInfoArray;//TravelInfo from CoreData
+@property (nonatomic, retain) NSArray* travelInfoArray;//TravelInfo from CoreData
 
 @end
 
@@ -27,9 +27,9 @@
     }
     return _tableView;
 }
--(TravelCollection*) travelInfoArray {
+-(NSArray*) travelInfoArray {
     if(!_travelInfoArray) {
-        _travelInfoArray = [[TravelCollection alloc] init];
+        _travelInfoArray = [DataSource.sharedDataSource getTravelItemCollection];
     }
     return _travelInfoArray;
 }
@@ -42,10 +42,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view addSubview:self.tableView];
-    NSLog(@"%d",self.travelInfoArray.travelPoints.count);
+    NSLog(@"%d",self.travelInfoArray.count);
 
 }
+-(void) viewWillAppear:(BOOL)animated  {
+    [super viewWillAppear:animated];
+    [self.tableView reloadData];
+}
 
+-(void) viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    self.travelInfoArray = nil;
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     NSLog(@"Memory Warning!");
@@ -54,12 +62,14 @@
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
     //NSLog(@"%f %f %@ %@ %@",info.latitude,info.longitude,info.name,info.imageUrl,info.soundUrl);
-    TravelInfoViewController* tivController = [[TravelInfoViewController alloc] initWithModel:self.travelInfoArray andCurrentIndex:indexPath.row];
+    //NSLog(indexPath);
+    NSIndexPath *selectedIndexPath = [tableView indexPathForSelectedRow];
+    TravelInfoViewController* tivController = [[[TravelInfoViewController alloc] initWithCurrentIndex:0] autorelease];
     [self.navigationController pushViewController:tivController animated:YES];
-    [tivController release];
+    
 }
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.travelInfoArray.travelPoints.count;
+    return self.travelInfoArray.count;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)theTableView
 {
@@ -73,7 +83,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    TravelModel* info =(TravelModel*) self.travelInfoArray.travelPoints[indexPath.row];
+    TravelItem* info =(TravelItem*) self.travelInfoArray[indexPath.row];
     if (info) {
     //NSLog(@"%f %f %@ %@ %@",info.latitude,info.longitude,info.name,info.imageUrl,info.soundUrl);
         [cell.textLabel setText:info.name];

@@ -7,18 +7,12 @@
 //
 
 #import "SaveController.h"
-#import "DbController.h"
-#import "TravelInfo.h"
 
 @interface SaveController()
-
-@property (nonatomic) TravelModel* model;
 
 @end
 
 @implementation SaveController
-
-@synthesize model = _model;
 
 -(void) viewDidLoad {
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -38,28 +32,8 @@
 }
 
 -(void) saveModelToCoreData {
-    DbController* coreController =  [[DbController alloc] init];
-    NSManagedObjectContext* context = coreController.managedObjectContext;
-    TravelInfo* info = (TravelInfo*)[NSEntityDescription insertNewObjectForEntityForName:@"TravelInfo" inManagedObjectContext:context];
-    [info setValuesForKeysWithDictionary:@{
-                                           @"longitude":[NSNumber numberWithDouble:self.model.longitude],
-                                           @"latitude":[NSNumber numberWithDouble:self.model.latitude],
-                                           @"name":self.model.name,
-                                           @"imageUrl":self.model.imageUrl,
-                                           @"soundUrl":self.model.soundUrl,
-                                           }];
-    [context save:nil];
-    [coreController release];
-    /*
-    NSFetchRequest* inf = [NSFetchRequest fetchRequestWithEntityName:@"TravelInfo"];
-    NSArray* arr = [context executeFetchRequest:inf error:nil];
-    for(id obj in arr) {
-        if( [obj isMemberOfClass:[TravelInfo class]]) {
-            TravelInfo * inf = (TravelInfo*)obj;
-            NSLog(inf.name);
-        }
-    }
-     */
+    [DataSource.sharedDataSource addTravelItem: self.model];
+    [DataSource.sharedDataSource saveContexChanges];
 }
 
 @end

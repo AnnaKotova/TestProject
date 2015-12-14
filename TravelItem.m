@@ -1,14 +1,14 @@
 //
-//  TravelInfo.m
+//  TravelItem.m
 //  TestProject
 //
-//  Created by Егор Сидоренко on 12/2/15.
+//  Created by User on 12/14/15.
 //  Copyright © 2015 Егор Сидоренко. All rights reserved.
 //
 
-#import "TravelInfo.h"
+#import "TravelItem.h"
 
-@implementation TravelInfo
+@implementation TravelItem
 
 // Insert code here to add functionality to your managed object subclass
 

@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
-#import "TravelCollection.h"
 #import "AnnotationModel.h"
 //#import <MapKit/MKAnnotation.h>
 

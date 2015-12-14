@@ -1,8 +1,8 @@
 //
-//  TravelInfo.h
+//  TravelItem.h
 //  TestProject
 //
-//  Created by Егор Сидоренко on 12/2/15.
+//  Created by User on 12/14/15.
 //  Copyright © 2015 Егор Сидоренко. All rights reserved.
 //
 
@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TravelInfo : NSManagedObject
+@interface TravelItem : NSManagedObject
 
 // Insert code here to declare functionality of your managed object subclass
 
@@ -19,4 +19,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 NS_ASSUME_NONNULL_END
 
-#import "TravelInfo+CoreDataProperties.h"
+#import "TravelItem+CoreDataProperties.h"

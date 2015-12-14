@@ -10,5 +10,5 @@
 #import "BaseViewController.h"
 @interface ImageController : BaseViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
     //@property (nonatomic,strong) UIIma
-- (instancetype)initWithSetting:(BOOL) isCamera :(TravelModel*) model;
+- (instancetype)initWithSetting:(BOOL) isCamera Model:(TravelItem*) model;
 @end

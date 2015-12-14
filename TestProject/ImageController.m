@@ -8,16 +8,16 @@
 
 #import "ImageController.h"
 #import "SoundRecordingController.h"
-@import AssetsLibrary;
+#import "MapController.h"
 @interface ImageController()
 
-@property (nonatomic) UIImageView* image;
-@property (nonatomic) UIButton* doneButton;
-@property (nonatomic) UIImagePickerController* picker;
-@property (nonatomic) UITextField *imageName;
+@property (nonatomic, retain) UIImageView* image;
+@property (nonatomic, retain) UIButton* doneButton;
+@property (nonatomic, retain) UIImagePickerController* picker;
+@property (nonatomic, retain) UITextField *imageName;
 
 @property (nonatomic) BOOL initWithCamera;
-@property (nonatomic) NSString* imageURL;
+@property (nonatomic, copy) NSString* imageURL;
 
 @end
 
@@ -58,7 +58,7 @@
     return _image;
 }
 
-- (instancetype)initWithSetting:(BOOL) isCamera :(TravelModel*) model
+- (instancetype)initWithSetting:(BOOL) isCamera :(TravelItem*) model
 {
     self = [super initWithModel:model];
     if (self) {
@@ -83,11 +83,25 @@
 }
 
 -(void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
-    NSLog(@"PickImage");
+    
     UIImage *chosenImage = info[UIImagePickerControllerOriginalImage];
     self.image.image = chosenImage;
     [picker dismissViewControllerAnimated:YES completion:NULL];
     [self.view addSubview:self.image];
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyyMMddhhmm"];
+    NSString *fileName = [NSString stringWithFormat:@"%@.jpg",[dateFormatter stringFromDate:[NSDate date]]];
+    NSArray* pathes= NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    if(pathes.count > 0 ) {
+        NSLog(pathes[0]);
+    }
+    NSString* filePath =[NSHomeDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"Documents/%@",fileName]];
+    [UIImageJPEGRepresentation(chosenImage, 1.0) writeToFile:filePath atomically:YES];
+    
+    /*NSError * er
+    [[NSFileManager defaultManager] copyItemAtPath:<#(nonnull NSString *)#> toPath:<#(nonnull NSString *)#> error:&err]
+    */
+    self.model.imageUrl = filePath;
     
     [self.view bringSubviewToFront:self.imageName];
     [self.imageName becomeFirstResponder];
@@ -95,16 +109,22 @@
     UIBarButtonItem* barBtn = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleDone target:self action:@selector(goToNextView:)];
     self.navigationItem.rightBarButtonItem = barBtn;
     [barBtn release];
-    NSURL *imageUrl = [info objectForKey:@"UIImagePickerControllerReferenceURL"];
+    /*NSURL *imageUrl = [info objectForKey:@"UIImagePickerControllerReferenceURL"];
     NSString *imageName = [imageUrl lastPathComponent];
     NSString *docDirPath    = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    self.imageURL = [docDirPath stringByAppendingPathComponent:imageName];
+    self.model.imageUrl = [docDirPath stringByAppendingPathComponent:imageName];
+     */
+    /*self.model.imageUrl = [[NSString alloc] initWithCString:[[info objectForKey:@"UIImagePickerControllerReferenceURL"] absoluteString]];*/
+    //NSLog(self.model.imageUrl);
+    //choosenImage.
 
 
 }
-
+-(void) imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [self.navigationController popToViewController:[[MapController alloc] init] animated:YES];
+}
 -(void) goToNextView :(UIBarButtonItem *) sender {
-    self.model.imageUrl = self.imageURL;
+    //self.model.imageUrl = self.imageURL;
     self.model.name = self.imageName.text;
     SoundRecordingController* soundContrl = [[SoundRecordingController alloc] initWithModel:self.model];
    [self.navigationController pushViewController:soundContrl animated:YES];

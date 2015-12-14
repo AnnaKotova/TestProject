@@ -11,8 +11,8 @@
 #include "ListViewController.h"
 @interface RootController()
 
-@property (nonatomic) UIButton* mapButton;
-@property (nonatomic) UIButton* listButton;
+@property (nonatomic, retain) UIButton* mapButton;
+@property (nonatomic, retain) UIButton* listButton;
 
 @property (nonatomic) int padding;
 

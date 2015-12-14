@@ -13,7 +13,7 @@
 
 -(instancetype) initWithTitle:(NSString*) title andCoordinates:(CLLocationCoordinate2D) coordinates;
 
-@property (strong,nonatomic) NSString* title;
+@property (nonatomic) NSString* title;
 @property (nonatomic) CLLocationCoordinate2D coordinate;
 @property (nonatomic) int Index;
 

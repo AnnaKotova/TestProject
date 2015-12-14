@@ -9,9 +9,10 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import <Foundation/Foundation.h>
-#import "TravelCollection.h"
+#import "DataSource.h"
 
-@interface TravelInfoViewController : UIViewController
-- (instancetype)initWithModel:(TravelCollection*) model andCurrentIndex:(int) index;
+
+@interface TravelInfoViewController : UIViewController<AVAudioPlayerDelegate>
+- (instancetype)initWithCurrentIndex:(int) index;
 
 @end

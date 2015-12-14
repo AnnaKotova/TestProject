@@ -11,13 +11,12 @@
 
 @interface SoundRecordingController()
 
-@property (nonatomic) AVAudioRecorder *audioRecorder;
-@property (nonatomic) UIButton * recordButton;
-@property (nonatomic) UIProgressView* progressBar;
+@property (nonatomic, retain) AVAudioRecorder *audioRecorder;
+@property (nonatomic, retain) UIButton * recordButton;
+@property (nonatomic, retain) UIProgressView* progressBar;
 @property (nonatomic) int maxTime;
-@property (nonatomic) NSTimer* recordTimer;
+@property (nonatomic, retain) NSTimer* recordTimer;
 @property (nonatomic) int ticks;
-@property (nonatomic) TravelModel* model;
 
 @end
 
@@ -135,6 +134,8 @@
 -(void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag
 {
     //self.model.soundUrl = [recorder.];
+    NSData* data = [NSData dataWithContentsOfFile:self.model.soundUrl];
+    [data writeToFile:self.model.soundUrl atomically:YES];
 }
 -(NSString*) getCurrentTime {
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];

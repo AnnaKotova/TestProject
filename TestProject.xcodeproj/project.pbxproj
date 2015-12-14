@@ -23,15 +23,14 @@
 		74193BD11C0DE0850044EDD6 /* DbController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193BD01C0DE0850044EDD6 /* DbController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		74193BD31C0DE1200044EDD6 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74193BD21C0DE1200044EDD6 /* CoreData.framework */; };
 		74193BD91C0E15F60044EDD6 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193BD81C0E15F60044EDD6 /* BaseViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		74193BE71C0E258F0044EDD6 /* TravelModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193BE61C0E258F0044EDD6 /* TravelModel.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		74193C0E1C0EA9830044EDD6 /* ListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193C0D1C0EA9830044EDD6 /* ListViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		74193C111C0EEBC30044EDD6 /* TravelInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193C101C0EEBC30044EDD6 /* TravelInfoViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		74193C2C1C0F0B510044EDD6 /* CoreModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 74193C2A1C0F0B510044EDD6 /* CoreModel.xcdatamodeld */; };
-		74193C311C0F0B920044EDD6 /* TravelInfo+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193C2E1C0F0B920044EDD6 /* TravelInfo+CoreDataProperties.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		74193C321C0F0B920044EDD6 /* TravelInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193C301C0F0B920044EDD6 /* TravelInfo.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		74193C351C0F21060044EDD6 /* TravelCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193C341C0F21060044EDD6 /* TravelCollection.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		74193C381C0F269C0044EDD6 /* AnnotationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193C371C0F269C0044EDD6 /* AnnotationModel.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		74193C3A1C105A180044EDD6 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74193C391C105A180044EDD6 /* AssetsLibrary.framework */; };
+		CE2823D21C1ED95000975BC7 /* TravelItem+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2823CF1C1ED95000975BC7 /* TravelItem+CoreDataProperties.m */; };
+		CE2823D31C1ED95000975BC7 /* TravelItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2823D11C1ED95000975BC7 /* TravelItem.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CE2823D61C1ED99B00975BC7 /* DataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2823D51C1ED99B00975BC7 /* DataSource.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,7 +54,6 @@
 		74193BB41C0CC4670044EDD6 /* SoundRecordingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundRecordingController.h; sourceTree = "<group>"; };
 		74193BB51C0CC4670044EDD6 /* SoundRecordingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundRecordingController.m; sourceTree = "<group>"; };
 		74193BB71C0DAB0A0044EDD6 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		74193BBE1C0DD08A0044EDD6 /* TravelModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelModel.h; sourceTree = "<group>"; };
 		74193BC11C0DD3240044EDD6 /* SaveController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaveController.h; sourceTree = "<group>"; };
 		74193BC21C0DD3240044EDD6 /* SaveController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaveController.m; sourceTree = "<group>"; };
 		74193BCF1C0DE0850044EDD6 /* DbController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DbController.h; sourceTree = "<group>"; };
@@ -63,21 +61,20 @@
 		74193BD21C0DE1200044EDD6 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		74193BD71C0E15F60044EDD6 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		74193BD81C0E15F60044EDD6 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
-		74193BE61C0E258F0044EDD6 /* TravelModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelModel.m; sourceTree = "<group>"; };
 		74193C0C1C0EA9830044EDD6 /* ListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListViewController.h; sourceTree = "<group>"; };
 		74193C0D1C0EA9830044EDD6 /* ListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListViewController.m; sourceTree = "<group>"; };
 		74193C0F1C0EEBC30044EDD6 /* TravelInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelInfoViewController.h; sourceTree = "<group>"; };
 		74193C101C0EEBC30044EDD6 /* TravelInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelInfoViewController.m; sourceTree = "<group>"; };
 		74193C2B1C0F0B510044EDD6 /* CoreModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreModel.xcdatamodel; sourceTree = "<group>"; };
-		74193C2D1C0F0B920044EDD6 /* TravelInfo+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "TravelInfo+CoreDataProperties.h"; path = "../TravelInfo+CoreDataProperties.h"; sourceTree = "<group>"; };
-		74193C2E1C0F0B920044EDD6 /* TravelInfo+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "TravelInfo+CoreDataProperties.m"; path = "../TravelInfo+CoreDataProperties.m"; sourceTree = "<group>"; };
-		74193C2F1C0F0B920044EDD6 /* TravelInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TravelInfo.h; path = ../TravelInfo.h; sourceTree = "<group>"; };
-		74193C301C0F0B920044EDD6 /* TravelInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TravelInfo.m; path = ../TravelInfo.m; sourceTree = "<group>"; };
-		74193C331C0F21060044EDD6 /* TravelCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelCollection.h; sourceTree = "<group>"; };
-		74193C341C0F21060044EDD6 /* TravelCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelCollection.m; sourceTree = "<group>"; };
 		74193C361C0F269C0044EDD6 /* AnnotationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnnotationModel.h; sourceTree = "<group>"; };
 		74193C371C0F269C0044EDD6 /* AnnotationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnnotationModel.m; sourceTree = "<group>"; };
 		74193C391C105A180044EDD6 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		CE2823CE1C1ED95000975BC7 /* TravelItem+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "TravelItem+CoreDataProperties.h"; path = "../TravelItem+CoreDataProperties.h"; sourceTree = "<group>"; };
+		CE2823CF1C1ED95000975BC7 /* TravelItem+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "TravelItem+CoreDataProperties.m"; path = "../TravelItem+CoreDataProperties.m"; sourceTree = "<group>"; };
+		CE2823D01C1ED95000975BC7 /* TravelItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TravelItem.h; path = ../TravelItem.h; sourceTree = "<group>"; };
+		CE2823D11C1ED95000975BC7 /* TravelItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TravelItem.m; path = ../TravelItem.m; sourceTree = "<group>"; };
+		CE2823D41C1ED99B00975BC7 /* DataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSource.h; sourceTree = "<group>"; };
+		CE2823D51C1ED99B00975BC7 /* DataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataSource.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,10 +123,6 @@
 		74193B8C1C0AF1250044EDD6 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				74193C2D1C0F0B920044EDD6 /* TravelInfo+CoreDataProperties.h */,
-				74193C2E1C0F0B920044EDD6 /* TravelInfo+CoreDataProperties.m */,
-				74193C2F1C0F0B920044EDD6 /* TravelInfo.h */,
-				74193C301C0F0B920044EDD6 /* TravelInfo.m */,
 				74193C2A1C0F0B510044EDD6 /* CoreModel.xcdatamodeld */,
 				74193B981C0AF1250044EDD6 /* Assets.xcassets */,
 				74193B9A1C0AF1250044EDD6 /* LaunchScreen.storyboard */,
@@ -171,12 +164,14 @@
 		74193BB91C0DCF9C0044EDD6 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				74193BBE1C0DD08A0044EDD6 /* TravelModel.h */,
-				74193BE61C0E258F0044EDD6 /* TravelModel.m */,
-				74193C331C0F21060044EDD6 /* TravelCollection.h */,
-				74193C341C0F21060044EDD6 /* TravelCollection.m */,
+				CE2823CE1C1ED95000975BC7 /* TravelItem+CoreDataProperties.h */,
+				CE2823CF1C1ED95000975BC7 /* TravelItem+CoreDataProperties.m */,
+				CE2823D01C1ED95000975BC7 /* TravelItem.h */,
+				CE2823D11C1ED95000975BC7 /* TravelItem.m */,
 				74193C361C0F269C0044EDD6 /* AnnotationModel.h */,
 				74193C371C0F269C0044EDD6 /* AnnotationModel.m */,
+				CE2823D41C1ED99B00975BC7 /* DataSource.h */,
+				CE2823D51C1ED99B00975BC7 /* DataSource.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -265,21 +260,20 @@
 				74193BAD1C0B14B50044EDD6 /* MapController.m in Sources */,
 				74193BB01C0C6FBD0044EDD6 /* ChoosingSourceController.m in Sources */,
 				74193B911C0AF1250044EDD6 /* AppDelegate.m in Sources */,
-				74193C351C0F21060044EDD6 /* TravelCollection.m in Sources */,
 				74193C111C0EEBC30044EDD6 /* TravelInfoViewController.m in Sources */,
+				CE2823D31C1ED95000975BC7 /* TravelItem.m in Sources */,
 				74193BD91C0E15F60044EDD6 /* BaseViewController.m in Sources */,
 				74193BB61C0CC4670044EDD6 /* SoundRecordingController.m in Sources */,
+				CE2823D61C1ED99B00975BC7 /* DataSource.m in Sources */,
 				74193BC31C0DD3240044EDD6 /* SaveController.m in Sources */,
 				74193B8E1C0AF1250044EDD6 /* main.m in Sources */,
 				74193C0E1C0EA9830044EDD6 /* ListViewController.m in Sources */,
 				74193C2C1C0F0B510044EDD6 /* CoreModel.xcdatamodeld in Sources */,
+				CE2823D21C1ED95000975BC7 /* TravelItem+CoreDataProperties.m in Sources */,
 				74193BA61C0AF5760044EDD6 /* RootController.m in Sources */,
 				74193C381C0F269C0044EDD6 /* AnnotationModel.m in Sources */,
 				74193BB31C0C7C230044EDD6 /* ImageController.m in Sources */,
-				74193BE71C0E258F0044EDD6 /* TravelModel.m in Sources */,
 				74193BD11C0DE0850044EDD6 /* DbController.m in Sources */,
-				74193C321C0F0B920044EDD6 /* TravelInfo.m in Sources */,
-				74193C311C0F0B920044EDD6 /* TravelInfo+CoreDataProperties.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,6 +423,7 @@
 				74193BA21C0AF1250044EDD6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

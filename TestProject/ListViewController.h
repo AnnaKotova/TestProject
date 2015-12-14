@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TravelCollection.h"
+#import "DataSource.h"
 
 @interface ListViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
 

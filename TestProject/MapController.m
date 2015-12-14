@@ -7,19 +7,21 @@
 //
 
 #import "MapController.h"
-#import "ChoosingSourceController.h"
-#import "TravelModel.h"
 #import "TravelInfoViewController.h"
+#import "ChoosingSourceController.h"
+
 
 @interface MapController()
 
 @property (nonatomic) int mapTypeHeight;
-@property (nonatomic) UIPickerView* mapTypePicker;
-@property (nonatomic) NSArray* mapTypesStrings;
-@property (nonatomic) TravelModel* model;
-@property (nonatomic) TravelCollection* collection;
-@property (nonatomic) MKMapView* mapView;
-@property (nonatomic) CLLocationManager* location;
+@property (nonatomic, retain) UIPickerView* mapTypePicker;
+@property (nonatomic, retain) NSArray* mapTypesStrings;
+@property (nonatomic, retain) TravelItem* model;
+@property (nonatomic, retain) NSArray* travelItemCollection;
+@property (nonatomic, retain) MKMapView* mapView;
+@property (nonatomic, retain) CLLocationManager* location;
+@property (nonatomic) double latitude;
+@property (nonatomic) double longitude;
 
 @end
 
@@ -31,7 +33,7 @@
 
 -(MKMapView*) mapView {
     if(!_mapView){
-        _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - self.mapTypeHeight)];
+        _mapView = [[[MKMapView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - self.mapTypeHeight)] autorelease];
         [_mapView setShowsUserLocation:YES];
         _mapView.delegate = self;
         [_mapView setZoomEnabled:YES];
@@ -40,21 +42,21 @@
     }
     return _mapView;
 }
--(TravelModel*) model {
+/*-(TravelModel*) model {
     if(!_model) _model = [[TravelModel alloc] init];
     return _model;
-}
+}*/
 
 -(CLLocationManager*) location {
     if(!_location) {
-        _location = [[CLLocationManager alloc] init];
+        _location = [[[CLLocationManager alloc] init] autorelease];
         _location.delegate = self;
     }
     return _location;
 }
--(TravelCollection*) collection {
-    if(!_collection) _collection = [[TravelCollection alloc] init];
-    return _collection;
+-(NSArray*) travelItemCollection {
+    if(!_travelItemCollection) _travelItemCollection = [DataSource.sharedDataSource getTravelItemCollection];
+    return _travelItemCollection;
 }
 - (int) mapTypeHeight {
     return 70;
@@ -66,11 +68,6 @@
 
 -(void) viewDidUnload {
     [super viewDidUnload];
-    self.mapTypePicker = nil;
-    [self.collection release];
-    [self.model release];
-    [self.location release];
-    [self.mapView release];
 }
 
 -(UIPickerView*) mapTypePicker
@@ -115,29 +112,34 @@
     [self.navigationController setNavigationBarHidden:NO];
 }
 -(void) goToNextView:(UIBarButtonItem*) sender{
-    ChoosingSourceController* chooseController = [[ChoosingSourceController alloc] initWithModel:self.model];
+    TravelItem* item= [DataSource.sharedDataSource createNewTravelItem];
+    [item setValuesForKeysWithDictionary:@{
+                                          @"longitude":item.longitude,
+                                          @"latitude":item.latitude }];
+    ChoosingSourceController* chooseController = [[ChoosingSourceController alloc] initWithModel:item];
     [self.navigationController pushViewController: chooseController animated:YES];
     [chooseController release];
 }
 
 -(void) mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
     [self.mapView setRegion:MKCoordinateRegionMake(userLocation.coordinate, MKCoordinateSpanMake(0.1f, 0.1f)) animated:YES];
-    self.model.latitude =  userLocation.location.coordinate.latitude;
-    self.model.longitude = userLocation.location.coordinate.longitude;
+    self.latitude =  userLocation.location.coordinate.latitude;
+    self.longitude = userLocation.location.coordinate.longitude;
 }
 
 -(void) mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
     //NSLog(@"Annotation Selected");
     int index = ((AnnotationModel*)view.annotation).Index;
-    TravelInfoViewController* controller = [[TravelInfoViewController alloc] initWithModel:(TravelModel*)self.collection.travelPoints[index]];
+    TravelInfoViewController* controller = [[TravelInfoViewController alloc] initWithModel:self.travelItemCollection];
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }
 
 -(void) addAnotations {
     int count = 0;
-    for (TravelModel* mod in self.collection.travelPoints) {
-        CLLocationCoordinate2D  coord =  CLLocationCoordinate2DMake(mod.latitude, mod.longitude);
+    
+    for (TravelItem* mod in self.travelItemCollection) {
+        CLLocationCoordinate2D  coord =  CLLocationCoordinate2DMake([mod.latitude doubleValue], [mod.longitude doubleValue]);
         AnnotationModel* annotation = [[AnnotationModel alloc] initWithTitle:mod.name andCoordinates:coord];
         annotation.Index = count;
         [self.mapView addAnnotation:annotation];

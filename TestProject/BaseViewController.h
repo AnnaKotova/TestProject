@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TravelModel.h"
+#import "DataSource.h"
 
 @interface BaseViewController : UIViewController
 
--(instancetype)initWithModel:(TravelModel *)model;
-@property (nonatomic) TravelModel* model;
+-(instancetype)initWithModel:(TravelItem *)model;
+
+@property (nonatomic) TravelItem* model;
 
 @end

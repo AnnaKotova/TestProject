@@ -10,34 +10,62 @@
 @import AssetsLibrary;
 @interface TravelInfoViewController ()
 
-@property (nonatomic) TravelCollection* model;
+@property (nonatomic, retain) NSArray* model;
 @property (nonatomic) int index;
-@property (nonatomic) UIImageView* backgroundView;
-@property (nonatomic) AVAudioPlayer* audioPlayer;
+@property (nonatomic, retain) UIImageView* backgroundView;
+@property (nonatomic, retain) UISlider * sliderView;
+@property (nonatomic, retain) AVAudioPlayer* audioPlayer;
 
 @end
 
 @implementation TravelInfoViewController
 
-- (instancetype)initWithModel:(TravelCollection*) model andCurrentIndex:(int) index
+- (void)dealloc
+{
+    [_model release];
+    
+    [super dealloc];
+}
+
+- (instancetype)initWithCurrentIndex:(int) index
 {
     self = [super init];
     if(self) {
-        self.model = model;
         self.index = index;
-        //NSLog(@"%@, %f , %f , %@",model.name, model.latitude,model.longitude,model.imageUrl);
     }
     return self;
 }
 
+-(UISlider*) sliderView {
+    if(!_sliderView ){
+        //_sliderView = [[UIProgressView alloc] initWithFrame:CGRectMake(5, 360, self.view.bounds.size.width - 5, 60 )];
+        //[_sliderView setProgressViewStyle:UIProgressViewStyleDefault];
+        _sliderView = [[UISlider alloc] initWithFrame:CGRectMake(5, 360, self.view.bounds.size.width - 5, 60 )];
+        [_sliderView setMaximumValue:250.0];
+        [_sliderView setMinimumValue:0];
+        [_sliderView setValue:100];
+        _sliderView.continuous = YES;
+        [_sliderView addTarget:self action:@selector(sliderAction:) forControlEvents:UIControlEventValueChanged];
+        //[_sliderView setBackgroundColor:[UIColor clearColor]];
+        //_sliderView setVa
+    }
+    return _sliderView;
+}
+
+-(void) sliderAction:(UISlider*)sender {
+    //[self.sliderView setValue:sender.value animated:YES];
+}
+
+-(NSArray*) model {
+    if(!_model) {
+        _model = [[DataSource.sharedDataSource getTravelItemCollection] retain];
+    }
+    return _model;
+}
+
 -(UIImageView*) backgroundView {
     if(!_backgroundView) {
-        //UIImage* image = [[UIImage alloc] ini:self.model.imageUrl];
-        //NSLog(@"%@", self.model.imageUrl);
-        //NSData* imageData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle]pathForResource:self.model.imageUrl ofType:@"image"]];
-        //UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfFile:imageData]];
         _backgroundView = [[UIImageView alloc] initWithFrame:self.view.frame];
-        //_backgroundView.image = image;
     }
     return  _backgroundView;
 }
@@ -46,7 +74,7 @@
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor whiteColor]];
     //
-        [self initViewValues];
+    [self initViewValues];
     [self.view addSubview:self.backgroundView];
     UISwipeGestureRecognizer*swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(actionSwipeLeft:)];
     [swipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
@@ -56,29 +84,50 @@
     [swipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
     [self.view addGestureRecognizer:swipeRight];
     [swipeRight release];
+    UIBarButtonItem* delete = [[UIBarButtonItem alloc] initWithTitle:@"Delete" style:UIBarButtonItemStyleDone target:self action:@selector(deleteTravelItem:)];
+    self.navigationItem.rightBarButtonItem = delete;
+    [delete release];
     
-    // Do any additional setup after loading the view.
+    [self.view addSubview:self.sliderView];
+    [self.sliderView becomeFirstResponder];
+    
+
+}
+
+-(void) deleteTravelItem:(UIBarButtonItem*) button {
+    [DataSource.sharedDataSource removeTravelItem:(TravelItem* )self.model[self.index]];
+    [self.navigationController popViewControllerAnimated:YES];
+    [DataSource.sharedDataSource saveContexChanges];
+    [[NSFileManager defaultManager] removeItemAtPath:((TravelItem* )self.model[self.index]).imageUrl error:nil];
+    [[NSFileManager defaultManager] removeItemAtPath:((TravelItem* )self.model[self.index]).soundUrl error:nil];
 }
 
 -(void) initViewValues {
-    if(self.index < 0 ) self.index = self.model.travelPoints.count -1;
-    else if (self.index >= self.model.travelPoints.count) self.index = 0;
-    TravelModel* displayModel = (TravelModel*)self.model.travelPoints[self.index];
+    if(self.index < 0 )
+        self.index = self.model.count -1;
+    else if (self.index >= self.model.count)
+        self.index = 0;
+    
+    TravelItem* displayModel = (TravelItem* )self.model[self.index];
     [self setTitle:displayModel.name];
-    //NSLog(displayModel.imageUrl);
-    NSData* imgData = [NSData dataWithContentsOfFile:@"/asset.JPG"];
-    UIImage* image = [UIImage imageWithData:imgData];
-    self.backgroundView.image =image;
-    //[image release];
-   /* ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-    __block UIImage *returnValue = nil;
-    NSURL* url = [NSURL URLWithString:displayModel.imageUrl];
-    [library assetForURL:url resultBlock:^(ALAsset *asset) {
-        returnValue = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullResolutionImage]];
-    } failureBlock:^(NSError *error) {
-        NSLog(@"error : %@", error);
-    }];
-    self.backgroundView.image = returnValue;*/
+    
+    
+    //Get image from PhAsset
+    UIImage* img = [[UIImage alloc] initWithContentsOfFile:displayModel.imageUrl];
+    self.backgroundView.image = img;
+    NSData* soundData = [NSData dataWithContentsOfFile:displayModel.soundUrl];
+    self.audioPlayer =[[AVAudioPlayer alloc] initWithData:soundData error:nil];
+    self.sliderView.maximumValue = self.audioPlayer.duration;
+    [self.audioPlayer setDelegate:self];
+    // [[AVAudioPlayer alloc ]initWithContentsOfURL:displayModel.soundUrl error:nil];
+    [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updateTime:) userInfo:nil repeats:YES];
+    [self.audioPlayer play];
+
+}
+
+-(void) updateTime:(NSTimer*) sender {
+    
+    self.sliderView.value = self.sliderView.value + 1;
 }
 - (void) actionSwipeLeft:(UISwipeGestureRecognizer*) gestureRecognizer{
     self.index--;
@@ -86,21 +135,12 @@
 }
 - (void) actionSwipeRight:(UISwipeGestureRecognizer*) gestureRecognizer{
     self.index++;
-        [self initViewValues];
+    [self initViewValues];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
