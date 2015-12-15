@@ -90,14 +90,34 @@
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier: CellIdentifier];
     }
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     TravelItem * info =(TravelItem *) self.travelInfoArray[ indexPath.row ];
     if (info)
     {
         [cell.textLabel setText: info.name];
+        cell.imageView.image = [[UIImage alloc] initWithContentsOfFile:info.imageUrl];
     }
     
     return cell;
+}
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return YES if you want the specified item to be editable.
+    return YES;
+}
+
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        TravelItem * itemToremove = self.travelInfoArray[indexPath.row];
+        [DataSource.sharedDataSource removeTravelItem:itemToremove];
+        [DataSource.sharedDataSource saveContexChanges];
+        _travelInfoArray = nil;
+        [self.tableView reloadData];
+    }
 }
 
 @end

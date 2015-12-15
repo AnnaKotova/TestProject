@@ -191,12 +191,13 @@
     SoundRecordingViewController* soundContrl = [[SoundRecordingViewController alloc] initWithModel: self.travelItemModel];
    [self.navigationController pushViewController: soundContrl animated: YES];
     [soundContrl release];
+    [self keyboardWillHide];
 }
 
 -(void) keyboardWillShow
 {
     [UIView beginAnimations: nil context: NULL];
-    [UIView setAnimationDuration: 0.3];
+    [UIView setAnimationDuration: 0.0];
     CGRect rect = CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y + self.keyboardOffset, self.view.bounds.size.width, self.view.bounds.size.height + self.keyboardOffset);
     self.view.bounds = rect;
     [UIView commitAnimations];
@@ -205,7 +206,7 @@
 -(void) keyboardWillHide
 {
     [UIView beginAnimations: nil context: NULL];
-    [UIView setAnimationDuration: 0.3];
+    [UIView setAnimationDuration: 0.0];
     CGRect rect = CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y - self.keyboardOffset, self.view.bounds.size.width, self.view.bounds.size.height - self.keyboardOffset);
     self.view.bounds = rect;
     [UIView commitAnimations];

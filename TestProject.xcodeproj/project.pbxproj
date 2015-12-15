@@ -12,14 +12,12 @@
 		74193B971C0AF1250044EDD6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74193B951C0AF1250044EDD6 /* Main.storyboard */; };
 		74193B991C0AF1250044EDD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 74193B981C0AF1250044EDD6 /* Assets.xcassets */; };
 		74193B9C1C0AF1250044EDD6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74193B9A1C0AF1250044EDD6 /* LaunchScreen.storyboard */; };
-		74193BA61C0AF5760044EDD6 /* RootController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193BA51C0AF5760044EDD6 /* RootController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		74193BA61C0AF5760044EDD6 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193BA51C0AF5760044EDD6 /* RootViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		74193BA81C0B0F070044EDD6 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74193BA71C0B0F070044EDD6 /* MapKit.framework */; };
-		74193BAD1C0B14B50044EDD6 /* MapController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193BAC1C0B14B50044EDD6 /* MapController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		74193BB01C0C6FBD0044EDD6 /* ChoosingSourceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193BAF1C0C6FBD0044EDD6 /* ChoosingSourceController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		74193BB31C0C7C230044EDD6 /* ImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193BB21C0C7C230044EDD6 /* ImageController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		74193BB61C0CC4670044EDD6 /* SoundRecordingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193BB51C0CC4670044EDD6 /* SoundRecordingController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		74193BAD1C0B14B50044EDD6 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193BAC1C0B14B50044EDD6 /* MapViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		74193BB31C0C7C230044EDD6 /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193BB21C0C7C230044EDD6 /* ImageViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		74193BB61C0CC4670044EDD6 /* SoundRecordingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193BB51C0CC4670044EDD6 /* SoundRecordingViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		74193BB81C0DAB0A0044EDD6 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74193BB71C0DAB0A0044EDD6 /* AVFoundation.framework */; };
-		74193BC31C0DD3240044EDD6 /* SaveController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193BC21C0DD3240044EDD6 /* SaveController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		74193BD11C0DE0850044EDD6 /* DbController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193BD01C0DE0850044EDD6 /* DbController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		74193BD31C0DE1200044EDD6 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74193BD21C0DE1200044EDD6 /* CoreData.framework */; };
 		74193BD91C0E15F60044EDD6 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193BD81C0E15F60044EDD6 /* BaseViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -42,20 +40,16 @@
 		74193B981C0AF1250044EDD6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		74193B9B1C0AF1250044EDD6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		74193B9D1C0AF1250044EDD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		74193BA41C0AF5760044EDD6 /* RootController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootController.h; sourceTree = "<group>"; };
-		74193BA51C0AF5760044EDD6 /* RootController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootController.m; sourceTree = "<group>"; };
+		74193BA41C0AF5760044EDD6 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		74193BA51C0AF5760044EDD6 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		74193BA71C0B0F070044EDD6 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		74193BAB1C0B14B50044EDD6 /* MapController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapController.h; sourceTree = "<group>"; };
-		74193BAC1C0B14B50044EDD6 /* MapController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapController.m; sourceTree = "<group>"; };
-		74193BAE1C0C6FBD0044EDD6 /* ChoosingSourceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChoosingSourceController.h; sourceTree = "<group>"; };
-		74193BAF1C0C6FBD0044EDD6 /* ChoosingSourceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChoosingSourceController.m; sourceTree = "<group>"; };
-		74193BB11C0C7C230044EDD6 /* ImageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageController.h; sourceTree = "<group>"; };
-		74193BB21C0C7C230044EDD6 /* ImageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageController.m; sourceTree = "<group>"; };
-		74193BB41C0CC4670044EDD6 /* SoundRecordingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundRecordingController.h; sourceTree = "<group>"; };
-		74193BB51C0CC4670044EDD6 /* SoundRecordingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundRecordingController.m; sourceTree = "<group>"; };
+		74193BAB1C0B14B50044EDD6 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
+		74193BAC1C0B14B50044EDD6 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
+		74193BB11C0C7C230044EDD6 /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
+		74193BB21C0C7C230044EDD6 /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
+		74193BB41C0CC4670044EDD6 /* SoundRecordingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundRecordingViewController.h; sourceTree = "<group>"; };
+		74193BB51C0CC4670044EDD6 /* SoundRecordingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundRecordingViewController.m; sourceTree = "<group>"; };
 		74193BB71C0DAB0A0044EDD6 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		74193BC11C0DD3240044EDD6 /* SaveController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaveController.h; sourceTree = "<group>"; };
-		74193BC21C0DD3240044EDD6 /* SaveController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaveController.m; sourceTree = "<group>"; };
 		74193BCF1C0DE0850044EDD6 /* DbController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DbController.h; sourceTree = "<group>"; };
 		74193BD01C0DE0850044EDD6 /* DbController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DbController.m; sourceTree = "<group>"; };
 		74193BD21C0DE1200044EDD6 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -139,18 +133,14 @@
 		74193BA31C0AF54A0044EDD6 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				74193BA41C0AF5760044EDD6 /* RootController.h */,
-				74193BA51C0AF5760044EDD6 /* RootController.m */,
-				74193BAB1C0B14B50044EDD6 /* MapController.h */,
-				74193BAC1C0B14B50044EDD6 /* MapController.m */,
-				74193BAE1C0C6FBD0044EDD6 /* ChoosingSourceController.h */,
-				74193BAF1C0C6FBD0044EDD6 /* ChoosingSourceController.m */,
-				74193BB11C0C7C230044EDD6 /* ImageController.h */,
-				74193BB21C0C7C230044EDD6 /* ImageController.m */,
-				74193BB41C0CC4670044EDD6 /* SoundRecordingController.h */,
-				74193BB51C0CC4670044EDD6 /* SoundRecordingController.m */,
-				74193BC11C0DD3240044EDD6 /* SaveController.h */,
-				74193BC21C0DD3240044EDD6 /* SaveController.m */,
+				74193BA41C0AF5760044EDD6 /* RootViewController.h */,
+				74193BA51C0AF5760044EDD6 /* RootViewController.m */,
+				74193BAB1C0B14B50044EDD6 /* MapViewController.h */,
+				74193BAC1C0B14B50044EDD6 /* MapViewController.m */,
+				74193BB11C0C7C230044EDD6 /* ImageViewController.h */,
+				74193BB21C0C7C230044EDD6 /* ImageViewController.m */,
+				74193BB41C0CC4670044EDD6 /* SoundRecordingViewController.h */,
+				74193BB51C0CC4670044EDD6 /* SoundRecordingViewController.m */,
 				74193BD71C0E15F60044EDD6 /* BaseViewController.h */,
 				74193BD81C0E15F60044EDD6 /* BaseViewController.m */,
 				74193C0C1C0EA9830044EDD6 /* ListViewController.h */,
@@ -257,22 +247,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				74193BAD1C0B14B50044EDD6 /* MapController.m in Sources */,
-				74193BB01C0C6FBD0044EDD6 /* ChoosingSourceController.m in Sources */,
+				74193BAD1C0B14B50044EDD6 /* MapViewController.m in Sources */,
 				74193B911C0AF1250044EDD6 /* AppDelegate.m in Sources */,
 				74193C111C0EEBC30044EDD6 /* TravelInfoViewController.m in Sources */,
 				CE2823D31C1ED95000975BC7 /* TravelItem.m in Sources */,
 				74193BD91C0E15F60044EDD6 /* BaseViewController.m in Sources */,
-				74193BB61C0CC4670044EDD6 /* SoundRecordingController.m in Sources */,
+				74193BB61C0CC4670044EDD6 /* SoundRecordingViewController.m in Sources */,
 				CE2823D61C1ED99B00975BC7 /* DataSource.m in Sources */,
-				74193BC31C0DD3240044EDD6 /* SaveController.m in Sources */,
 				74193B8E1C0AF1250044EDD6 /* main.m in Sources */,
 				74193C0E1C0EA9830044EDD6 /* ListViewController.m in Sources */,
 				74193C2C1C0F0B510044EDD6 /* CoreModel.xcdatamodeld in Sources */,
 				CE2823D21C1ED95000975BC7 /* TravelItem+CoreDataProperties.m in Sources */,
-				74193BA61C0AF5760044EDD6 /* RootController.m in Sources */,
+				74193BA61C0AF5760044EDD6 /* RootViewController.m in Sources */,
 				74193C381C0F269C0044EDD6 /* AnnotationModel.m in Sources */,
-				74193BB31C0C7C230044EDD6 /* ImageController.m in Sources */,
+				74193BB31C0C7C230044EDD6 /* ImageViewController.m in Sources */,
 				74193BD11C0DE0850044EDD6 /* DbController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -384,11 +372,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Corrine Kohlmeyer-Hyman (2BWLG6F5DY)";
 				INFOPLIST_FILE = TestProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.egorsydorenko.TestProject;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "49fca8c7-02e5-4a4d-8950-f0af97f1b7b2";
 			};
 			name = Debug;
 		};
@@ -396,11 +386,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Corrine Kohlmeyer-Hyman (2BWLG6F5DY)";
 				INFOPLIST_FILE = TestProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.egorsydorenko.TestProject;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "49fca8c7-02e5-4a4d-8950-f0af97f1b7b2";
 			};
 			name = Release;
 		};

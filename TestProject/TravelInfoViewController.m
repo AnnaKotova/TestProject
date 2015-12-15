@@ -32,7 +32,7 @@
 {
     if(!_playButton)
     {
-        _playButton = [[UIButton alloc] initWithFrame:CGRectMake(5.0, 280.0, self.view.bounds.size.width - 10, 40.0)];
+        _playButton = [[UIButton alloc] initWithFrame:CGRectMake(5.0, 420.0, self.view.bounds.size.width - 10, 40.0)];
         [_playButton setTitle:@"Play" forState:UIControlStateNormal];
         [_playButton setBackgroundColor:[UIColor grayColor]];
         [_playButton addTarget:self action:@selector(playSound:) forControlEvents:UIControlEventTouchDown];
@@ -54,7 +54,7 @@
 {
     if(!_sliderView )
     {
-        _sliderView = [[UISlider alloc] initWithFrame:CGRectMake(5, 210, self.view.bounds.size.width - 5, 60 )];
+        _sliderView = [[UISlider alloc] initWithFrame:CGRectMake(5, 360, self.view.bounds.size.width - 5, 60 )];
         [_sliderView setMaximumValue:250.0];
         [_sliderView setMinimumValue:0];
         [_sliderView setValue:100];

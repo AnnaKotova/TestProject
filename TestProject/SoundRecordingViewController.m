@@ -114,10 +114,16 @@
 
 -(void) addingDone:(UIBarButtonItem*) sender
 {
-    SaveViewController* sController = [[SaveViewController alloc] initWithModel: self.travelItemModel];
-    [self.navigationController pushViewController: sController animated: YES];
-    [sController release];
-    
+    UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"Saved!" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction * okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                                {
+                                    [DataSource.sharedDataSource saveContexChanges];
+                                    NSArray *array = [self.navigationController viewControllers];
+                                    
+                                    [self.navigationController popToViewController:[array objectAtIndex:1] animated:YES];
+                                }];
+    [alert addAction:okAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 -(void) startRecording:(UIButton*) sender

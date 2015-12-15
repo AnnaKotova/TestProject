@@ -14,13 +14,14 @@
 @interface MapViewController()
 
 @property (nonatomic) int _mapHeight;
-@property (nonatomic, retain) UIPickerView * mapTypePicker;
+//@property (nonatomic, retain) UIPickerView * mapTypePicker;
 @property (nonatomic, retain) NSArray * mapTypesStrings;
 @property (nonatomic, retain) NSArray * travelItemCollection;
 @property (nonatomic, retain) MKMapView * mapView;
 @property (nonatomic, retain) CLLocationManager * locationManager;
 @property (nonatomic) double latitude;
 @property (nonatomic) double longitude;
+@property (nonatomic) UIButton* mapTypeButton;
 
 
 @end
@@ -28,12 +29,13 @@
 @implementation MapViewController
 
 @synthesize _mapHeight = __mapHeight;
-@synthesize mapTypePicker = _mapTypePicker;
+//@synthesize mapTypePicker = _mapTypePicker;
 @synthesize mapTypesStrings = _mapTypesStrings;
 
 #pragma  UIControl Prperties
 
--(MKMapView*) mapView {
+-(MKMapView*) mapView
+{
     if(!_mapView){
         _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - self._mapHeight)];
         [_mapView setShowsUserLocation: YES];
@@ -45,7 +47,9 @@
     return _mapView;
 }
 
--(CLLocationManager*) locationManager {
+
+-(CLLocationManager*) locationManager
+{
     if(!_locationManager) {
         _locationManager = [[[CLLocationManager alloc] init] autorelease];
         _locationManager.delegate = self;
@@ -54,7 +58,8 @@
 }
 
 
--(NSArray*) travelItemCollection {
+-(NSArray*) travelItemCollection
+{
     if(!_travelItemCollection) _travelItemCollection = [DataSource.sharedDataSource getTravelItemCollection];
     return _travelItemCollection;
 }
@@ -62,24 +67,48 @@
     return 70;
 }
 
-- (NSArray*) mapTypesStrings {
+- (NSArray*) mapTypesStrings
+{
     return @[@"Standart", @"Satellite", @"Hybrid"];
 }
 
--(void) viewDidUnload {
+-(void) viewDidUnload
+{
     [super viewDidUnload];
 }
-
--(UIPickerView*) mapTypePicker
+-(UIButton*) mapTypeButton
 {
-    if(!_mapTypePicker)
+    if(!_mapTypeButton)
     {
-        _mapTypePicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - self._mapHeight, self.view.bounds.size.width, self._mapHeight)];
-        [_mapTypePicker setBackgroundColor: [UIColor whiteColor]];
-        _mapTypePicker.delegate = self;
-        [_mapTypePicker setShowsSelectionIndicator: YES];
+        _mapTypeButton = [[UIButton alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - self._mapHeight, self.view.bounds.size.width, self._mapHeight)];
+        [_mapTypeButton addTarget:self action:@selector(chooseType:) forControlEvents:UIControlEventAllTouchEvents];
+        [_mapTypeButton setTitle:@"Map Type: Standart" forState:UIControlStateNormal];
+        [_mapTypeButton setBackgroundColor:[UIColor grayColor]];
     }
-    return _mapTypePicker;
+    return _mapTypeButton;
+}
+-(void) chooseType:(UIButton*) sender {
+    UIAlertController* chooseMapTypeAlert = [UIAlertController alertControllerWithTitle:@"choose map type" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction* setStandartmaptypeAction = [UIAlertAction actionWithTitle:@"Standart" style:UIAlertControllerStyleActionSheet handler:^(UIAlertAction * _Nonnull action)
+                                               {
+                                                   [self.mapView setMapType:MKMapTypeStandard];
+                                                   [_mapTypeButton setTitle:@"Map Type: Standart" forState:UIControlStateNormal];
+                                               }];
+    UIAlertAction* setHybridMapTypeAction = [UIAlertAction actionWithTitle:@"Hybrid" style:UIAlertControllerStyleActionSheet handler:^(UIAlertAction * _Nonnull action)
+                                               {
+                                                   [self.mapView setMapType:MKMapTypeHybrid];
+                                                   [_mapTypeButton setTitle:@"Map Type: Hybrid" forState:UIControlStateNormal];
+                                               }];
+    UIAlertAction* setSatelliteMapTypeAction = [UIAlertAction actionWithTitle:@"Satellite" style:UIAlertControllerStyleActionSheet handler:^(UIAlertAction * _Nonnull action)
+                                               {
+                                                   [self.mapView setMapType:MKMapTypeSatellite];
+                                                   [_mapTypeButton setTitle:@"Map Type: Satellite" forState:UIControlStateNormal];
+                                               }];
+    [chooseMapTypeAlert addAction:setStandartmaptypeAction];
+    [chooseMapTypeAlert addAction:setHybridMapTypeAction];
+    [chooseMapTypeAlert addAction:setSatelliteMapTypeAction];
+    [self presentViewController:chooseMapTypeAlert animated:YES completion:nil];
+                                                                             
 }
 
 -(int) numberOfComponentsInPickerView:(UIPickerView *)pickerView {
@@ -99,20 +128,23 @@
     [super viewDidLoad];
  
     [self.view addSubview:self.mapView];
-    [self.view addSubview:self.mapTypePicker];
-    UIBarButtonItem*barbutton = [[UIBarButtonItem alloc] initWithTitle: @"Next" style:UIBarButtonItemStyleDone target: self action: @selector(goToNextView:)];
+    [self.view addSubview:self.mapTypeButton];
+    UIBarButtonItem*barbutton = [[UIBarButtonItem alloc] initWithTitle: @"New" style:UIBarButtonItemStyleDone target: self action: @selector(goToNextView:)];
     self.navigationItem.rightBarButtonItem =  barbutton;
     [barbutton release];
-    [self addAnotationsFromTravelCollectionToMap];
+    
     [self.locationManager requestWhenInUseAuthorization];
     [self.locationManager startUpdatingLocation];
+    //self.mapView add
 }
 
 -(void) viewWillAppear:(BOOL)animated {
 
     [super viewWillAppear: animated];
     [self.navigationController setNavigationBarHidden: NO];
-
+    _travelItemCollection = nil;
+    [self.mapView removeAnnotations: self.mapView.annotations];
+    [self addAnotationsFromTravelCollectionToMap];
 }
 
 
@@ -121,11 +153,15 @@
     if(annotation == mapView.userLocation) {
         return nil;
     }
-    MKPinAnnotationView *annView=[[MKPinAnnotationView alloc] initWithAnnotation: annotation reuseIdentifier: @"currentloc"];
-    annView.animatesDrop = TRUE;
-    annView.canShowCallout = YES;
-    annView.calloutOffset = CGPointMake(-5, 5);
-    return annView;
+    if( [annotation isKindOfClass:[AnnotationModel class]] )
+    {
+        MKPinAnnotationView *annView=[[MKPinAnnotationView alloc] initWithAnnotation: annotation reuseIdentifier: @"currentloc"];
+        annView.animatesDrop = TRUE;
+        annView.canShowCallout = YES;
+        annView.calloutOffset = CGPointMake(-5, 5);
+        return annView;
+    }
+    return nil;
 }
 
 -(void) viewWillDisappear:(BOOL)animated {
@@ -157,7 +193,10 @@
     TravelInfoViewController * tviController = [[[TravelInfoViewController alloc] initWithCurrentIndex: annotationModelItem.number] autorelease];
     [self.navigationController pushViewController: tviController animated: YES];
 }
-
+- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
+    
+    NSLog(@"tap on title");
+}
 
 -(void) addAnotationsFromTravelCollectionToMap
 {

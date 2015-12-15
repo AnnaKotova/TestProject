@@ -15,14 +15,17 @@
 
 @implementation DataSource
 
--(DbController *)coreController {
-    if(!_coreController) {
+-(DbController *)coreController
+{
+    if(!_coreController)
+    {
         _coreController = [[DbController alloc] init];
     }
     return _coreController;
 }
 
-+(DataSource *) sharedDataSource {
++(DataSource *) sharedDataSource
+{
     static DataSource * singletonObject = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -31,30 +34,34 @@
     return singletonObject;
 }
 
--(instancetype) init {
++(void) initializeSingleTon { }
+
+-(instancetype) init
+{
     self = [super init];
-    if(!self) {
-        
-    }
     return self;
     
 }
 
--(TravelItem *) createNewTravelItem {
+-(TravelItem *) createNewTravelItem
+{
     return (TravelItem *)[NSEntityDescription insertNewObjectForEntityForName: @"TravelInfo" inManagedObjectContext: self.coreController.managedObjectContext];
 }
 
--(NSArray *) getTravelItemCollection {
+-(NSArray *) getTravelItemCollection
+{
     NSFetchRequest * inf = [NSFetchRequest fetchRequestWithEntityName: @"TravelInfo"];
     NSArray * arr = [self.coreController.managedObjectContext executeFetchRequest: inf error: nil];
     return [arr copy];
 }
 
--(void) removeTravelItem:(TravelItem *) item {
+-(void) removeTravelItem:(TravelItem *) item
+{
     [self.coreController.managedObjectContext deleteObject: item];
 }
 
--(void) saveContexChanges {
+-(void) saveContexChanges
+{
     [self.coreController.managedObjectContext save: nil];
 }
 

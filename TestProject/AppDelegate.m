@@ -25,6 +25,7 @@
     [rController release];
 
     [self.window makeKeyAndVisible];
+    [DataSource initializeSingleTon];
     
     return YES;
 }
