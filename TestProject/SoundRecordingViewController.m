@@ -6,51 +6,53 @@
 //  Copyright © 2015 Егор Сидоренко. All rights reserved.
 //
 
-#import "SoundRecordingController.h"
-#import "SaveController.h"
+#import "SoundRecordingViewController.h"
+#import "SaveViewController.h"
 
-@interface SoundRecordingController()
+@interface SoundRecordingViewController()
 
-@property (nonatomic, retain) AVAudioRecorder *audioRecorder;
+@property (nonatomic, retain) AVAudioRecorder * audioRecorder;
 @property (nonatomic, retain) UIButton * recordButton;
-@property (nonatomic, retain) UIProgressView* progressBar;
+@property (nonatomic, retain) UIProgressView * progressBar;
 @property (nonatomic) int maxTime;
-@property (nonatomic, retain) NSTimer* recordTimer;
+@property (nonatomic, retain) NSTimer * recordTimer;
 @property (nonatomic) int ticks;
 
 @end
 
-@implementation SoundRecordingController
+@implementation SoundRecordingViewController
 
-- (AVAudioRecorder* ) audioRecorder {
-    if(!_audioRecorder) {
-        NSArray *dirPaths;
-        NSString *docsDir;
+- (AVAudioRecorder *) audioRecorder
+{
+    if(!_audioRecorder)
+    {
+        NSArray * dirPaths;
+        NSString * docsDir;
         
         dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         docsDir = dirPaths[0];
 
-        NSString *soundFilePath = [docsDir
-                                   stringByAppendingPathComponent:[NSString stringWithFormat:@"sound_%@.caf", [self getCurrentTime]]];
-        self.model.soundUrl = soundFilePath;
+        NSString * soundFilePath = [docsDir
+                                   stringByAppendingPathComponent:[NSString stringWithFormat: @"sound_%@.caf", [self getCurrentTime]]];
+        self.travelItemModel.soundUrl = soundFilePath;
         
         NSURL *soundFileURL = [NSURL fileURLWithPath:soundFilePath];
         
         NSDictionary *recordSettings = [NSDictionary
                                         dictionaryWithObjectsAndKeys:
-                                        [NSNumber numberWithInt:AVAudioQualityMin],
+                                        [NSNumber numberWithInt: AVAudioQualityMin],
                                         AVEncoderAudioQualityKey,
-                                        [NSNumber numberWithInt:16],
+                                        [NSNumber numberWithInt: 16],
                                         AVEncoderBitRateKey,
                                         [NSNumber numberWithInt: 2],
                                         AVNumberOfChannelsKey,
-                                        [NSNumber numberWithFloat:44100.0],
+                                        [NSNumber numberWithFloat: 44100.0],
                                         AVSampleRateKey,
                                         nil];
         
-        NSError *error = nil;
+        NSError * error = nil;
         
-        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+        AVAudioSession * audioSession = [AVAudioSession sharedInstance];
         [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord 
                             error:nil];
         
@@ -62,8 +64,10 @@
 }
 
 
--(UIButton*) recordButton {
-    if(!_recordButton) {
+-(UIButton *) recordButton
+{
+    if(!_recordButton)
+    {
         _recordButton = [[UIButton alloc] initWithFrame:CGRectMake(5, 210, self.view.bounds.size.width - 10, 60)];
         [_recordButton setTitle:@"Record" forState:UIControlStateNormal];
         _recordButton.layer.borderWidth = 0.5f;
@@ -75,56 +79,62 @@
     return  _recordButton;
 }
 
--(UIProgressView*) progressBar {
-    if(!_progressBar) {
-        _progressBar = [[UIProgressView alloc] initWithFrame:CGRectMake(5, 180, self.view.bounds.size.width-10, 30)];
-        //_progressBar.
+-(UIProgressView *) progressBar
+{
+    if(!_progressBar)
+    {
+        _progressBar = [[UIProgressView alloc] initWithFrame:CGRectMake(5, 180, self.view.bounds.size.width - 10, 30)];
     }
     return _progressBar;
 }
 
--(int) maxTime {
+-(int) maxTime
+{
     return 3;
 }
--(void) viewDidUnload {
+
+-(void) viewDidUnload
+{
     [super viewDidUnload];
     self.progressBar = nil;
     self.recordButton = nil;
     [self.audioRecorder release];
 }
--(void) viewDidLoad {
-    UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(addingDone:)];
+
+-(void) viewDidLoad
+{
+    [super viewDidLoad];
+    UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithTitle: @"Done" style: UIBarButtonItemStyleDone target:self action: @selector(addingDone:)];
     self.navigationItem.rightBarButtonItem = doneButton;
     [doneButton release];
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:self.progressBar];
     [self.view addSubview:self.recordButton];
-    
-    //[self.recordTimer ]
-    //[doneButton dealloc];
-    
 }
--(void) addingDone:(UIBarButtonItem*) sender {
-    SaveController* sController = [[SaveController alloc] initWithModel:self.model];
-    [self.navigationController pushViewController:sController animated:YES];
+
+-(void) addingDone:(UIBarButtonItem*) sender
+{
+    SaveViewController* sController = [[SaveViewController alloc] initWithModel: self.travelItemModel];
+    [self.navigationController pushViewController: sController animated: YES];
     [sController release];
     
 }
--(void) startRecording:(UIButton*) sender {
+
+-(void) startRecording:(UIButton*) sender
+{
     self.ticks = 0;
     self.progressBar.progress = 0.0;
-    self.recordTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerTick) userInfo:nil repeats:YES];
+    self.recordTimer = [NSTimer scheduledTimerWithTimeInterval: 1 target: self selector: @selector(timerTick) userInfo: nil repeats: YES];
     if (!self.audioRecorder.recording)
     {
-        //_playButton.enabled = NO;
-        //_stopButton.enabled = YES;
         [self.audioRecorder record];
     }
 }
 
--(void) timerTick {
+-(void) timerTick
+{
     self.progressBar.progress+=(1.f/self.maxTime);
-        [self.recordButton setTitle:[NSString stringWithFormat:@"Record  Time 00:00:%d",++self.ticks] forState:UIControlStateNormal];
+        [self.recordButton setTitle: [NSString stringWithFormat: @"Record  Time 00:00:%d",++self.ticks] forState: UIControlStateNormal];
     if (self.progressBar.progress >= 1.0) {
         [self.recordTimer invalidate];
         [self.audioRecorder stop];
@@ -133,14 +143,16 @@
 
 -(void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag
 {
-    //self.model.soundUrl = [recorder.];
-    NSData* data = [NSData dataWithContentsOfFile:self.model.soundUrl];
-    [data writeToFile:self.model.soundUrl atomically:YES];
+    NSData* data = [NSData dataWithContentsOfFile: self.travelItemModel.soundUrl];
+    [data writeToFile:self.travelItemModel.soundUrl atomically: YES];
 }
--(NSString*) getCurrentTime {
+
+-(NSString *) getCurrentTime
+{
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyyMMddhhmm"];
     NSString *CurrentTime = [dateFormatter stringFromDate:[NSDate date]];
     return CurrentTime;
 }
+
 @end

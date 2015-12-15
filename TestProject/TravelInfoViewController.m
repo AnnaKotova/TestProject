@@ -15,6 +15,8 @@
 @property (nonatomic, retain) UIImageView* backgroundView;
 @property (nonatomic, retain) UISlider * sliderView;
 @property (nonatomic, retain) AVAudioPlayer* audioPlayer;
+@property (nonatomic, retain) UIButton* playButton;
+@property (nonatomic, retain) NSTimer* playTimer;
 
 @end
 
@@ -23,54 +25,66 @@
 - (void)dealloc
 {
     [_model release];
-    
     [super dealloc];
+}
+
+-(UIButton*) playButton
+{
+    if(!_playButton)
+    {
+        _playButton = [[UIButton alloc] initWithFrame:CGRectMake(5.0, 280.0, self.view.bounds.size.width - 10, 40.0)];
+        [_playButton setTitle:@"Play" forState:UIControlStateNormal];
+        [_playButton setBackgroundColor:[UIColor grayColor]];
+        [_playButton addTarget:self action:@selector(playSound:) forControlEvents:UIControlEventTouchDown];
+    }
+    return _playButton;
 }
 
 - (instancetype)initWithCurrentIndex:(int) index
 {
     self = [super init];
-    if(self) {
+    if(self)
+    {
         self.index = index;
     }
     return self;
 }
 
--(UISlider*) sliderView {
-    if(!_sliderView ){
-        //_sliderView = [[UIProgressView alloc] initWithFrame:CGRectMake(5, 360, self.view.bounds.size.width - 5, 60 )];
-        //[_sliderView setProgressViewStyle:UIProgressViewStyleDefault];
-        _sliderView = [[UISlider alloc] initWithFrame:CGRectMake(5, 360, self.view.bounds.size.width - 5, 60 )];
+-(UISlider*) sliderView
+{
+    if(!_sliderView )
+    {
+        _sliderView = [[UISlider alloc] initWithFrame:CGRectMake(5, 210, self.view.bounds.size.width - 5, 60 )];
         [_sliderView setMaximumValue:250.0];
         [_sliderView setMinimumValue:0];
         [_sliderView setValue:100];
         _sliderView.continuous = YES;
-        [_sliderView addTarget:self action:@selector(sliderAction:) forControlEvents:UIControlEventValueChanged];
-        //[_sliderView setBackgroundColor:[UIColor clearColor]];
-        //_sliderView setVa
+        //[_sliderView addTarget:self action:@selector(sliderAction:) forControlEvents:UIControlEventValueChanged];
     }
     return _sliderView;
 }
 
--(void) sliderAction:(UISlider*)sender {
-    //[self.sliderView setValue:sender.value animated:YES];
-}
 
--(NSArray*) model {
-    if(!_model) {
+-(NSArray*) model
+{
+    if(!_model)
+    {
         _model = [[DataSource.sharedDataSource getTravelItemCollection] retain];
     }
     return _model;
 }
 
--(UIImageView*) backgroundView {
-    if(!_backgroundView) {
+-(UIImageView*) backgroundView
+{
+    if(!_backgroundView)
+    {
         _backgroundView = [[UIImageView alloc] initWithFrame:self.view.frame];
     }
     return  _backgroundView;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor whiteColor]];
     //
@@ -89,12 +103,14 @@
     [delete release];
     
     [self.view addSubview:self.sliderView];
+    [self.view addSubview:self.playButton];
     [self.sliderView becomeFirstResponder];
     
 
 }
 
--(void) deleteTravelItem:(UIBarButtonItem*) button {
+-(void) deleteTravelItem:(UIBarButtonItem*) button
+{
     [DataSource.sharedDataSource removeTravelItem:(TravelItem* )self.model[self.index]];
     [self.navigationController popViewControllerAnimated:YES];
     [DataSource.sharedDataSource saveContexChanges];
@@ -102,9 +118,10 @@
     [[NSFileManager defaultManager] removeItemAtPath:((TravelItem* )self.model[self.index]).soundUrl error:nil];
 }
 
--(void) initViewValues {
+-(void) initViewValues
+{
     if(self.index < 0 )
-        self.index = self.model.count -1;
+        self.index = self.model.count - 1;
     else if (self.index >= self.model.count)
         self.index = 0;
     
@@ -112,34 +129,46 @@
     [self setTitle:displayModel.name];
     
     
-    //Get image from PhAsset
     UIImage* img = [[UIImage alloc] initWithContentsOfFile:displayModel.imageUrl];
     self.backgroundView.image = img;
     NSData* soundData = [NSData dataWithContentsOfFile:displayModel.soundUrl];
     self.audioPlayer =[[AVAudioPlayer alloc] initWithData:soundData error:nil];
     self.sliderView.maximumValue = self.audioPlayer.duration;
     [self.audioPlayer setDelegate:self];
-    // [[AVAudioPlayer alloc ]initWithContentsOfURL:displayModel.soundUrl error:nil];
-    [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updateTime:) userInfo:nil repeats:YES];
-    [self.audioPlayer play];
-
+    self.sliderView.value = 0.0f;
 }
 
--(void) updateTime:(NSTimer*) sender {
-    
+-(void) updateTime:(NSTimer*) sender
+{
     self.sliderView.value = self.sliderView.value + 1;
+    if(self.sliderView.value == self.audioPlayer.duration)
+    {
+        [self.playTimer invalidate];
+    }
 }
-- (void) actionSwipeLeft:(UISwipeGestureRecognizer*) gestureRecognizer{
+- (void) actionSwipeLeft:(UISwipeGestureRecognizer*) gestureRecognizer
+{
     self.index--;
     [self initViewValues];
 }
-- (void) actionSwipeRight:(UISwipeGestureRecognizer*) gestureRecognizer{
+- (void) actionSwipeRight:(UISwipeGestureRecognizer*) gestureRecognizer
+{
     self.index++;
     [self initViewValues];
 }
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 
+}
+-(void)playSound:(UIButton*) sender
+{
+    if (self.audioPlayer)
+    {
+        self.sliderView.value = 0.0f;
+        self.playTimer = [NSTimer scheduledTimerWithTimeInterval: 1.0 target: self selector:@selector(updateTime:) userInfo: nil repeats: YES];
+        [self.audioPlayer play];
+    }
 }
 
 

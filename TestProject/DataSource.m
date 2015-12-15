@@ -10,20 +10,20 @@
 @interface DataSource()
 
 -(instancetype) init;
-@property DbController* coreController;
+@property (nonatomic)  DbController * coreController;
 @end
 
 @implementation DataSource
 
--(DbController* )coreController {
+-(DbController *)coreController {
     if(!_coreController) {
         _coreController = [[DbController alloc] init];
     }
     return _coreController;
 }
 
-+(DataSource*) sharedDataSource {
-    static DataSource *singletonObject = nil;
++(DataSource *) sharedDataSource {
+    static DataSource * singletonObject = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         singletonObject = [[self alloc] init];
@@ -40,28 +40,22 @@
     
 }
 
--(void) dealloc {
-    //[self.coreController release];
+-(TravelItem *) createNewTravelItem {
+    return (TravelItem *)[NSEntityDescription insertNewObjectForEntityForName: @"TravelInfo" inManagedObjectContext: self.coreController.managedObjectContext];
 }
 
-
--(TravelItem*) createNewTravelItem {
-    return (TravelItem*)[NSEntityDescription insertNewObjectForEntityForName:@"TravelInfo" inManagedObjectContext:self.coreController.managedObjectContext];
-}
-
--(NSArray*) getTravelItemCollection {
-    NSFetchRequest* inf = [NSFetchRequest fetchRequestWithEntityName:@"TravelInfo"];
-    NSArray* arr = [self.coreController.managedObjectContext executeFetchRequest:inf error:nil];
-
+-(NSArray *) getTravelItemCollection {
+    NSFetchRequest * inf = [NSFetchRequest fetchRequestWithEntityName: @"TravelInfo"];
+    NSArray * arr = [self.coreController.managedObjectContext executeFetchRequest: inf error: nil];
     return [arr copy];
 }
 
--(void) removeTravelItem:(TravelItem*) item {
-    [self.coreController.managedObjectContext deleteObject:item];
+-(void) removeTravelItem:(TravelItem *) item {
+    [self.coreController.managedObjectContext deleteObject: item];
 }
 
 -(void) saveContexChanges {
-    [self.coreController.managedObjectContext save:nil];
+    [self.coreController.managedObjectContext save: nil];
 }
 
 

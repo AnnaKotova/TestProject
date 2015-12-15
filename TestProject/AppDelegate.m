@@ -18,8 +18,8 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    RootController* rController = [[RootController alloc] init];
-    UINavigationController *navController =[[UINavigationController alloc] initWithRootViewController:rController];
+    RootViewController * rController = [[RootViewController alloc] init];
+    UINavigationController * navController =[[UINavigationController alloc] initWithRootViewController:rController];
     self.window.rootViewController = navController;
     [navController release];
     [rController release];

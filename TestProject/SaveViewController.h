@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
 
-@interface SaveController : BaseViewController
+@interface SaveViewController : BaseViewController
 
 @end

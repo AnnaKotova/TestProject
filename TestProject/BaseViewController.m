@@ -13,12 +13,13 @@
 @end
 
 @implementation BaseViewController
--(instancetype)initWithModel:(TravelItem *)model {
+-(instancetype)initWithModel:(TravelItem *)travelItemModel
+{
     self = [super init];
-    if(self){
-        self.model = model;
+    if(self)
+    {
+        self.travelItemModel = travelItemModel;
     }
-     //NSLog(@"%f %f %@ %@ %@",self.model.latitude,self.model.longitude, self.model.name, self.model.soundUrl);
     return self;
 }
 @end

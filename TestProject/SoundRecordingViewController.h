@@ -1,5 +1,5 @@
 //
-//  ChoosingSourceController.h
+//  SoundRecordingController.h
 //  TestProject
 //
 //  Created by Егор Сидоренко on 11/30/15.
@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
 #import "BaseViewController.h"
 
-@interface ChoosingSourceController : BaseViewController
+@interface SoundRecordingViewController : BaseViewController<AVAudioRecorderDelegate>
 
 @end

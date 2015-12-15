@@ -11,8 +11,8 @@
 
 @interface BaseViewController : UIViewController
 
--(instancetype)initWithModel:(TravelItem *)model;
+-(instancetype)initWithModel:(TravelItem *)travelItemModel;
 
-@property (nonatomic) TravelItem* model;
+@property (nonatomic,retain) TravelItem * travelItemModel;
 
 @end

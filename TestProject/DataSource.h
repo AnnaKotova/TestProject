@@ -16,13 +16,9 @@
 
 -(TravelItem*) createNewTravelItem;
 
--(BOOL) addTravelItem:(TravelItem*)item;
-
 -(NSArray*) getTravelItemCollection;
 
--(void) removeTravelItem:(TravelItem*) item;
-//-(NSArray*) getTravelItemCollectionByNamesSorted:(NSString*) sortedType;
-
+-(void) removeTravelItem:(TravelItem *) item;
 
 -(void) saveContexChanges;
 

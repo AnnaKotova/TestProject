@@ -11,11 +11,11 @@
 
 @interface AnnotationModel : NSObject<MKAnnotation>
 
--(instancetype) initWithTitle:(NSString*) title andCoordinates:(CLLocationCoordinate2D) coordinates;
+-(instancetype) initWithTitle:(NSString *) title Coordinates:(CLLocationCoordinate2D) coordinates Number:(NSInteger) index;
 
-@property (nonatomic) NSString* title;
+@property (nonatomic, copy) NSString * title;
 @property (nonatomic) CLLocationCoordinate2D coordinate;
-@property (nonatomic) int Index;
+@property (nonatomic) int number;
 
 //- (MKMapItem*)mapItem;
 

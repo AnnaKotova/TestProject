@@ -13,6 +13,7 @@
 
 
 @interface TravelInfoViewController : UIViewController<AVAudioPlayerDelegate>
+
 - (instancetype)initWithCurrentIndex:(int) index;
 
 @end

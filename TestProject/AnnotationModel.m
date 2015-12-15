@@ -10,21 +10,18 @@
 
 @implementation AnnotationModel
 
--(instancetype) initWithTitle:(NSString*) title andCoordinates:(CLLocationCoordinate2D) coordinates {
+-(int) number {
+    return _number;
+}
+
+-(instancetype) initWithTitle:(NSString *) title Coordinates:(CLLocationCoordinate2D) coordinates  Number:(NSInteger) index {
     self = [super init];
     if(self) {
         self.coordinate = coordinates;
         self.title = title;
+        _number = index;
     }
     return self;
 }
-/*- (MKMapItem*)mapItem {
-    MKPlacemark *placemark = [[MKPlacemark alloc]
-                              initWithCoordinate:self.coordinates
-                              addressDictionary:nil];
-    
-    MKMapItem *mapItem = [[MKMapItem alloc] initWithPlacemark:placemark];
-    mapItem.name = self.customTitle;
-    return mapItem;
-}*/
+
 @end
