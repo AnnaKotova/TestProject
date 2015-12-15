@@ -26,6 +26,9 @@
         _tableView = [[UITableView alloc] initWithFrame:self.view.frame];
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        UIRefreshControl *refreshControl = [[[UIRefreshControl alloc] init] autorelease];
+        [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
+        [self.tableView addSubview:refreshControl];
     }
     return _tableView;
 }
@@ -49,8 +52,12 @@
 {
     [super viewDidLoad];
     [self.view addSubview:self.tableView];
-    NSLog(@"%d",self.travelInfoArray.count);
 
+}
+-(void) refresh:(UIRefreshControl*) refreshControl {
+    _travelInfoArray = nil;
+    [self.tableView reloadData];
+    [refreshControl endRefreshing];
 }
 -(void) viewWillAppear:(BOOL)animated
 {
@@ -119,5 +126,6 @@
         [self.tableView reloadData];
     }
 }
+
 
 @end

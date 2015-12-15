@@ -1,0 +1,23 @@
+/* 
+  Localization.strings
+  TestProject
+
+  Created by User on 12/15/15.
+  Copyright © 2015 Егор Сидоренко. All rights reserved.
+*/
+
+"Back" = "Back";
+"Main Window" = "Main Window";
+"List" = "List";
+"New" = "New";
+"Cancel" = "Cancel";
+"Standart" = "Standart";
+"Hybrid" = "Hybrid";
+"Satelite" = "Satelite";
+"Next" = "Next";
+"Library" = "Library";
+"Camera" = "Camera";
+"Done" = "Done";
+"Record" = "Record";
+"Play" = "Play";
+"Map" = "Map";

@@ -29,6 +29,7 @@
 		CE2823D21C1ED95000975BC7 /* TravelItem+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2823CF1C1ED95000975BC7 /* TravelItem+CoreDataProperties.m */; };
 		CE2823D31C1ED95000975BC7 /* TravelItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2823D11C1ED95000975BC7 /* TravelItem.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CE2823D61C1ED99B00975BC7 /* DataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2823D51C1ED99B00975BC7 /* DataSource.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CEAD2AD61C20617F00E47554 /* Localization.strings in Resources */ = {isa = PBXBuildFile; fileRef = CEAD2AD81C20617F00E47554 /* Localization.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +70,7 @@
 		CE2823D11C1ED95000975BC7 /* TravelItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TravelItem.m; path = ../TravelItem.m; sourceTree = "<group>"; };
 		CE2823D41C1ED99B00975BC7 /* DataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSource.h; sourceTree = "<group>"; };
 		CE2823D51C1ED99B00975BC7 /* DataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataSource.m; sourceTree = "<group>"; };
+		CEAD2AD71C20617F00E47554 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localization.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +128,7 @@
 				74193B8D1C0AF1250044EDD6 /* main.m */,
 				74193BCF1C0DE0850044EDD6 /* DbController.h */,
 				74193BD01C0DE0850044EDD6 /* DbController.m */,
+				CEAD2AD81C20617F00E47554 /* Localization.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -235,6 +238,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				74193B9C1C0AF1250044EDD6 /* LaunchScreen.storyboard in Resources */,
+				CEAD2AD61C20617F00E47554 /* Localization.strings in Resources */,
 				74193B991C0AF1250044EDD6 /* Assets.xcassets in Resources */,
 				74193B971C0AF1250044EDD6 /* Main.storyboard in Resources */,
 			);
@@ -283,6 +287,14 @@
 				74193B9B1C0AF1250044EDD6 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		CEAD2AD81C20617F00E47554 /* Localization.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CEAD2AD71C20617F00E47554 /* en */,
+			);
+			name = Localization.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

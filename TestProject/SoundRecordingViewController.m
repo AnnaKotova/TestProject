@@ -104,7 +104,7 @@
 -(void) viewDidLoad
 {
     [super viewDidLoad];
-    UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithTitle: @"Done" style: UIBarButtonItemStyleDone target:self action: @selector(addingDone:)];
+    UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithTitle: NSLocalizedString(@"Done",nil) style: UIBarButtonItemStyleDone target:self action: @selector(addingDone:)];
     self.navigationItem.rightBarButtonItem = doneButton;
     [doneButton release];
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -114,8 +114,8 @@
 
 -(void) addingDone:(UIBarButtonItem*) sender
 {
-    UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"Saved!" message:@"" preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction * okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+    UIAlertController * alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Saved",nil) message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction * okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
                                 {
                                     [DataSource.sharedDataSource saveContexChanges];
                                     NSArray *array = [self.navigationController viewControllers];

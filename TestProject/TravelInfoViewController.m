@@ -98,6 +98,8 @@
     [swipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
     [self.view addGestureRecognizer:swipeRight];
     [swipeRight release];
+    
+    
     UIBarButtonItem* delete = [[UIBarButtonItem alloc] initWithTitle:@"Delete" style:UIBarButtonItemStyleDone target:self action:@selector(deleteTravelItem:)];
     self.navigationItem.rightBarButtonItem = delete;
     [delete release];
@@ -125,6 +127,11 @@
     else if (self.index >= self.model.count)
         self.index = 0;
     
+    [self.playTimer invalidate];
+    if(self.audioPlayer)
+    {
+        [self.audioPlayer stop];
+    }
     TravelItem* displayModel = (TravelItem* )self.model[self.index];
     [self setTitle:displayModel.name];
     
@@ -141,7 +148,7 @@
 -(void) updateTime:(NSTimer*) sender
 {
     self.sliderView.value = self.sliderView.value + 1;
-    if(self.sliderView.value == self.audioPlayer.duration)
+    if(self.sliderView.value >= self.sliderView.maximumValue)
     {
         [self.playTimer invalidate];
     }
@@ -156,6 +163,8 @@
     self.index++;
     [self initViewValues];
 }
+
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -165,9 +174,13 @@
 {
     if (self.audioPlayer)
     {
-        self.sliderView.value = 0.0f;
+        
+        if(self.sliderView.value == self.sliderView.maximumValue)
+            self.sliderView.value = 0.0f;
         self.playTimer = [NSTimer scheduledTimerWithTimeInterval: 1.0 target: self selector:@selector(updateTime:) userInfo: nil repeats: YES];
+        self.audioPlayer.currentTime = self.sliderView.value;
         [self.audioPlayer play];
+        
     }
 }
 

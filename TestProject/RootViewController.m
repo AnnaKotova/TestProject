@@ -27,7 +27,7 @@
     if(!_mapButton)
     {
         _mapButton = [UIButton buttonWithType: UIButtonTypeCustom];
-        [_mapButton setTitle: @"MAP" forState: UIControlStateNormal];
+        [_mapButton setTitle: NSLocalizedString(@"Map",nil) forState: UIControlStateNormal];
         _mapButton.frame = CGRectMake(0.0 + self.padding, 210.0, self.view.bounds.size.width - self.padding * 2, 40.0);
         _mapButton.backgroundColor = [UIColor grayColor];
         [_mapButton setTitleColor:[UIColor blueColor] forState: UIControlStateNormal];
@@ -45,7 +45,7 @@
         [_listButton setTitleColor:[UIColor blueColor] forState: UIControlStateNormal];
         _listButton.backgroundColor = [UIColor grayColor];
         _listButton.frame = CGRectMake(0.0+self.padding, 260.0, self.view.bounds.size.width - self.padding * 2, 40.0);
-        [_listButton setTitle: @"LIST" forState: UIControlStateNormal];
+        [_listButton setTitle: NSLocalizedString(@"List",nil) forState: UIControlStateNormal];
         [_listButton addTarget: self action: @selector(goToNextView:) forControlEvents: UIControlEventTouchDown];
     }
     
@@ -63,8 +63,8 @@
 -(void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear: animated];
-    [self setTitle: @"Main Window"];
-     self.navigationItem.title = @"Main Window";
+    [self setTitle: NSLocalizedString(@"Main Window",nil)];
+     self.navigationItem.title = NSLocalizedString(@"Main Window",nil);
 }
 
 -(void) viewDidUnload
@@ -76,13 +76,13 @@
 {
     if(sender == _mapButton)
     {
-        self.navigationItem.title = @"Back";
+        self.navigationItem.title = NSLocalizedString(@"Back",nil);
         MapViewController * mapController = [[MapViewController alloc] init];
         [self.navigationController pushViewController: mapController animated: YES];
     }
-    else if ([sender.currentTitle isEqualToString: @"LIST"])
+    else
     {
-        self.navigationItem.title = @"Back";
+        self.navigationItem.title = NSLocalizedString(@"Back",nil);
         ListViewController * listController = [[ListViewController alloc] init];
         [self.navigationController pushViewController:listController animated:YES];
         [listController release];

@@ -14,8 +14,6 @@
 @interface MapViewController()
 
 @property (nonatomic) int _mapHeight;
-//@property (nonatomic, retain) UIPickerView * mapTypePicker;
-@property (nonatomic, retain) NSArray * mapTypesStrings;
 @property (nonatomic, retain) NSArray * travelItemCollection;
 @property (nonatomic, retain) MKMapView * mapView;
 @property (nonatomic, retain) CLLocationManager * locationManager;
@@ -29,8 +27,6 @@
 @implementation MapViewController
 
 @synthesize _mapHeight = __mapHeight;
-//@synthesize mapTypePicker = _mapTypePicker;
-@synthesize mapTypesStrings = _mapTypesStrings;
 
 #pragma  UIControl Prperties
 
@@ -67,11 +63,6 @@
     return 70;
 }
 
-- (NSArray*) mapTypesStrings
-{
-    return @[@"Standart", @"Satellite", @"Hybrid"];
-}
-
 -(void) viewDidUnload
 {
     [super viewDidUnload];
@@ -89,24 +80,30 @@
 }
 -(void) chooseType:(UIButton*) sender {
     UIAlertController* chooseMapTypeAlert = [UIAlertController alertControllerWithTitle:@"choose map type" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
-    UIAlertAction* setStandartmaptypeAction = [UIAlertAction actionWithTitle:@"Standart" style:UIAlertControllerStyleActionSheet handler:^(UIAlertAction * _Nonnull action)
+    UIAlertAction* setStandartmaptypeAction = [UIAlertAction actionWithTitle: NSLocalizedString(@"Standart",nil) style:UIAlertControllerStyleActionSheet handler:^(UIAlertAction * _Nonnull action)
                                                {
                                                    [self.mapView setMapType:MKMapTypeStandard];
                                                    [_mapTypeButton setTitle:@"Map Type: Standart" forState:UIControlStateNormal];
                                                }];
-    UIAlertAction* setHybridMapTypeAction = [UIAlertAction actionWithTitle:@"Hybrid" style:UIAlertControllerStyleActionSheet handler:^(UIAlertAction * _Nonnull action)
+    UIAlertAction* setHybridMapTypeAction = [UIAlertAction actionWithTitle: NSLocalizedString(@"Hybrid",nil) style:UIAlertControllerStyleActionSheet handler:^(UIAlertAction * _Nonnull action)
                                                {
                                                    [self.mapView setMapType:MKMapTypeHybrid];
                                                    [_mapTypeButton setTitle:@"Map Type: Hybrid" forState:UIControlStateNormal];
                                                }];
-    UIAlertAction* setSatelliteMapTypeAction = [UIAlertAction actionWithTitle:@"Satellite" style:UIAlertControllerStyleActionSheet handler:^(UIAlertAction * _Nonnull action)
+    UIAlertAction* setSatelliteMapTypeAction = [UIAlertAction actionWithTitle: NSLocalizedString(@"Satellite",nil) style:UIAlertControllerStyleActionSheet handler:^(UIAlertAction * _Nonnull action)
                                                {
                                                    [self.mapView setMapType:MKMapTypeSatellite];
                                                    [_mapTypeButton setTitle:@"Map Type: Satellite" forState:UIControlStateNormal];
                                                }];
+    UIAlertAction* setCancel = [UIAlertAction actionWithTitle: NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action)
+                                                {
+                                                    [self.mapView setMapType:MKMapTypeSatellite];
+                                                    [_mapTypeButton setTitle:@"Map Type: Satellite" forState:UIControlStateNormal];
+                                                }];
     [chooseMapTypeAlert addAction:setStandartmaptypeAction];
     [chooseMapTypeAlert addAction:setHybridMapTypeAction];
     [chooseMapTypeAlert addAction:setSatelliteMapTypeAction];
+    [chooseMapTypeAlert addAction:setCancel];
     [self presentViewController:chooseMapTypeAlert animated:YES completion:nil];
                                                                              
 }
@@ -115,21 +112,12 @@
     return 1;
 }
 
-- (NSString* ) pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    [self.mapView setMapType:(MKMapType)row];
-    return self.mapTypesStrings[row];
-}
-
--(int) pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    return self.mapTypesStrings.count;
-}
-
 -(void) viewDidLoad {
     [super viewDidLoad];
  
     [self.view addSubview:self.mapView];
     [self.view addSubview:self.mapTypeButton];
-    UIBarButtonItem*barbutton = [[UIBarButtonItem alloc] initWithTitle: @"New" style:UIBarButtonItemStyleDone target: self action: @selector(goToNextView:)];
+    UIBarButtonItem*barbutton = [[UIBarButtonItem alloc] initWithTitle: NSLocalizedString(@"New",nil) style:UIBarButtonItemStyleDone target: self action: @selector(goToNextView:)];
     self.navigationItem.rightBarButtonItem =  barbutton;
     [barbutton release];
     
@@ -189,9 +177,12 @@
 
 -(void) mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
-    AnnotationModel * annotationModelItem = ((AnnotationModel *)view.annotation);
-    TravelInfoViewController * tviController = [[[TravelInfoViewController alloc] initWithCurrentIndex: annotationModelItem.number] autorelease];
-    [self.navigationController pushViewController: tviController animated: YES];
+    if([view.annotation isKindOfClass:[AnnotationModel class]])
+    {
+        AnnotationModel * annotationModelItem = ((AnnotationModel *)view.annotation);
+        TravelInfoViewController * tviController = [[[TravelInfoViewController alloc] initWithCurrentIndex: annotationModelItem.number] autorelease];
+        [self.navigationController pushViewController: tviController animated: YES];
+    }
 }
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
     

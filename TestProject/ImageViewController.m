@@ -81,9 +81,9 @@
 -(void) viewDidLoad
 {
     [super viewDidLoad];
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"!" message: @"" preferredStyle: UIAlertActionStyleDefault];
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"" message: @"" preferredStyle: UIAlertActionStyleDefault];
 
-    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:
     ^(UIAlertAction * _Nonnull action)
     {
         [self backToPreviousController];
@@ -91,7 +91,7 @@
     
     if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
     {
-        UIAlertAction* showCameraAction = [UIAlertAction actionWithTitle:@"Camera" style:UIAlertActionStyleDefault handler:
+        UIAlertAction* showCameraAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Camera",nil) style:UIAlertActionStyleDefault handler:
         ^(UIAlertAction* _Nonnull action)
         {
             self.initWithCamera = YES;
@@ -100,7 +100,7 @@
         [alert addAction:showCameraAction];
     }
     
-    UIAlertAction* showLibraryAction = [UIAlertAction actionWithTitle:@"Library" style:UIAlertActionStyleDefault handler:
+    UIAlertAction* showLibraryAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Library",nil) style:UIAlertActionStyleDefault handler:
     ^(UIAlertAction* _Nonnull action)
     {
         self.initWithCamera = NO;
@@ -159,7 +159,7 @@
         [self.imageName becomeFirstResponder];
         [self.navigationController setNavigationBarHidden: NO];
         
-        UIBarButtonItem* barBtn = [[UIBarButtonItem alloc] initWithTitle:@"Next" style: UIBarButtonItemStyleDone target: self action: @selector(goToNextView:)];
+        UIBarButtonItem* barBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next",nil) style: UIBarButtonItemStyleDone target: self action: @selector(goToNextView:)];
         self.navigationItem.rightBarButtonItem = barBtn;
         [barBtn release];
     }
