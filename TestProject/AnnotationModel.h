@@ -15,7 +15,7 @@
 
 @property (nonatomic, copy) NSString * title;
 @property (nonatomic) CLLocationCoordinate2D coordinate;
-@property (nonatomic) int number;
+@property (nonatomic) NSInteger number;
 
 //- (MKMapItem*)mapItem;
 

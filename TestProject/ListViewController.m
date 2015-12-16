@@ -99,7 +99,7 @@
     }
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
-    TravelItem * info =(TravelItem *) self.travelInfoArray[ indexPath.row ];
+    TravelItem * info =(TravelItem *) self.travelInfoArray[indexPath.row];
     if (info)
     {
         [cell.textLabel setText: info.name];
