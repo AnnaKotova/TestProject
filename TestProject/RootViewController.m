@@ -77,15 +77,14 @@
     if(sender == _mapButton)
     {
         self.navigationItem.title = NSLocalizedString(@"Back",nil);
-        MapViewController * mapController = [[MapViewController alloc] init];
+        MapViewController * mapController = [[[MapViewController alloc] init] autorelease];
         [self.navigationController pushViewController: mapController animated: YES];
     }
     else
     {
         self.navigationItem.title = NSLocalizedString(@"Back",nil);
-        ListViewController * listController = [[ListViewController alloc] init];
+        ListViewController * listController = [[[ListViewController alloc] init] autorelease];
         [self.navigationController pushViewController:listController animated:YES];
-        [listController release];
     }
 }
 
