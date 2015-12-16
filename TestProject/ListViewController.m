@@ -40,6 +40,7 @@
         self.travelInfoArray = nil;
     }
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

@@ -29,12 +29,13 @@
 
 #pragma mark - UIViewController Life Cycle
 
--(void) dealloc {
+- (void)dealloc
+{
     [self.mapView release];
     [super dealloc];
 }
 
--(void) viewDidLoad
+- (void)viewDidLoad
 {
     [super viewDidLoad];
     
@@ -100,7 +101,7 @@
 }
 
 
-- (NSArray *) travelItemCollection
+- (NSArray *)travelItemCollection
 {
     if(!_travelItemCollection) _travelItemCollection = [DataSource.sharedDataSource getTravelItemCollection];
     return _travelItemCollection;
@@ -121,11 +122,7 @@
     return _mapTypeButton;
 }
 
-
-
-
 #pragma mark - MKMapViewDelegate
-
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id ) annotation {
     
@@ -150,14 +147,14 @@
 }
 
 
--(void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
+- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
     [self.mapView setRegion:MKCoordinateRegionMake(userLocation.coordinate, MKCoordinateSpanMake(0.1f, 0.1f)) animated: YES];
     self.latitude =  userLocation.location.coordinate.latitude;
     self.longitude = userLocation.location.coordinate.longitude;
 }
 
--(void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
     if([view.annotation isKindOfClass:[AnnotationModel class]])
     {
@@ -166,6 +163,7 @@
         [self.navigationController pushViewController: tviController animated: YES];
     }
 }
+
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
     
     NSLog(@"tap on title");
@@ -227,6 +225,5 @@
         count++;
     }
 }
-
 
 @end

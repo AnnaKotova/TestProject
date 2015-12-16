@@ -38,7 +38,7 @@
     return self;
 }
 
-- (void) viewDidLoad
+- (void)viewDidLoad
 {
     [super viewDidLoad];
     UIAlertController * alert = [UIAlertController alertControllerWithTitle: @"" message: @"" preferredStyle: UIAlertControllerStyleActionSheet];
@@ -120,7 +120,7 @@
 
 #pragma mark - Properties Setters and Getters
 
-- (UIImagePickerController *) picker
+- (UIImagePickerController *)picker
 {
     if(!_picker)
     {
@@ -141,12 +141,12 @@
     return _picker;
 }
 
-- (int) keyboardOffset
+- (int)keyboardOffset
 {
     return 80;
 }
 
-- (UITextField *) imageNameTextField
+- (UITextField *)imageNameTextField
 {
     if(!_imageNameTextField)
     {
@@ -160,7 +160,7 @@
     return _imageNameTextField;
 }
 
-- (UIImageView *) pickedImageView
+- (UIImageView *)pickedImageView
 {
     if(!_pickedImageView)
     {
@@ -207,6 +207,7 @@
 
 
 }
+
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     [self _backButtonAction];
@@ -224,6 +225,7 @@
 {
     [self presentViewController: self.picker animated: NO completion: NULL];
 }
+
 - (void)_nextButtonAction:(UIBarButtonItem *) sender
 {
     self.travelItemModel.name = self.imageNameTextField.text;

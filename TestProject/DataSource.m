@@ -9,13 +9,13 @@
 #import "DataSource.h"
 @interface DataSource()
 
--(instancetype) init;
+- (instancetype)init;
 @property (nonatomic)  DbController * coreController;
 @end
 
 @implementation DataSource
 
--(DbController *)coreController
+- (DbController *)coreController
 {
     if(!_coreController)
     {
@@ -24,7 +24,7 @@
     return _coreController;
 }
 
-+(DataSource *) sharedDataSource
++ (DataSource *)sharedDataSource
 {
     static DataSource * singletonObject = nil;
     static dispatch_once_t onceToken;
@@ -34,31 +34,31 @@
     return singletonObject;
 }
 
--(instancetype) init
+- (instancetype)init
 {
     self = [super init];
     return self;
 }
 
--(TravelItem *) createNewTravelItem
+- (TravelItem *)createNewTravelItem
 {
     return (TravelItem *)[NSEntityDescription insertNewObjectForEntityForName: @"TravelInfo"
                                                        inManagedObjectContext: self.coreController.managedObjectContext];
 }
 
--(NSArray *) getTravelItemCollection
+- (NSArray *)getTravelItemCollection
 {
     NSFetchRequest * inf = [NSFetchRequest fetchRequestWithEntityName: @"TravelInfo"];
     NSArray * arr = [self.coreController.managedObjectContext executeFetchRequest: inf error: nil];
     return arr;
 }
 
--(void) removeTravelItem:(TravelItem *) item
+- (void)removeTravelItem:(TravelItem *) item
 {
     [self.coreController.managedObjectContext deleteObject: item];
 }
 
--(void) saveContexChanges
+- (void)saveContexChanges
 {
     [self.coreController.managedObjectContext save: nil];
 }

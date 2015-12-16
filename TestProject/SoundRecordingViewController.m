@@ -131,7 +131,7 @@
 
 #pragma mark - Private Section
 
--(NSString *) _getCurrentTime
+-(NSString *)_getCurrentTime
 {
     NSDateFormatter* dateFormatter = [[NSDateFormatter new] autorelease];
     [dateFormatter setDateFormat:@"yyyyMMddhhmm"];

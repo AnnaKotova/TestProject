@@ -31,14 +31,14 @@
     [self.view addSubview:self.listButton];
 }
 
--(void) viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear: animated];
     [self setTitle: NSLocalizedString(@"Main Window",nil)];
     self.navigationItem.title = NSLocalizedString(@"Main Window",nil);
 }
 
--(void) viewDidUnload
+- (void)viewDidUnload
 {
     [super viewDidUnload];
 }
@@ -88,7 +88,7 @@
 
 #pragma mark Private Section
 
--(void) _buttonAction:(UIButton *) sender
+-(void)_buttonAction:(UIButton *) sender
 {
     if(sender == _mapButton)
     {

@@ -169,18 +169,18 @@
         [self.playTimer invalidate];
     }
 }
+
 - (void)_actionSwipeLeft:(UISwipeGestureRecognizer *) gestureRecognizer
 {
     self.index--;
     [self _setupViewValues];
 }
+
 - (void)_actionSwipeRight:(UISwipeGestureRecognizer *) gestureRecognizer
 {
     self.index++;
     [self _setupViewValues];
 }
-
-
 
 - (void)_playButtonAction:(UIButton *) sender
 {
