@@ -12,13 +12,11 @@
 @interface ListViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, retain) UITableView * tableView;
-
 @property (nonatomic, retain) NSArray * travelInfoArray;//TravelInfo from CoreData
 
 @end
 
 @implementation ListViewController
-
 
 #pragma mark - UIViewController Life Cycle
 
@@ -26,7 +24,6 @@
 {
     [super viewDidLoad];
     [self.view addSubview:self.tableView];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -80,14 +77,17 @@
     TravelInfoViewController * tivController = [[[TravelInfoViewController alloc] initWithCurrentIndex:indexPath.row] autorelease];
     [self.navigationController pushViewController:tivController animated:YES];
 }
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.travelInfoArray.count;
 }
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)theTableView
 {
     return 1;
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString * CellIdentifier = @"Cell";
@@ -104,18 +104,15 @@
     {
         [cell.textLabel setText: info.name];
         cell.imageView.image = [[[UIImage alloc] initWithContentsOfFile:info.imageUrl] autorelease];
-
     }
-    
     return [cell autorelease];
 }
+
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
     return YES;
 }
 
-// Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)

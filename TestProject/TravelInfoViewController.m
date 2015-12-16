@@ -11,12 +11,13 @@
 @interface TravelInfoViewController () <AVAudioPlayerDelegate>
 
 @property (nonatomic, retain) NSArray * model;
-@property (nonatomic) NSInteger index;
 @property (nonatomic, retain) UIImageView * backgroundImageView;
 @property (nonatomic, retain) UISlider * sliderView;
 @property (nonatomic, retain) AVAudioPlayer * audioPlayer;
 @property (nonatomic, retain) UIButton * playButton;
 @property (nonatomic, retain) NSTimer * playTimer;
+
+@property (nonatomic) NSInteger index;
 
 @end
 
@@ -140,21 +141,23 @@
         self.index = 0;
     
     [self.playTimer invalidate];
+    
     if(self.audioPlayer)
     {
         [self.audioPlayer stop];
     }
+    
     TravelItem * displayModel = (TravelItem *)self.model[self.index];
     [self setTitle:displayModel.name];
     
-    
-    UIImage * img = [[UIImage alloc] initWithContentsOfFile:displayModel.imageUrl];
+    UIImage * img = [[[UIImage alloc] initWithContentsOfFile:displayModel.imageUrl] autorelease];
     self.backgroundImageView.image = img;
-    [img release];
+    
     NSData * soundData = [NSData dataWithContentsOfFile:displayModel.soundUrl];
     self.audioPlayer =[[[AVAudioPlayer alloc] initWithData:soundData error:nil] autorelease];
-    self.sliderView.maximumValue = self.audioPlayer.duration;
     [self.audioPlayer setDelegate:self];
+    
+    self.sliderView.maximumValue = self.audioPlayer.duration;
     self.sliderView.value = 0.0f;
 }
 

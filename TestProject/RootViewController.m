@@ -9,6 +9,7 @@
 #import "RootViewController.h"
 #include "MapViewController.h"
 #include "ListViewController.h"
+
 @interface RootViewController()
 
 @property (nonatomic, retain) UIButton * mapButton;
@@ -85,7 +86,7 @@
 
 
 
-#pragma mark Private Action
+#pragma mark Private Section
 
 -(void) _buttonAction:(UIButton *) sender
 {

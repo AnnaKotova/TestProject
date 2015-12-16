@@ -13,9 +13,10 @@
 @property (nonatomic, retain) AVAudioRecorder * audioRecorder;
 @property (nonatomic, retain) UIButton * recordButton;
 @property (nonatomic, retain) UIProgressView * progressBar;
-@property (nonatomic) int maxTime;
 @property (nonatomic, retain) NSTimer * recordTimer;
+
 @property (nonatomic) int ticks;
+@property (nonatomic) int maxTime;
 
 @end
 
@@ -90,7 +91,6 @@
     return _audioRecorder;
 }
 
-
 - (UIButton *)recordButton
 {
     if(!_recordButton)
@@ -119,9 +119,6 @@
 {
     return 3;
 }
-
-
-
 
 #pragma mark - AVAudioRecorder delegate
 
@@ -166,7 +163,6 @@
         [self.audioRecorder stop];
     }
 }
-
 
 - (void)_doneButtonAction:(UIBarButtonItem*) sender
 {

@@ -9,23 +9,22 @@
 #import "ImageViewController.h"
 #import "SoundRecordingViewController.h"
 #import "MapViewController.h"
+
 @interface ImageViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 {
    // float _bbb;
     //NSObject * _obj;
 }
-@property (atomic, readwrite, retain) NSObject * obj;
 
 @property (nonatomic, retain) UIImageView * pickedImageView;
 @property (nonatomic, retain) UIButton * doneButton;
 @property (nonatomic, retain) UIImagePickerController * picker;
 @property (nonatomic, retain) UITextField * imageNameTextField;
+@property (nonatomic, copy) NSString * imagePath;
 
 @property (nonatomic) BOOL isGetPictureFromCamera;
-@property (nonatomic, copy) NSString * imagePath;
 @property (nonatomic) int keyboardOffset;
 
-//@property float aaa;
 @end
 
 
@@ -213,7 +212,7 @@
     [self _backButtonAction];
 }
 
-#pragma mark - Private Actions
+#pragma mark - Private Section
 
 - (void)_backButtonAction
 {

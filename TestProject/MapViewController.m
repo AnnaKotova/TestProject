@@ -10,17 +10,16 @@
 #import "TravelInfoViewController.h"
 #import "ImageViewController.h"
 
-
 @interface MapViewController() <MKMapViewDelegate, CLLocationManagerDelegate, UIPickerViewDelegate>
 
-@property (nonatomic) int _mapHeight;
 @property (nonatomic, retain) NSArray * travelItemCollection;
 @property (nonatomic, retain) MKMapView * mapView;
 @property (nonatomic, retain) CLLocationManager * locationManager;
+@property (nonatomic, retain) UIButton * mapTypeButton;
+
+@property (nonatomic) int _mapHeight;
 @property (nonatomic) double latitude;
 @property (nonatomic) double longitude;
-@property (nonatomic) UIButton * mapTypeButton;
-
 
 @end
 
@@ -172,7 +171,7 @@
     NSLog(@"tap on title");
 }
 
-#pragma mark - Private Actions
+#pragma mark - Private Section
 
 - (void)_chooseTypeButtonAction:(UIButton *)sender
 {
@@ -207,11 +206,7 @@
     
     UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
                                                             style:UIAlertActionStyleCancel
-                                                          handler:^(UIAlertAction * _Nonnull action)
-                                    {
-                                        [self.mapView setMapType:MKMapTypeSatellite];
-                                        [_mapTypeButton setTitle:@"Map Type: Satellite" forState:UIControlStateNormal];
-                                    }];
+                                                          handler:^(UIAlertAction * _Nonnull action) { }];
     
     [chooseMapTypeAlert addAction:standartmaptypeAction];
     [chooseMapTypeAlert addAction:hybridMapTypeAction];
