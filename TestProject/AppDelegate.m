@@ -18,6 +18,8 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    [DataSource initializeSingleTon];
     RootViewController * rController = [[RootViewController alloc] init];
     UINavigationController * navController =[[UINavigationController alloc] initWithRootViewController:rController];
     self.window.rootViewController = navController;
@@ -25,7 +27,7 @@
     [rController release];
 
     [self.window makeKeyAndVisible];
-    [DataSource initializeSingleTon];
+    
     
     return YES;
 }

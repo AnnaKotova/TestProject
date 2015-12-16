@@ -70,7 +70,8 @@
 		CE2823D11C1ED95000975BC7 /* TravelItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TravelItem.m; path = ../TravelItem.m; sourceTree = "<group>"; };
 		CE2823D41C1ED99B00975BC7 /* DataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSource.h; sourceTree = "<group>"; };
 		CE2823D51C1ED99B00975BC7 /* DataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataSource.m; sourceTree = "<group>"; };
-		CEAD2AD71C20617F00E47554 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localization.strings; sourceTree = "<group>"; };
+		CEAC1C491C215A9F00DE152C /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localization.strings; sourceTree = "<group>"; usesTabs = 0; };
+		CEAC1C4A1C215AB400DE152C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localization.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -292,7 +293,8 @@
 		CEAD2AD81C20617F00E47554 /* Localization.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				CEAD2AD71C20617F00E47554 /* en */,
+				CEAC1C491C215A9F00DE152C /* Base */,
+				CEAC1C4A1C215AB400DE152C /* en */,
 			);
 			name = Localization.strings;
 			sourceTree = "<group>";
