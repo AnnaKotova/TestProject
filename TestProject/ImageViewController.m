@@ -58,6 +58,7 @@
         _imageName.layer.borderColor = [[UIColor darkGrayColor] CGColor];
         [_imageName setBackgroundColor: [UIColor whiteColor]];
         _imageName.layer.cornerRadius = 10;
+        [_imageName setHidden:YES];
     }
     return _imageName;
 }
@@ -112,6 +113,9 @@
     [self presentViewController: alert animated: YES completion: nil];
 
     
+    UIBarButtonItem *backBtn =[[[UIBarButtonItem alloc]initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backToPreviousController)] autorelease];
+    self.navigationItem.leftBarButtonItem=backBtn;
+    
     [self.view addSubview: self.imageName];
     [self.view setBackgroundColor: [UIColor whiteColor]];
     
@@ -159,11 +163,11 @@
         [self.imageName becomeFirstResponder];
         [self.navigationController setNavigationBarHidden: NO];
         
-        UIBarButtonItem* barBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next",nil) style: UIBarButtonItemStyleDone target: self action: @selector(goToNextView:)];
+        UIBarButtonItem* barBtn = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next",nil) style: UIBarButtonItemStyleDone target: self action: @selector(goToNextView:)] autorelease];
         self.navigationItem.rightBarButtonItem = barBtn;
-        [barBtn release];
+        
     }
-
+    [self.imageName setHidden:NO];
 
 
 }
@@ -188,9 +192,8 @@
 -(void) goToNextView :(UIBarButtonItem *) sender
 {
     self.travelItemModel.name = self.imageName.text;
-    SoundRecordingViewController* soundContrl = [[SoundRecordingViewController alloc] initWithModel: self.travelItemModel];
+    SoundRecordingViewController* soundContrl = [[[SoundRecordingViewController alloc] initWithModel: self.travelItemModel] autorelease];
    [self.navigationController pushViewController: soundContrl animated: YES];
-    [soundContrl release];
     [self keyboardWillHide];
 }
 

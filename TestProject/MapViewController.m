@@ -117,9 +117,8 @@
  
     [self.view addSubview:self.mapView];
     [self.view addSubview:self.mapTypeButton];
-    UIBarButtonItem*barbutton = [[UIBarButtonItem alloc] initWithTitle: NSLocalizedString(@"New",nil) style:UIBarButtonItemStyleDone target: self action: @selector(goToNextView:)];
+    UIBarButtonItem*barbutton = [[[UIBarButtonItem alloc] initWithTitle: NSLocalizedString(@"New",nil) style:UIBarButtonItemStyleDone target: self action: @selector(goToNextView:)] autorelease];
     self.navigationItem.rightBarButtonItem =  barbutton;
-    [barbutton release];
     
     [self.locationManager requestWhenInUseAuthorization];
     [self.locationManager startUpdatingLocation];
@@ -203,7 +202,6 @@
 }
 
 -(void) dealloc {
-    [self.locationManager release];
     [self.mapView release];
     [super dealloc];
 }

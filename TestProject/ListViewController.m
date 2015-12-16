@@ -23,7 +23,7 @@
 {
     if(!_tableView)
     {
-        _tableView = [[UITableView alloc] initWithFrame:self.view.frame];
+        _tableView = [[[UITableView alloc] initWithFrame:self.view.frame] autorelease];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         UIRefreshControl *refreshControl = [[[UIRefreshControl alloc] init] autorelease];

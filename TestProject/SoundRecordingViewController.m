@@ -68,7 +68,7 @@
 {
     if(!_recordButton)
     {
-        _recordButton = [[UIButton alloc] initWithFrame:CGRectMake(5, 210, self.view.bounds.size.width - 10, 60)];
+        _recordButton = [[[UIButton alloc] initWithFrame:CGRectMake(5, 210, self.view.bounds.size.width - 10, 60)] autorelease];
         [_recordButton setTitle:@"Record" forState:UIControlStateNormal];
         _recordButton.layer.borderWidth = 0.5f;
         _recordButton.layer.cornerRadius = 5;
@@ -104,9 +104,8 @@
 -(void) viewDidLoad
 {
     [super viewDidLoad];
-    UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithTitle: NSLocalizedString(@"Done",nil) style: UIBarButtonItemStyleDone target:self action: @selector(addingDone:)];
+    UIBarButtonItem* doneButton = [[[UIBarButtonItem alloc] initWithTitle: NSLocalizedString(@"Done",nil) style: UIBarButtonItemStyleDone target:self action: @selector(addingDone:)] autorelease];
     self.navigationItem.rightBarButtonItem = doneButton;
-    [doneButton release];
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:self.progressBar];
     [self.view addSubview:self.recordButton];
