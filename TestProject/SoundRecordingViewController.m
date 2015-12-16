@@ -68,7 +68,7 @@
     if(!_recordButton)
     {
         _recordButton = [[[UIButton alloc] initWithFrame:CGRectMake(5, 210, self.view.bounds.size.width - 10, 60)] autorelease];
-        [_recordButton setTitle:@"Record" forState:UIControlStateNormal];
+        [_recordButton setTitle:NSLocalizedString(@"Record",nil) forState:UIControlStateNormal];
         _recordButton.layer.borderWidth = 0.5f;
         _recordButton.layer.cornerRadius = 5;
         _recordButton.layer.borderColor = [[UIColor grayColor]CGColor];
@@ -104,6 +104,7 @@
 {
     [super viewDidLoad];
     UIBarButtonItem* doneButton = [[[UIBarButtonItem alloc] initWithTitle: NSLocalizedString(@"Done",nil) style: UIBarButtonItemStyleDone target:self action: @selector(addingDone:)] autorelease];
+    [doneButton setEnabled:NO];
     self.navigationItem.rightBarButtonItem = doneButton;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:self.progressBar];
@@ -149,6 +150,7 @@
 {
     NSData* data = [NSData dataWithContentsOfFile: self.travelItemModel.soundUrl];
     [data writeToFile:self.travelItemModel.soundUrl atomically: YES];
+    [self.navigationItem.rightBarButtonItem setEnabled:YES];
 }
 
 -(NSString *) getCurrentTime
