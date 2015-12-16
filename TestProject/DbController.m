@@ -2,26 +2,29 @@
 @import CoreData;
 @implementation DbController
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
-    if (!self) return nil;
     
-    [self initializeCoreData];
+    if (self)
+    {
+        [self setupCoreDataController];
+    }
     
     return self;
 }
 
-- (void)initializeCoreData
+- (void)setupCoreDataController
 {
     NSURL * modelURL = [[NSBundle mainBundle] URLForResource:@"CoreModel" withExtension: @"momd"];
-    NSManagedObjectModel * mom = [[NSManagedObjectModel alloc] initWithContentsOfURL: modelURL];
+    NSManagedObjectModel * mom = [[[NSManagedObjectModel alloc] initWithContentsOfURL: modelURL] autorelease];
     NSAssert(mom != nil, @"Error initializing Managed Object Model");
     
-    NSPersistentStoreCoordinator * psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: mom];
-    NSManagedObjectContext * moc = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
-    [moc setPersistentStoreCoordinator: psc];
-    [self setManagedObjectContext: moc];
+    NSPersistentStoreCoordinator * psc = [[[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: mom] autorelease];
+    NSManagedObjectContext * moc = [[[NSManagedObjectContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType] autorelease];
+
+    moc.persistentStoreCoordinator = psc;
+    self.managedObjectContext = moc;
     
     NSFileManager * fileManager = [NSFileManager defaultManager];
     NSURL * documentsURL = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains: NSUserDomainMask] lastObject];
@@ -32,10 +35,12 @@
     {
         NSError * error = nil;
         NSPersistentStoreCoordinator * psc = [[self managedObjectContext] persistentStoreCoordinator];
-        NSPersistentStore * store = [psc addPersistentStoreWithType:NSSQLiteStoreType configuration: nil URL: storeURL options: nil error: &error];
+        NSPersistentStore * store = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                                                      configuration: nil
+                                                                URL: storeURL
+                                                            options: nil
+                                                              error: &error];
         NSAssert(store != nil, @"Error initializing PSC: %@\n%@", [error localizedDescription], [error userInfo]);
     });
-    [mom release];
-    [psc release];
 }
 @end

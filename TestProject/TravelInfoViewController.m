@@ -7,20 +7,22 @@
 //
 
 #import "TravelInfoViewController.h"
-@import AssetsLibrary;
-@interface TravelInfoViewController ()
 
-@property (nonatomic, retain) NSArray* model;
-@property (nonatomic) int index;
-@property (nonatomic, retain) UIImageView* backgroundView;
+@interface TravelInfoViewController () <AVAudioPlayerDelegate>
+
+@property (nonatomic, retain) NSArray * model;
+@property (nonatomic) NSInteger index;
+@property (nonatomic, retain) UIImageView * backgroundImageView;
 @property (nonatomic, retain) UISlider * sliderView;
-@property (nonatomic, retain) AVAudioPlayer* audioPlayer;
-@property (nonatomic, retain) UIButton* playButton;
-@property (nonatomic, retain) NSTimer* playTimer;
+@property (nonatomic, retain) AVAudioPlayer * audioPlayer;
+@property (nonatomic, retain) UIButton * playButton;
+@property (nonatomic, retain) NSTimer * playTimer;
 
 @end
 
 @implementation TravelInfoViewController
+
+#pragma mark - UIViewController Lifecycle
 
 - (void)dealloc
 {
@@ -28,19 +30,56 @@
     [super dealloc];
 }
 
--(UIButton*) playButton
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    //
+    [self _setupViewValues];
+    [self.view addSubview:self.backgroundImageView];
+    UISwipeGestureRecognizer * swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(_actionSwipeLeft:)];
+    [swipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
+    [self.view addGestureRecognizer:swipeLeft];
+    [swipeLeft release];
+    UISwipeGestureRecognizer * swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(_actionSwipeRight:)];
+    [swipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
+    [self.view addGestureRecognizer:swipeRight];
+    [swipeRight release];
+    
+    
+    UIBarButtonItem* delete = [[UIBarButtonItem alloc] initWithTitle:@"Delete"
+                                                               style:UIBarButtonItemStyleDone
+                                                              target:self
+                                                              action:@selector(_deleteButtonAction:)];
+    
+    self.navigationItem.rightBarButtonItem = delete;
+    [delete release];
+    
+    [self.view addSubview:self.sliderView];
+    [self.view addSubview:self.playButton];
+    [self.sliderView becomeFirstResponder];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+}
+
+#pragma mark - Properties Setters and Getters
+
+- (UIButton *)playButton
 {
     if(!_playButton)
     {
         _playButton = [[[UIButton alloc] initWithFrame:CGRectMake(5.0, 420.0, self.view.bounds.size.width - 10, 40.0)] autorelease];
         [_playButton setTitle:@"Play" forState:UIControlStateNormal];
         [_playButton setBackgroundColor:[UIColor grayColor]];
-        [_playButton addTarget:self action:@selector(playSound:) forControlEvents:UIControlEventTouchDown];
+        [_playButton addTarget:self action:@selector(_playButtonAction:) forControlEvents:UIControlEventTouchDown];
     }
     return _playButton;
 }
 
-- (instancetype)initWithCurrentIndex:(int) index
+- (instancetype)initWithCurrentIndex:(NSInteger) index
 {
     self = [super init];
     if(self)
@@ -50,7 +89,7 @@
     return self;
 }
 
--(UISlider*) sliderView
+- (UISlider *)sliderView
 {
     if(!_sliderView )
     {
@@ -59,13 +98,12 @@
         [_sliderView setMinimumValue:0];
         [_sliderView setValue:100];
         _sliderView.continuous = YES;
-        //[_sliderView addTarget:self action:@selector(sliderAction:) forControlEvents:UIControlEventValueChanged];
     }
     return _sliderView;
 }
 
 
--(NSArray*) model
+- (NSArray *)model
 {
     if(!_model)
     {
@@ -74,53 +112,27 @@
     return _model;
 }
 
--(UIImageView*) backgroundView
+- (UIImageView *)backgroundImageView
 {
-    if(!_backgroundView)
+    if(!_backgroundImageView)
     {
-        _backgroundView = [[UIImageView alloc] initWithFrame:self.view.frame];
+        _backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame];
     }
-    return  _backgroundView;
+    return  _backgroundImageView;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    //
-    [self initViewValues];
-    [self.view addSubview:self.backgroundView];
-    UISwipeGestureRecognizer*swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(actionSwipeLeft:)];
-    [swipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
-    [self.view addGestureRecognizer:swipeLeft];
-    [swipeLeft release];
-    UISwipeGestureRecognizer*swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(actionSwipeRight:)];
-    [swipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
-    [self.view addGestureRecognizer:swipeRight];
-    [swipeRight release];
-    
-    
-    UIBarButtonItem* delete = [[UIBarButtonItem alloc] initWithTitle:@"Delete" style:UIBarButtonItemStyleDone target:self action:@selector(deleteTravelItem:)];
-    self.navigationItem.rightBarButtonItem = delete;
-    [delete release];
-    
-    [self.view addSubview:self.sliderView];
-    [self.view addSubview:self.playButton];
-    [self.sliderView becomeFirstResponder];
-    
+#pragma mark - Private Section
 
-}
-
--(void) deleteTravelItem:(UIBarButtonItem*) button
+- (void)_deleteButtonAction:(UIBarButtonItem *) button
 {
-    [DataSource.sharedDataSource removeTravelItem:(TravelItem* )self.model[self.index]];
+    [DataSource.sharedDataSource removeTravelItem:(TravelItem *)self.model[self.index]];
     [self.navigationController popViewControllerAnimated:YES];
     [DataSource.sharedDataSource saveContexChanges];
-    [[NSFileManager defaultManager] removeItemAtPath:((TravelItem* )self.model[self.index]).imageUrl error:nil];
-    [[NSFileManager defaultManager] removeItemAtPath:((TravelItem* )self.model[self.index]).soundUrl error:nil];
+    [[NSFileManager defaultManager] removeItemAtPath:((TravelItem *)self.model[self.index]).imageUrl error:nil];
+    [[NSFileManager defaultManager] removeItemAtPath:((TravelItem *)self.model[self.index]).soundUrl error:nil];
 }
 
--(void) initViewValues
+- (void)_setupViewValues
 {
     if(self.index < 0 )
         self.index = self.model.count - 1;
@@ -132,21 +144,21 @@
     {
         [self.audioPlayer stop];
     }
-    TravelItem* displayModel = (TravelItem* )self.model[self.index];
+    TravelItem * displayModel = (TravelItem *)self.model[self.index];
     [self setTitle:displayModel.name];
     
     
-    UIImage* img = [[UIImage alloc] initWithContentsOfFile:displayModel.imageUrl];
-    self.backgroundView.image = img;
+    UIImage * img = [[UIImage alloc] initWithContentsOfFile:displayModel.imageUrl];
+    self.backgroundImageView.image = img;
     [img release];
-    NSData* soundData = [NSData dataWithContentsOfFile:displayModel.soundUrl];
-    self.audioPlayer =[[AVAudioPlayer alloc] initWithData:soundData error:nil];
+    NSData * soundData = [NSData dataWithContentsOfFile:displayModel.soundUrl];
+    self.audioPlayer =[[[AVAudioPlayer alloc] initWithData:soundData error:nil] autorelease];
     self.sliderView.maximumValue = self.audioPlayer.duration;
     [self.audioPlayer setDelegate:self];
     self.sliderView.value = 0.0f;
 }
 
--(void) updateTime:(NSTimer*) sender
+- (void)_updateTimeTimerAction:(NSTimer *) sender
 {
     self.sliderView.value = self.sliderView.value + 1;
     if(self.sliderView.value >= self.sliderView.maximumValue)
@@ -154,31 +166,32 @@
         [self.playTimer invalidate];
     }
 }
-- (void) actionSwipeLeft:(UISwipeGestureRecognizer*) gestureRecognizer
+- (void)_actionSwipeLeft:(UISwipeGestureRecognizer *) gestureRecognizer
 {
     self.index--;
-    [self initViewValues];
+    [self _setupViewValues];
 }
-- (void) actionSwipeRight:(UISwipeGestureRecognizer*) gestureRecognizer
+- (void)_actionSwipeRight:(UISwipeGestureRecognizer *) gestureRecognizer
 {
     self.index++;
-    [self initViewValues];
+    [self _setupViewValues];
 }
 
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
 
-}
--(void)playSound:(UIButton*) sender
+- (void)_playButtonAction:(UIButton *) sender
 {
     if (self.audioPlayer)
     {
         
         if(self.sliderView.value == self.sliderView.maximumValue)
             self.sliderView.value = 0.0f;
-        self.playTimer = [NSTimer scheduledTimerWithTimeInterval: 1.0 target: self selector:@selector(updateTime:) userInfo: nil repeats: YES];
+        self.playTimer = [NSTimer scheduledTimerWithTimeInterval: 1.0
+                                                          target: self
+                                                        selector:@selector(_updateTimeTimerAction:)
+                                                        userInfo: nil
+                                                         repeats: YES];
+        
         self.audioPlayer.currentTime = self.sliderView.value;
         [self.audioPlayer play];
         

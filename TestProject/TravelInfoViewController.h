@@ -12,8 +12,8 @@
 #import "DataSource.h"
 
 
-@interface TravelInfoViewController : UIViewController<AVAudioPlayerDelegate>
+@interface TravelInfoViewController : UIViewController
 
-- (instancetype)initWithCurrentIndex:(int) index;
+- (instancetype)initWithCurrentIndex:(NSInteger) index;
 
 @end

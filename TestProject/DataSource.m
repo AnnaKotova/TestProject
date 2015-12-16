@@ -34,25 +34,23 @@
     return singletonObject;
 }
 
-+(void) initializeSingleTon { }
-
 -(instancetype) init
 {
     self = [super init];
     return self;
-    
 }
 
 -(TravelItem *) createNewTravelItem
 {
-    return (TravelItem *)[NSEntityDescription insertNewObjectForEntityForName: @"TravelInfo" inManagedObjectContext: self.coreController.managedObjectContext];
+    return (TravelItem *)[NSEntityDescription insertNewObjectForEntityForName: @"TravelInfo"
+                                                       inManagedObjectContext: self.coreController.managedObjectContext];
 }
 
 -(NSArray *) getTravelItemCollection
 {
     NSFetchRequest * inf = [NSFetchRequest fetchRequestWithEntityName: @"TravelInfo"];
     NSArray * arr = [self.coreController.managedObjectContext executeFetchRequest: inf error: nil];
-    return [arr copy];
+    return arr;
 }
 
 -(void) removeTravelItem:(TravelItem *) item

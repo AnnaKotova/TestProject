@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "DataSource.h"
 
-@interface ListViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
+@interface ListViewController : UIViewController
 
 @end

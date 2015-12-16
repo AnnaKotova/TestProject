@@ -13,7 +13,10 @@
 @end
 
 @implementation BaseViewController
--(instancetype)initWithModel:(TravelItem *)travelItemModel
+
+#pragma mark - BaseController Life cycle
+
+- (instancetype)initWithModel:(TravelItem *)travelItemModel
 {
     self = [super init];
     if(self)
@@ -22,4 +25,5 @@
     }
     return self;
 }
+
 @end

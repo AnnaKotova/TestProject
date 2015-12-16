@@ -10,6 +10,6 @@
 #import <AVFoundation/AVFoundation.h>
 #import "BaseViewController.h"
 
-@interface SoundRecordingViewController : BaseViewController<AVAudioRecorderDelegate>
+@interface SoundRecordingViewController : BaseViewController
 
 @end

@@ -11,7 +11,7 @@
 #import "AnnotationModel.h"
 //#import <MapKit/MKAnnotation.h>
 
-@interface MapViewController : UIViewController< MKMapViewDelegate, CLLocationManagerDelegate, UIPickerViewDelegate >
+@interface MapViewController : UIViewController
 
 
 

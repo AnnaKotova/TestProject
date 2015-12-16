@@ -13,7 +13,7 @@
 @interface DataSource : NSObject
 
 +(DataSource*) sharedDataSource;
-+(void) initializeSingleTon;
+
 -(TravelItem*) createNewTravelItem;
 
 -(NSArray*) getTravelItemCollection;

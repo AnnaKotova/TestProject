@@ -10,13 +10,15 @@
 
 @implementation AnnotationModel
 
--(int) number {
+- (NSInteger)number {
     return _number;
 }
 
--(instancetype) initWithTitle:(NSString *) title Coordinates:(CLLocationCoordinate2D) coordinates  Number:(NSInteger) index {
+- (instancetype)initWithTitle:(NSString *) title Coordinates:(CLLocationCoordinate2D) coordinates  Number:(NSInteger) index
+{
     self = [super init];
-    if(self) {
+    if(self)
+    {
         self.coordinate = coordinates;
         self.title = title;
         _number = index;

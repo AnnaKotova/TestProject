@@ -8,7 +8,7 @@
 
 #import "SoundRecordingViewController.h"
 
-@interface SoundRecordingViewController()
+@interface SoundRecordingViewController () <AVAudioRecorderDelegate>
 
 @property (nonatomic, retain) AVAudioRecorder * audioRecorder;
 @property (nonatomic, retain) UIButton * recordButton;
@@ -21,7 +21,33 @@
 
 @implementation SoundRecordingViewController
 
-- (AVAudioRecorder *) audioRecorder
+#pragma mark - UIViewController Life cycle
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    self.progressBar = nil;
+    self.recordButton = nil;
+    [self.audioRecorder release];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    UIBarButtonItem* doneButton = [[[UIBarButtonItem alloc] initWithTitle: NSLocalizedString(@"Done",nil)
+                                                                    style: UIBarButtonItemStyleDone
+                                                                   target:self
+                                                                   action: @selector(_doneButtonAction:)] autorelease];
+    [doneButton setEnabled:NO];
+    self.navigationItem.rightBarButtonItem = doneButton;
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self.view addSubview:self.progressBar];
+    [self.view addSubview:self.recordButton];
+}
+
+#pragma mark - Properties Setter and Getters
+
+- (AVAudioRecorder *)audioRecorder
 {
     if(!_audioRecorder)
     {
@@ -32,7 +58,7 @@
         docsDir = dirPaths[0];
 
         NSString * soundFilePath = [docsDir
-                                   stringByAppendingPathComponent:[NSString stringWithFormat: @"sound_%@.caf", [self getCurrentTime]]];
+                                   stringByAppendingPathComponent:[NSString stringWithFormat: @"sound_%@.caf", [self _getCurrentTime]]];
         self.travelItemModel.soundUrl = soundFilePath;
         
         NSURL *soundFileURL = [NSURL fileURLWithPath:soundFilePath];
@@ -55,7 +81,9 @@
         [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord 
                             error:nil];
         
-        _audioRecorder = [[AVAudioRecorder alloc]initWithURL:soundFileURL settings:recordSettings error:&error];
+        _audioRecorder = [[AVAudioRecorder alloc]initWithURL:soundFileURL
+                                                    settings:recordSettings
+                                                       error:&error];
         _audioRecorder.delegate = self;
     }
     
@@ -63,7 +91,7 @@
 }
 
 
--(UIButton *) recordButton
+- (UIButton *)recordButton
 {
     if(!_recordButton)
     {
@@ -73,12 +101,12 @@
         _recordButton.layer.cornerRadius = 5;
         _recordButton.layer.borderColor = [[UIColor grayColor]CGColor];
         [_recordButton setBackgroundColor:[UIColor darkGrayColor]];
-        [_recordButton addTarget:self action:@selector(startRecording:) forControlEvents:UIControlEventTouchDown];
+        [_recordButton addTarget:self action:@selector(_startRecording:) forControlEvents:UIControlEventTouchDown];
     }
     return  _recordButton;
 }
 
--(UIProgressView *) progressBar
+- (UIProgressView *)progressBar
 {
     if(!_progressBar)
     {
@@ -87,78 +115,73 @@
     return _progressBar;
 }
 
--(int) maxTime
+- (int)maxTime
 {
     return 3;
 }
 
--(void) viewDidUnload
-{
-    [super viewDidUnload];
-    self.progressBar = nil;
-    self.recordButton = nil;
-    [self.audioRecorder release];
-}
 
--(void) viewDidLoad
-{
-    [super viewDidLoad];
-    UIBarButtonItem* doneButton = [[[UIBarButtonItem alloc] initWithTitle: NSLocalizedString(@"Done",nil) style: UIBarButtonItemStyleDone target:self action: @selector(addingDone:)] autorelease];
-    [doneButton setEnabled:NO];
-    self.navigationItem.rightBarButtonItem = doneButton;
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self.view addSubview:self.progressBar];
-    [self.view addSubview:self.recordButton];
-}
 
--(void) addingDone:(UIBarButtonItem*) sender
-{
-    UIAlertController * alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Saved",nil) message:@"" preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction * okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
-                                {
-                                    [DataSource.sharedDataSource saveContexChanges];
-                                    NSArray *array = [self.navigationController viewControllers];
-                                    
-                                    [self.navigationController popToViewController:[array objectAtIndex:1] animated:YES];
-                                }];
-    [alert addAction:okAction];
-    [self presentViewController:alert animated:YES completion:nil];
-}
 
--(void) startRecording:(UIButton*) sender
-{
-    self.ticks = 0;
-    self.progressBar.progress = 0.0;
-    self.recordTimer = [NSTimer scheduledTimerWithTimeInterval: 1 target: self selector: @selector(timerTick) userInfo: nil repeats: YES];
-    if (!self.audioRecorder.recording)
-    {
-        [self.audioRecorder record];
-    }
-}
+#pragma mark - AVAudioRecorder delegate
 
--(void) timerTick
-{
-    self.progressBar.progress+=(1.f/self.maxTime);
-        [self.recordButton setTitle: [NSString stringWithFormat: @"Record  Time 00:00:%d",++self.ticks] forState: UIControlStateNormal];
-    if (self.progressBar.progress >= 1.0) {
-        [self.recordTimer invalidate];
-        [self.audioRecorder stop];
-    }
-}
-
--(void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag
+- (void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag
 {
     NSData* data = [NSData dataWithContentsOfFile: self.travelItemModel.soundUrl];
     [data writeToFile:self.travelItemModel.soundUrl atomically: YES];
     [self.navigationItem.rightBarButtonItem setEnabled:YES];
 }
 
--(NSString *) getCurrentTime
+#pragma mark - Private Section
+
+-(NSString *) _getCurrentTime
 {
-    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+    NSDateFormatter* dateFormatter = [[NSDateFormatter new] autorelease];
     [dateFormatter setDateFormat:@"yyyyMMddhhmm"];
     NSString *CurrentTime = [dateFormatter stringFromDate:[NSDate date]];
     return CurrentTime;
 }
 
+- (void)_startRecording:(UIButton *) sender
+{
+    self.ticks = 0;
+    self.progressBar.progress = 0.0;
+    self.recordTimer = [NSTimer scheduledTimerWithTimeInterval:1
+                                                        target:self
+                                                      selector:@selector(_timerTick)
+                                                      userInfo:nil
+                                                       repeats:YES];
+    if (!self.audioRecorder.recording)
+    {
+        [self.audioRecorder record];
+    }
+}
+
+- (void)_timerTick
+{
+    self.progressBar.progress+=(1.f/self.maxTime);
+    [self.recordButton setTitle: [NSString stringWithFormat:@"Record  Time 00:00:%d",++self.ticks] forState:UIControlStateNormal];
+    if (self.progressBar.progress >= 1.0) {
+        [self.recordTimer invalidate];
+        [self.audioRecorder stop];
+    }
+}
+
+
+- (void)_doneButtonAction:(UIBarButtonItem*) sender
+{
+    UIAlertController * alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Saved",nil)
+                                                                    message:@""
+                                                             preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction * okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil)
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * _Nonnull action)
+                                {
+                                    [DataSource.sharedDataSource saveContexChanges];
+                                    NSArray * array = [self.navigationController viewControllers];
+                                    [self.navigationController popToViewController:[array objectAtIndex:1] animated:YES];
+                                }];
+    [alert addAction:okAction];
+    [self presentViewController:alert animated:YES completion:nil];
+}
 @end

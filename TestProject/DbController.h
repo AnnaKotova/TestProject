@@ -10,8 +10,6 @@
 
 @interface DbController : NSObject
 
-@property (strong) NSManagedObjectContext * managedObjectContext;
-
-- (void)initializeCoreData;
+@property (nonatomic,retain) NSManagedObjectContext * managedObjectContext;
 
 @end
