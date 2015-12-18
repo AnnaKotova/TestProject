@@ -60,7 +60,10 @@
 
 - (void)saveContexChanges
 {
-    [self.coreController.managedObjectContext save: nil];
+    if([self.coreController.managedObjectContext hasChanges])
+    {
+        [self.coreController.managedObjectContext save: nil];
+    }
 }
 
 

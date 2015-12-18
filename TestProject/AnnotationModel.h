@@ -17,6 +17,4 @@
 @property (nonatomic) CLLocationCoordinate2D coordinate;
 @property (nonatomic) NSInteger number;
 
-//- (MKMapItem*)mapItem;
-
 @end

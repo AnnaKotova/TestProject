@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
+#import <Photos/Photos.h>
 @interface ImageViewController : BaseViewController 
 
 @end

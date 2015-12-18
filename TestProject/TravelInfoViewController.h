@@ -16,4 +16,9 @@
 
 - (instancetype)initWithCurrentIndex:(NSInteger) index;
 
+typedef NS_ENUM (NSInteger, ScrollDirection){
+    ScrollDirectionRight,
+    ScrollDirectionLeft
+} ;
+
 @end

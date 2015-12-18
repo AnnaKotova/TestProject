@@ -9,6 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "DataSource.h"
 
+
 @interface ListViewController : UIViewController
+
+
+typedef NS_ENUM(NSInteger, UserViewStyle) {
+    ViewTile,
+    ViewTable
+};
 
 @end

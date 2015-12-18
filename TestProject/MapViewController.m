@@ -46,15 +46,14 @@
                                                                  target:self
                                                                  action:@selector(_buttonAction:)] autorelease];
     self.navigationItem.rightBarButtonItem =  barbutton;
-    
-    [self.locationManager requestWhenInUseAuthorization];
-    [self.locationManager startUpdatingLocation];
-    //self.mapView add
+    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+        [self.locationManager requestWhenInUseAuthorization];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    
+
     [super viewWillAppear: animated];
     [self.navigationController setNavigationBarHidden: NO];
     _travelItemCollection = nil;
@@ -62,16 +61,6 @@
     [self _addAnotationsFromTravelCollectionToMap];
 }
 
-- (void)_buttonAction:(UIBarButtonItem *)sender{
-    TravelItem * item= [DataSource.sharedDataSource createNewTravelItem];
-    [item setValuesForKeysWithDictionary:@{
-                                           @"longitude":[NSNumber numberWithDouble: self.longitude],
-                                           @"latitude":[NSNumber numberWithDouble: self.latitude] }];
-    
-    ImageViewController * chooseController = [[[ImageViewController alloc] initWithModel: item] autorelease];
-    [self.navigationController pushViewController: chooseController animated: YES];
-    
-}
 
 #pragma mark - Properties Setters and Getters
 
@@ -82,10 +71,12 @@
     if(!_mapView){
         _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - self._mapHeight)];
         [_mapView setShowsUserLocation: YES];
-        _mapView.delegate = self;
+        
         [_mapView setZoomEnabled: YES];
+        _mapView.delegate = self;
         [_mapView setShowsScale: YES];
-        [_mapView setScrollEnabled: YES];
+        //[_mapView setScrollEnabled: YES];
+        
     }
     return _mapView;
 }
@@ -146,6 +137,16 @@
     [super viewWillDisappear: animated];
 }
 
+
+-(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{
+    //NSLog(status.)
+    [self.locationManager startUpdatingLocation];
+}
+-(void) locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
+    NSLog(@"%@",error);
+}
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
@@ -226,4 +227,16 @@
     }
 }
 
+- (void)_buttonAction:(UIBarButtonItem *)sender{
+    TravelItem * item = [DataSource.sharedDataSource createNewTravelItem];
+    [DataSource.sharedDataSource removeTravelItem:item];
+    item = [DataSource.sharedDataSource createNewTravelItem];
+    [item setValuesForKeysWithDictionary:@{
+                                           @"longitude":[NSNumber numberWithDouble: self.longitude],
+                                           @"latitude":[NSNumber numberWithDouble: self.latitude] }];
+    
+    ImageViewController * chooseController = [[[ImageViewController alloc] initWithModel: item] autorelease];
+    [self.navigationController pushViewController: chooseController animated: YES];
+    
+}
 @end

@@ -23,12 +23,13 @@
 		74193BD91C0E15F60044EDD6 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193BD81C0E15F60044EDD6 /* BaseViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		74193C0E1C0EA9830044EDD6 /* ListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193C0D1C0EA9830044EDD6 /* ListViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		74193C111C0EEBC30044EDD6 /* TravelInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193C101C0EEBC30044EDD6 /* TravelInfoViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		74193C2C1C0F0B510044EDD6 /* CoreModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 74193C2A1C0F0B510044EDD6 /* CoreModel.xcdatamodeld */; };
 		74193C381C0F269C0044EDD6 /* AnnotationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193C371C0F269C0044EDD6 /* AnnotationModel.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		74193C3A1C105A180044EDD6 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74193C391C105A180044EDD6 /* AssetsLibrary.framework */; };
-		CE2823D21C1ED95000975BC7 /* TravelItem+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2823CF1C1ED95000975BC7 /* TravelItem+CoreDataProperties.m */; };
-		CE2823D31C1ED95000975BC7 /* TravelItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2823D11C1ED95000975BC7 /* TravelItem.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CE2823D61C1ED99B00975BC7 /* DataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2823D51C1ED99B00975BC7 /* DataSource.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CE7DD7D01C24642C0054EA69 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE7DD7CF1C24642C0054EA69 /* Photos.framework */; };
+		CE8655911C21B60300CBBD62 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CE86558F1C21B60300CBBD62 /* CoreDataModel.xcdatamodeld */; };
+		CE8655961C21B64700CBBD62 /* TravelItem+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8655931C21B64700CBBD62 /* TravelItem+CoreDataProperties.m */; };
+		CE8655971C21B64700CBBD62 /* TravelItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8655951C21B64700CBBD62 /* TravelItem.m */; };
 		CEAD2AD61C20617F00E47554 /* Localization.strings in Resources */ = {isa = PBXBuildFile; fileRef = CEAD2AD81C20617F00E47554 /* Localization.strings */; };
 /* End PBXBuildFile section */
 
@@ -60,16 +61,17 @@
 		74193C0D1C0EA9830044EDD6 /* ListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListViewController.m; sourceTree = "<group>"; };
 		74193C0F1C0EEBC30044EDD6 /* TravelInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelInfoViewController.h; sourceTree = "<group>"; };
 		74193C101C0EEBC30044EDD6 /* TravelInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelInfoViewController.m; sourceTree = "<group>"; };
-		74193C2B1C0F0B510044EDD6 /* CoreModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreModel.xcdatamodel; sourceTree = "<group>"; };
 		74193C361C0F269C0044EDD6 /* AnnotationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnnotationModel.h; sourceTree = "<group>"; };
 		74193C371C0F269C0044EDD6 /* AnnotationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnnotationModel.m; sourceTree = "<group>"; };
 		74193C391C105A180044EDD6 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
-		CE2823CE1C1ED95000975BC7 /* TravelItem+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "TravelItem+CoreDataProperties.h"; path = "../TravelItem+CoreDataProperties.h"; sourceTree = "<group>"; };
-		CE2823CF1C1ED95000975BC7 /* TravelItem+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "TravelItem+CoreDataProperties.m"; path = "../TravelItem+CoreDataProperties.m"; sourceTree = "<group>"; };
-		CE2823D01C1ED95000975BC7 /* TravelItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TravelItem.h; path = ../TravelItem.h; sourceTree = "<group>"; };
-		CE2823D11C1ED95000975BC7 /* TravelItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TravelItem.m; path = ../TravelItem.m; sourceTree = "<group>"; };
 		CE2823D41C1ED99B00975BC7 /* DataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSource.h; sourceTree = "<group>"; };
 		CE2823D51C1ED99B00975BC7 /* DataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataSource.m; sourceTree = "<group>"; };
+		CE7DD7CF1C24642C0054EA69 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
+		CE8655901C21B60300CBBD62 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
+		CE8655921C21B64700CBBD62 /* TravelItem+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "TravelItem+CoreDataProperties.h"; path = "../TravelItem+CoreDataProperties.h"; sourceTree = "<group>"; };
+		CE8655931C21B64700CBBD62 /* TravelItem+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "TravelItem+CoreDataProperties.m"; path = "../TravelItem+CoreDataProperties.m"; sourceTree = "<group>"; };
+		CE8655941C21B64700CBBD62 /* TravelItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TravelItem.h; path = ../TravelItem.h; sourceTree = "<group>"; };
+		CE8655951C21B64700CBBD62 /* TravelItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TravelItem.m; path = ../TravelItem.m; sourceTree = "<group>"; };
 		CEAC1C491C215A9F00DE152C /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localization.strings; sourceTree = "<group>"; usesTabs = 0; };
 		CEAC1C4A1C215AB400DE152C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localization.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -79,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE7DD7D01C24642C0054EA69 /* Photos.framework in Frameworks */,
 				74193C3A1C105A180044EDD6 /* AssetsLibrary.framework in Frameworks */,
 				74193BD31C0DE1200044EDD6 /* CoreData.framework in Frameworks */,
 				74193BB81C0DAB0A0044EDD6 /* AVFoundation.framework in Frameworks */,
@@ -92,6 +95,7 @@
 		74193B801C0AF1250044EDD6 = {
 			isa = PBXGroup;
 			children = (
+				CE7DD7CF1C24642C0054EA69 /* Photos.framework */,
 				74193B8B1C0AF1250044EDD6 /* TestProject */,
 				74193B951C0AF1250044EDD6 /* Main.storyboard */,
 				74193B8A1C0AF1250044EDD6 /* Products */,
@@ -120,7 +124,6 @@
 		74193B8C1C0AF1250044EDD6 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				74193C2A1C0F0B510044EDD6 /* CoreModel.xcdatamodeld */,
 				74193B981C0AF1250044EDD6 /* Assets.xcassets */,
 				74193B9A1C0AF1250044EDD6 /* LaunchScreen.storyboard */,
 				74193B9D1C0AF1250044EDD6 /* Info.plist */,
@@ -130,6 +133,7 @@
 				74193BCF1C0DE0850044EDD6 /* DbController.h */,
 				74193BD01C0DE0850044EDD6 /* DbController.m */,
 				CEAD2AD81C20617F00E47554 /* Localization.strings */,
+				CE86558F1C21B60300CBBD62 /* CoreDataModel.xcdatamodeld */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -158,10 +162,10 @@
 		74193BB91C0DCF9C0044EDD6 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				CE2823CE1C1ED95000975BC7 /* TravelItem+CoreDataProperties.h */,
-				CE2823CF1C1ED95000975BC7 /* TravelItem+CoreDataProperties.m */,
-				CE2823D01C1ED95000975BC7 /* TravelItem.h */,
-				CE2823D11C1ED95000975BC7 /* TravelItem.m */,
+				CE8655921C21B64700CBBD62 /* TravelItem+CoreDataProperties.h */,
+				CE8655931C21B64700CBBD62 /* TravelItem+CoreDataProperties.m */,
+				CE8655941C21B64700CBBD62 /* TravelItem.h */,
+				CE8655951C21B64700CBBD62 /* TravelItem.m */,
 				74193C361C0F269C0044EDD6 /* AnnotationModel.h */,
 				74193C371C0F269C0044EDD6 /* AnnotationModel.m */,
 				CE2823D41C1ED99B00975BC7 /* DataSource.h */,
@@ -212,6 +216,11 @@
 				TargetAttributes = {
 					74193B881C0AF1250044EDD6 = {
 						CreatedOnToolsVersion = 7.1.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -255,14 +264,14 @@
 				74193BAD1C0B14B50044EDD6 /* MapViewController.m in Sources */,
 				74193B911C0AF1250044EDD6 /* AppDelegate.m in Sources */,
 				74193C111C0EEBC30044EDD6 /* TravelInfoViewController.m in Sources */,
-				CE2823D31C1ED95000975BC7 /* TravelItem.m in Sources */,
+				CE8655911C21B60300CBBD62 /* CoreDataModel.xcdatamodeld in Sources */,
+				CE8655971C21B64700CBBD62 /* TravelItem.m in Sources */,
 				74193BD91C0E15F60044EDD6 /* BaseViewController.m in Sources */,
 				74193BB61C0CC4670044EDD6 /* SoundRecordingViewController.m in Sources */,
+				CE8655961C21B64700CBBD62 /* TravelItem+CoreDataProperties.m in Sources */,
 				CE2823D61C1ED99B00975BC7 /* DataSource.m in Sources */,
 				74193B8E1C0AF1250044EDD6 /* main.m in Sources */,
 				74193C0E1C0EA9830044EDD6 /* ListViewController.m in Sources */,
-				74193C2C1C0F0B510044EDD6 /* CoreModel.xcdatamodeld in Sources */,
-				CE2823D21C1ED95000975BC7 /* TravelItem+CoreDataProperties.m in Sources */,
 				74193BA61C0AF5760044EDD6 /* RootViewController.m in Sources */,
 				74193C381C0F269C0044EDD6 /* AnnotationModel.m in Sources */,
 				74193BB31C0C7C230044EDD6 /* ImageViewController.m in Sources */,
@@ -389,7 +398,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Corrine Kohlmeyer-Hyman (2BWLG6F5DY)";
 				INFOPLIST_FILE = TestProject/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.egorsydorenko.TestProject;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -404,7 +413,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Corrine Kohlmeyer-Hyman (2BWLG6F5DY)";
 				INFOPLIST_FILE = TestProject/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.egorsydorenko.TestProject;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -436,14 +445,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		74193C2A1C0F0B510044EDD6 /* CoreModel.xcdatamodeld */ = {
+		CE86558F1C21B60300CBBD62 /* CoreDataModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				74193C2B1C0F0B510044EDD6 /* CoreModel.xcdatamodel */,
+				CE8655901C21B60300CBBD62 /* CoreDataModel.xcdatamodel */,
 			);
-			currentVersion = 74193C2B1C0F0B510044EDD6 /* CoreModel.xcdatamodel */;
-			name = CoreModel.xcdatamodeld;
-			path = ../CoreModel.xcdatamodeld;
+			currentVersion = CE8655901C21B60300CBBD62 /* CoreDataModel.xcdatamodel */;
+			path = CoreDataModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

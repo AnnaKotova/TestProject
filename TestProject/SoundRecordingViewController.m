@@ -60,7 +60,7 @@
 
         NSString * soundFilePath = [docsDir
                                    stringByAppendingPathComponent:[NSString stringWithFormat: @"sound_%@.caf", [self _getCurrentTime]]];
-        self.travelItemModel.soundUrl = soundFilePath;
+        self.travelItemModel.soundPath = soundFilePath;
         
         NSURL *soundFileURL = [NSURL fileURLWithPath:soundFilePath];
         
@@ -124,8 +124,8 @@
 
 - (void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag
 {
-    NSData* data = [NSData dataWithContentsOfFile: self.travelItemModel.soundUrl];
-    [data writeToFile:self.travelItemModel.soundUrl atomically: YES];
+    NSData* data = [NSData dataWithContentsOfFile: self.travelItemModel.soundPath];
+    [data writeToFile:self.travelItemModel.soundPath atomically: YES];
     [self.navigationItem.rightBarButtonItem setEnabled:YES];
 }
 
@@ -134,7 +134,7 @@
 -(NSString *)_getCurrentTime
 {
     NSDateFormatter* dateFormatter = [[NSDateFormatter new] autorelease];
-    [dateFormatter setDateFormat:@"yyyyMMddhhmm"];
+    [dateFormatter setDateFormat:@"yyyyMMddhhmmss"];
     NSString *CurrentTime = [dateFormatter stringFromDate:[NSDate date]];
     return CurrentTime;
 }
@@ -169,6 +169,7 @@
     UIAlertController * alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Saved",nil)
                                                                     message:@""
                                                              preferredStyle:UIAlertControllerStyleAlert];
+    
     UIAlertAction * okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil)
                                                         style:UIAlertActionStyleDefault
                                                       handler:^(UIAlertAction * _Nonnull action)

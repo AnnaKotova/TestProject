@@ -16,7 +16,7 @@
 
 - (void)setupCoreDataController
 {
-    NSURL * modelURL = [[NSBundle mainBundle] URLForResource:@"CoreModel" withExtension: @"momd"];
+    NSURL * modelURL = [[NSBundle mainBundle] URLForResource:@"CoreDataModel" withExtension: @"momd"];
     NSManagedObjectModel * mom = [[[NSManagedObjectModel alloc] initWithContentsOfURL: modelURL] autorelease];
     NSAssert(mom != nil, @"Error initializing Managed Object Model");
     
@@ -28,7 +28,7 @@
     
     NSFileManager * fileManager = [NSFileManager defaultManager];
     NSURL * documentsURL = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains: NSUserDomainMask] lastObject];
-    NSURL * storeURL = [documentsURL URLByAppendingPathComponent:@"CoreModel.sqlite"];
+    NSURL * storeURL = [documentsURL URLByAppendingPathComponent:@"CoreDataModel.sqlite"];
     
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
     ^(void)

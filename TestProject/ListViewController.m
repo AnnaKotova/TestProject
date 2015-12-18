@@ -9,10 +9,15 @@
 #import "ListViewController.h"
 #import "TravelInfoViewController.h"
 
-@interface ListViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface ListViewController () <UITableViewDelegate, UITableViewDataSource, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+{
+    UserViewStyle _viewStyle;
+}
+
 
 @property (nonatomic, retain) UITableView * tableView;
 @property (nonatomic, retain) NSArray * travelInfoArray;//TravelInfo from CoreData
+@property (nonatomic, retain)UICollectionView * collectionView;
 
 @end
 
@@ -24,12 +29,26 @@
 {
     [super viewDidLoad];
     [self.view addSubview:self.tableView];
+    [self.view addSubview:self.collectionView];
+    
+    UIBarButtonItem* changeStyleBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Table"
+                                                                                 style:UIBarButtonItemStyleDone
+                                                                                target:self action:@selector(_changeStyleBarButtonItemAction)] autorelease];
+    _viewStyle = ViewTile;
+    self.navigationItem.rightBarButtonItem = changeStyleBarButtonItem;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.tableView reloadData];
+    if(_viewStyle == ViewTable)
+    {
+        [self.tableView reloadData];
+    }
+    else if(_viewStyle == ViewTile)
+    {
+        [self.collectionView reloadData];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -46,6 +65,7 @@
     [super didReceiveMemoryWarning];
     NSLog(@"Memory Warning!");
 }
+
 #pragma mark - Properties Setters and Getters
 
 - (UITableView *)tableView
@@ -71,7 +91,69 @@
     return _travelInfoArray;
 }
 
-#pragma mark - Properties Setters and Getters
+- (UICollectionView *)collectionView
+{
+    if (!_collectionView) {
+        UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc] init];
+        flowLayout.itemSize = CGSizeMake(72, 72);
+        _collectionView = [[[UICollectionView alloc] initWithFrame:CGRectMake(0, self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height, self.view.bounds.size.width, self.view.bounds.size.height) collectionViewLayout:flowLayout ] retain];
+        [flowLayout autorelease];
+        _collectionView.delegate = self;
+        [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cellIdentifier"];
+        _collectionView.dataSource = self;
+        _collectionView.backgroundColor = [UIColor whiteColor];
+    }
+    return _collectionView;
+}
+
+
+#pragma mark - UICollectionView Delegate
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake(1.0, 1.0, 1.0, 1.0);
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return self.travelInfoArray.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cellIdentifier" forIndexPath:indexPath];
+    
+    TravelItem * info =(TravelItem *) self.travelInfoArray[indexPath.row];
+    
+    if(info)
+    {
+        UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, cell.bounds.size.width, cell.bounds.size.height)] ;
+        imageView.image  = [[[UIImage alloc] initWithContentsOfFile:info.thumbnailPath] autorelease];
+        [cell addSubview:imageView];
+        [cell setBackgroundView:imageView];
+        [imageView release];
+        UILabel* labelUICollectionCell = [[UILabel alloc] initWithFrame:CGRectMake(0, 57, cell.bounds.size.width, 15)];
+        labelUICollectionCell.text = info.name;
+        labelUICollectionCell.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
+        labelUICollectionCell.textColor = [UIColor whiteColor];
+        labelUICollectionCell.font = [UIFont fontWithName:@"Helvetica" size:10.0];
+        labelUICollectionCell.textAlignment = NSTextAlignmentCenter;
+        [cell addSubview:labelUICollectionCell];
+        [cell bringSubviewToFront:labelUICollectionCell];
+        [labelUICollectionCell autorelease];
+        cell.layer.borderWidth = 1.0;
+        cell.layer.borderColor = [[UIColor blackColor] CGColor];
+    }
+    return cell;
+}
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    TravelInfoViewController * tivController = [[[TravelInfoViewController alloc] initWithCurrentIndex:indexPath.row] autorelease];
+    [self.navigationController pushViewController:tivController animated:YES];
+}
+
+
+#pragma mark - UITableView Delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -104,7 +186,9 @@
     if (info)
     {
         [cell.textLabel setText: info.name];
-        cell.imageView.image = [[[UIImage alloc] initWithContentsOfFile:info.imageUrl] autorelease];
+        UIImage * thumbImage = [[UIImage alloc] initWithContentsOfFile:info.thumbnailPath];
+        cell.imageView.image = thumbImage;
+        [thumbImage autorelease];
     }
     return [cell autorelease];
 }
@@ -128,10 +212,25 @@
 
 #pragma mark - Private Section
 
-- (void)_refreshTableView:(UIRefreshControl *) refreshControl {
+- (void)_refreshTableView:(UIRefreshControl *) refreshControl
+{
     _travelInfoArray = nil;
     [self.tableView reloadData];
     [refreshControl endRefreshing];
 }
-
+- (void)_changeStyleBarButtonItemAction
+{
+    if(_viewStyle == ViewTile)
+    {
+        self.navigationItem.rightBarButtonItem.title = @"Table";
+        [self.view bringSubviewToFront:self.tableView];
+        _viewStyle = ViewTable;
+    }
+    else if (_viewStyle == ViewTable)
+    {
+        self.navigationItem.rightBarButtonItem.title = @"Tile";
+        [self.view bringSubviewToFront:self.collectionView];
+        _viewStyle = ViewTile;
+    }
+}
 @end

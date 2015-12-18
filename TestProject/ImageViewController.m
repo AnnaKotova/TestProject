@@ -178,10 +178,14 @@
     UIImage * chosenImage = info[UIImagePickerControllerOriginalImage];
     self.pickedImageView.image = chosenImage;
     [picker dismissViewControllerAnimated: YES completion: NULL];
+    NSURL * imageUrl = [info objectForKey:UIImagePickerControllerReferenceURL];
     
-    [self.view addSubview: self.pickedImageView];
+    PHFetchResult *result = [PHAsset fetchAssetsWithALAssetURLs:@[imageUrl] options:nil];
+    
+    //
+   /* [self.view addSubview: self.pickedImageView];
     NSDateFormatter * dateFormatter = [[NSDateFormatter new] autorelease];
-    [dateFormatter setDateFormat: @"yyyyMMddhhmm"];
+    [dateFormatter setDateFormat: @"yyyyMMddhhmmss"];
     NSString * fileName = [NSString stringWithFormat:@"%@.jpg",[dateFormatter stringFromDate:[NSDate date]]];
     NSString * filePath =[NSHomeDirectory() stringByAppendingPathComponent: [NSString stringWithFormat: @"Documents/%@", fileName]];
     
@@ -191,7 +195,7 @@
     }
     else
     {
-        self.travelItemModel.imageUrl = filePath;
+        self.travelItemModel.imagePath = filePath;
         [self.view bringSubviewToFront: self.imageNameTextField];
         [self.imageNameTextField becomeFirstResponder];
         [self.navigationController setNavigationBarHidden: NO];
@@ -204,6 +208,7 @@
         
     }
     self.imageNameTextField.hidden = NO;
+    [self _createThumbnail];*/
 
 
 }
@@ -218,7 +223,10 @@
 - (void)_backButtonAction
 {
     [self.navigationController popViewControllerAnimated: YES];
-    [DataSource.sharedDataSource removeTravelItem: self.travelItemModel];
+    [[NSFileManager defaultManager] removeItemAtPath:self.travelItemModel.soundPath error:nil];
+    [[NSFileManager defaultManager] removeItemAtPath:self.travelItemModel.thumbnailPath error:nil];
+    [DataSource.sharedDataSource removeTravelItem:self.travelItemModel];
+    [DataSource.sharedDataSource saveContexChanges];    
 }
 
 - (void)_libraryButtonAction
@@ -250,5 +258,24 @@
     CGRect rect = CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y - self.keyboardOffset, self.view.bounds.size.width, self.view.bounds.size.height - self.keyboardOffset);
     self.view.bounds = rect;
     [UIView commitAnimations];
+}
+
+-(void)_createThumbnail
+{
+    CGSize thumbnailSize = CGSizeMake(79, 79);
+    UIGraphicsBeginImageContext(thumbnailSize);
+    [self.pickedImageView.image drawInRect:CGRectMake(0, 0, thumbnailSize.width, thumbnailSize.height)];
+    UIImage* thumbnailImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    NSString* thumbnailPath = [self.travelItemModel.imagePath stringByReplacingOccurrencesOfString:@".jpg" withString:@"-thb.jpg"];
+
+    if(![UIImageJPEGRepresentation(thumbnailImage, 1.0) writeToFile: thumbnailPath atomically: YES] )
+    {
+        NSLog(@"File isn't saved");
+    }
+    else
+    {
+        self.travelItemModel.thumbnailPath = thumbnailPath;
+    }
 }
 @end
