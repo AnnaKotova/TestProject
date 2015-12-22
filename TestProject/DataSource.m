@@ -24,7 +24,7 @@
     return _coreController;
 }
 
-+ (DataSource *)sharedDataSource
++ (instancetype)sharedDataSource
 {
     static DataSource * singletonObject = nil;
     static dispatch_once_t onceToken;

@@ -2,7 +2,7 @@
 //  TravelItem+CoreDataProperties.m
 //  TestProject
 //
-//  Created by User on 12/16/15.
+//  Created by User on 12/22/15.
 //  Copyright © 2015 Егор Сидоренко. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -14,10 +14,10 @@
 @implementation TravelItem (CoreDataProperties)
 
 @dynamic imagePath;
-@dynamic soundPath;
-@dynamic thumbnailPath;
-@dynamic name;
-@dynamic longitude;
 @dynamic latitude;
+@dynamic longitude;
+@dynamic name;
+@dynamic soundPath;
+@dynamic videoUrl;
 
 @end

@@ -10,15 +10,11 @@
 #import <AVFoundation/AVFoundation.h>
 #import <Foundation/Foundation.h>
 #import "DataSource.h"
+#import <Photos/Photos.h>
 
 
 @interface TravelInfoViewController : UIViewController
 
 - (instancetype)initWithCurrentIndex:(NSInteger) index;
-
-typedef NS_ENUM (NSInteger, ScrollDirection){
-    ScrollDirectionRight,
-    ScrollDirectionLeft
-} ;
 
 @end

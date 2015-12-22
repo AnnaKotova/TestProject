@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import "BaseViewController.h"
+#import "Utils.h"
 
 @interface SoundRecordingViewController : BaseViewController
 

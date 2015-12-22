@@ -41,6 +41,7 @@
     
     [self.view addSubview:self.mapView];
     [self.view addSubview:self.mapTypeButton];
+    [self.view bringSubviewToFront:self.mapTypeButton];
     UIBarButtonItem * barbutton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"New", nil)
                                                                   style:UIBarButtonItemStyleDone
                                                                  target:self
@@ -69,7 +70,7 @@
 - (MKMapView *)mapView
 {
     if(!_mapView){
-        _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - self._mapHeight)];
+        _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
         [_mapView setShowsUserLocation: YES];
         
         [_mapView setZoomEnabled: YES];
@@ -105,10 +106,11 @@
 {
     if(!_mapTypeButton)
     {
-        _mapTypeButton = [[UIButton alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - self._mapHeight, self.view.bounds.size.width, self._mapHeight)];
+        _mapTypeButton = [[UIButton alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 70, self.view.bounds.size.width,  70)];
         [_mapTypeButton addTarget:self action:@selector(_chooseTypeButtonAction:) forControlEvents:UIControlEventAllTouchEvents];
         [_mapTypeButton setTitle:@"Map Type: Standart" forState:UIControlStateNormal];
-        [_mapTypeButton setBackgroundColor:[UIColor grayColor]];
+        [_mapTypeButton setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.3]];
+        [_mapTypeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     }
     return _mapTypeButton;
 }
@@ -127,6 +129,13 @@
         annView.animatesDrop = TRUE;
         annView.canShowCallout = YES;
         annView.calloutOffset = CGPointMake(-5, 5);
+        UIButton* btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 20, 10)];
+        [btn setImage:[UIImage imageNamed:@"annotationInfo"] forState:UIControlStateNormal];
+        [btn addTarget:self action:@selector(_showTravelInfoAnnotationButtonAction:) forControlEvents:UIControlEventTouchDown];
+        btn.tag = ((AnnotationModel *)annotation).number;
+
+        annView.rightCalloutAccessoryView = btn;
+        [btn release];
         return annView;
     }
     return nil;
@@ -157,12 +166,12 @@
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
-    if([view.annotation isKindOfClass:[AnnotationModel class]])
+  /*  if([view.annotation isKindOfClass:[AnnotationModel class]])
     {
         AnnotationModel * annotationModelItem = ((AnnotationModel *)view.annotation);
         TravelInfoViewController * tviController = [[[TravelInfoViewController alloc] initWithCurrentIndex: annotationModelItem.number] autorelease];
         [self.navigationController pushViewController: tviController animated: YES];
-    }
+    }*/
 }
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
@@ -238,5 +247,11 @@
     ImageViewController * chooseController = [[[ImageViewController alloc] initWithModel: item] autorelease];
     [self.navigationController pushViewController: chooseController animated: YES];
     
+}
+
+- (void)_showTravelInfoAnnotationButtonAction:(UIButton *)sender {
+    //AnnotationModel * annotationModelItem = ((AnnotationModel *)view.annotation);
+    TravelInfoViewController * tviController = [[[TravelInfoViewController alloc] initWithCurrentIndex: sender.tag] autorelease];
+    [self.navigationController pushViewController: tviController animated: YES];
 }
 @end

@@ -174,43 +174,42 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
 {
-    
-    UIImage * chosenImage = info[UIImagePickerControllerOriginalImage];
+ 
+    UIImage * chosenImage = [info objectForKey:UIImagePickerControllerOriginalImage];
     self.pickedImageView.image = chosenImage;
     [picker dismissViewControllerAnimated: YES completion: NULL];
-    NSURL * imageUrl = [info objectForKey:UIImagePickerControllerReferenceURL];
-    
-    PHFetchResult *result = [PHAsset fetchAssetsWithALAssetURLs:@[imageUrl] options:nil];
-    
-    //
-   /* [self.view addSubview: self.pickedImageView];
-    NSDateFormatter * dateFormatter = [[NSDateFormatter new] autorelease];
-    [dateFormatter setDateFormat: @"yyyyMMddhhmmss"];
-    NSString * fileName = [NSString stringWithFormat:@"%@.jpg",[dateFormatter stringFromDate:[NSDate date]]];
-    NSString * filePath =[NSHomeDirectory() stringByAppendingPathComponent: [NSString stringWithFormat: @"Documents/%@", fileName]];
-    
-    if(![UIImageJPEGRepresentation(chosenImage, 1.0) writeToFile: filePath atomically: YES] )
+    if(self.isGetPictureFromCamera)
     {
-        NSLog(@"File isn't saved");
+        [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^
+                                                            {
+                                                               PHAssetChangeRequest* assetChangeRequest = [PHAssetChangeRequest creationRequestForAssetFromImage:[info valueForKey:UIImagePickerControllerOriginalImage]];
+                                                                //[[assetChangerequest placeholderForCreatedAsset] ]
+                                                                self.travelItemModel.imagePath = [[assetChangeRequest placeholderForCreatedAsset] localIdentifier];
+                                                            }
+                                          completionHandler:^(BOOL success, NSError *error)
+                                                            {
+                                                                if (!success)
+                                                                {
+                                                                    NSLog(@"Image From Camera not saved !!");
+                                                                }
+                                                            }];
     }
     else
     {
-        self.travelItemModel.imagePath = filePath;
-        [self.view bringSubviewToFront: self.imageNameTextField];
-        [self.imageNameTextField becomeFirstResponder];
-        [self.navigationController setNavigationBarHidden: NO];
-        
-        UIBarButtonItem * barBtn = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", nil)
-                                                                     style:UIBarButtonItemStyleDone
-                                                                    target:self
-                                                                    action:@selector(_nextButtonAction:)] autorelease];
-        self.navigationItem.rightBarButtonItem = barBtn;
-        
+        self.travelItemModel.imagePath = [[[[info objectForKey:UIImagePickerControllerReferenceURL] query] componentsSeparatedByString:@"&"][0] substringFromIndex:3];
+        //self.travelItemModel.imagePath = [[info objectForKey:UIImagePickerControllerReferenceURL] absoluteString];
     }
+    
+    [self.view addSubview: self.pickedImageView];
     self.imageNameTextField.hidden = NO;
-    [self _createThumbnail];*/
-
-
+    [self.view bringSubviewToFront: self.imageNameTextField];
+    [self.imageNameTextField becomeFirstResponder];
+    [self.navigationController setNavigationBarHidden: NO];
+    UIBarButtonItem * barBtn = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", nil)
+                                                                 style:UIBarButtonItemStyleDone
+                                                                target:self
+                                                                action:@selector(_nextButtonAction:)] autorelease];
+    self.navigationItem.rightBarButtonItem = barBtn;
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker

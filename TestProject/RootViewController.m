@@ -9,6 +9,7 @@
 #import "RootViewController.h"
 #include "MapViewController.h"
 #include "ListViewController.h"
+#include "VideoRecorderViewController.h"
 
 @interface RootViewController()
 
@@ -93,8 +94,10 @@
     if(sender == _mapButton)
     {
         self.navigationItem.title = NSLocalizedString(@"Back",nil);
-        MapViewController * mapController = [[[MapViewController alloc] init] autorelease];
-        [self.navigationController pushViewController: mapController animated: YES];
+        /*MapViewController * mapController = [[[MapViewController alloc] init] autorelease];
+        [self.navigationController pushViewController: mapController animated: YES];*/
+        VideoRecorderViewController * videoRecorder = [[[VideoRecorderViewController alloc] init] autorelease];
+        [self.navigationController pushViewController:videoRecorder animated:YES];
     }
     else
     {

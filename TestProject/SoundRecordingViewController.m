@@ -57,10 +57,9 @@
         
         dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         docsDir = dirPaths[0];
-
-        NSString * soundFilePath = [docsDir
-                                   stringByAppendingPathComponent:[NSString stringWithFormat: @"sound_%@.caf", [self _getCurrentTime]]];
-        self.travelItemModel.soundPath = soundFilePath;
+        NSString * fileName = [NSString stringWithFormat: @"sound_%@.caf", [Utils.sharedUtils getCurrentTime]];
+        NSString * soundFilePath = [docsDir stringByAppendingPathComponent:fileName];
+        self.travelItemModel.soundPath = fileName;
         
         NSURL *soundFileURL = [NSURL fileURLWithPath:soundFilePath];
         
@@ -130,14 +129,6 @@
 }
 
 #pragma mark - Private Section
-
--(NSString *)_getCurrentTime
-{
-    NSDateFormatter* dateFormatter = [[NSDateFormatter new] autorelease];
-    [dateFormatter setDateFormat:@"yyyyMMddhhmmss"];
-    NSString *CurrentTime = [dateFormatter stringFromDate:[NSDate date]];
-    return CurrentTime;
-}
 
 - (void)_startRecording:(UIButton *) sender
 {

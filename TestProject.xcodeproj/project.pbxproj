@@ -25,12 +25,18 @@
 		74193C111C0EEBC30044EDD6 /* TravelInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193C101C0EEBC30044EDD6 /* TravelInfoViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		74193C381C0F269C0044EDD6 /* AnnotationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 74193C371C0F269C0044EDD6 /* AnnotationModel.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		74193C3A1C105A180044EDD6 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74193C391C105A180044EDD6 /* AssetsLibrary.framework */; };
+		CE0ED3F51C28552700C928A4 /* VideoRecorderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0ED3F41C28552700C928A4 /* VideoRecorderViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CE0ED3F71C285B9000C928A4 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE0ED3F61C285B9000C928A4 /* MediaPlayer.framework */; };
+		CE0ED3F91C285B9700C928A4 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE0ED3F81C285B9700C928A4 /* CoreMedia.framework */; };
+		CE0ED3FB1C285BC300C928A4 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE0ED3FA1C285BC300C928A4 /* MobileCoreServices.framework */; };
 		CE2823D61C1ED99B00975BC7 /* DataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2823D51C1ED99B00975BC7 /* DataSource.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CE7DD7D01C24642C0054EA69 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE7DD7CF1C24642C0054EA69 /* Photos.framework */; };
 		CE8655911C21B60300CBBD62 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CE86558F1C21B60300CBBD62 /* CoreDataModel.xcdatamodeld */; };
 		CE8655961C21B64700CBBD62 /* TravelItem+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8655931C21B64700CBBD62 /* TravelItem+CoreDataProperties.m */; };
 		CE8655971C21B64700CBBD62 /* TravelItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8655951C21B64700CBBD62 /* TravelItem.m */; };
 		CEAD2AD61C20617F00E47554 /* Localization.strings in Resources */ = {isa = PBXBuildFile; fileRef = CEAD2AD81C20617F00E47554 /* Localization.strings */; };
+		CECF2DE91C29328C0092D6FD /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = CECF2DE81C29328C0092D6FD /* Utils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CECF2DEC1C2942400092D6FD /* TravelItem+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = CECF2DEB1C2942400092D6FD /* TravelItem+CoreDataProperties.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +70,11 @@
 		74193C361C0F269C0044EDD6 /* AnnotationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnnotationModel.h; sourceTree = "<group>"; };
 		74193C371C0F269C0044EDD6 /* AnnotationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnnotationModel.m; sourceTree = "<group>"; };
 		74193C391C105A180044EDD6 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		CE0ED3F31C28552700C928A4 /* VideoRecorderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoRecorderViewController.h; sourceTree = "<group>"; };
+		CE0ED3F41C28552700C928A4 /* VideoRecorderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoRecorderViewController.m; sourceTree = "<group>"; };
+		CE0ED3F61C285B9000C928A4 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		CE0ED3F81C285B9700C928A4 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		CE0ED3FA1C285BC300C928A4 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		CE2823D41C1ED99B00975BC7 /* DataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSource.h; sourceTree = "<group>"; };
 		CE2823D51C1ED99B00975BC7 /* DataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataSource.m; sourceTree = "<group>"; };
 		CE7DD7CF1C24642C0054EA69 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
@@ -74,6 +85,10 @@
 		CE8655951C21B64700CBBD62 /* TravelItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TravelItem.m; path = ../TravelItem.m; sourceTree = "<group>"; };
 		CEAC1C491C215A9F00DE152C /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localization.strings; sourceTree = "<group>"; usesTabs = 0; };
 		CEAC1C4A1C215AB400DE152C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localization.strings; sourceTree = "<group>"; };
+		CECF2DE71C29328C0092D6FD /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		CECF2DE81C29328C0092D6FD /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
+		CECF2DEA1C2942400092D6FD /* TravelItem+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TravelItem+CoreDataProperties.h"; sourceTree = "<group>"; };
+		CECF2DEB1C2942400092D6FD /* TravelItem+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TravelItem+CoreDataProperties.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +96,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE0ED3FB1C285BC300C928A4 /* MobileCoreServices.framework in Frameworks */,
+				CE0ED3F91C285B9700C928A4 /* CoreMedia.framework in Frameworks */,
+				CE0ED3F71C285B9000C928A4 /* MediaPlayer.framework in Frameworks */,
 				CE7DD7D01C24642C0054EA69 /* Photos.framework in Frameworks */,
 				74193C3A1C105A180044EDD6 /* AssetsLibrary.framework in Frameworks */,
 				74193BD31C0DE1200044EDD6 /* CoreData.framework in Frameworks */,
@@ -95,7 +113,8 @@
 		74193B801C0AF1250044EDD6 = {
 			isa = PBXGroup;
 			children = (
-				CE7DD7CF1C24642C0054EA69 /* Photos.framework */,
+				CECF2DEA1C2942400092D6FD /* TravelItem+CoreDataProperties.h */,
+				CECF2DEB1C2942400092D6FD /* TravelItem+CoreDataProperties.m */,
 				74193B8B1C0AF1250044EDD6 /* TestProject */,
 				74193B951C0AF1250044EDD6 /* Main.storyboard */,
 				74193B8A1C0AF1250044EDD6 /* Products */,
@@ -155,6 +174,8 @@
 				74193C0D1C0EA9830044EDD6 /* ListViewController.m */,
 				74193C0F1C0EEBC30044EDD6 /* TravelInfoViewController.h */,
 				74193C101C0EEBC30044EDD6 /* TravelInfoViewController.m */,
+				CE0ED3F31C28552700C928A4 /* VideoRecorderViewController.h */,
+				CE0ED3F41C28552700C928A4 /* VideoRecorderViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -170,6 +191,8 @@
 				74193C371C0F269C0044EDD6 /* AnnotationModel.m */,
 				CE2823D41C1ED99B00975BC7 /* DataSource.h */,
 				CE2823D51C1ED99B00975BC7 /* DataSource.m */,
+				CECF2DE71C29328C0092D6FD /* Utils.h */,
+				CECF2DE81C29328C0092D6FD /* Utils.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -177,6 +200,10 @@
 		74193BBD1C0DCFD20044EDD6 /* FrameWorks */ = {
 			isa = PBXGroup;
 			children = (
+				CE0ED3FA1C285BC300C928A4 /* MobileCoreServices.framework */,
+				CE0ED3F81C285B9700C928A4 /* CoreMedia.framework */,
+				CE0ED3F61C285B9000C928A4 /* MediaPlayer.framework */,
+				CE7DD7CF1C24642C0054EA69 /* Photos.framework */,
 				74193C391C105A180044EDD6 /* AssetsLibrary.framework */,
 				74193BD21C0DE1200044EDD6 /* CoreData.framework */,
 				74193BB71C0DAB0A0044EDD6 /* AVFoundation.framework */,
@@ -265,6 +292,8 @@
 				74193B911C0AF1250044EDD6 /* AppDelegate.m in Sources */,
 				74193C111C0EEBC30044EDD6 /* TravelInfoViewController.m in Sources */,
 				CE8655911C21B60300CBBD62 /* CoreDataModel.xcdatamodeld in Sources */,
+				CECF2DEC1C2942400092D6FD /* TravelItem+CoreDataProperties.m in Sources */,
+				CE0ED3F51C28552700C928A4 /* VideoRecorderViewController.m in Sources */,
 				CE8655971C21B64700CBBD62 /* TravelItem.m in Sources */,
 				74193BD91C0E15F60044EDD6 /* BaseViewController.m in Sources */,
 				74193BB61C0CC4670044EDD6 /* SoundRecordingViewController.m in Sources */,
@@ -276,6 +305,7 @@
 				74193C381C0F269C0044EDD6 /* AnnotationModel.m in Sources */,
 				74193BB31C0C7C230044EDD6 /* ImageViewController.m in Sources */,
 				74193BD11C0DE0850044EDD6 /* DbController.m in Sources */,
+				CECF2DE91C29328C0092D6FD /* Utils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

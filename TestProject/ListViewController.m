@@ -31,7 +31,7 @@
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.collectionView];
     
-    UIBarButtonItem* changeStyleBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Table"
+    UIBarButtonItem * changeStyleBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Table"
                                                                                  style:UIBarButtonItemStyleDone
                                                                                 target:self action:@selector(_changeStyleBarButtonItemAction)] autorelease];
     _viewStyle = ViewTile;
@@ -98,10 +98,15 @@
         flowLayout.itemSize = CGSizeMake(72, 72);
         _collectionView = [[[UICollectionView alloc] initWithFrame:CGRectMake(0, self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height, self.view.bounds.size.width, self.view.bounds.size.height) collectionViewLayout:flowLayout ] retain];
         [flowLayout autorelease];
+        UIRefreshControl * refreshControl = [[[UIRefreshControl alloc] init] autorelease];
+        [refreshControl addTarget:self action:@selector(_refreshCollectionView:) forControlEvents:UIControlEventValueChanged];
+        [_collectionView addSubview:refreshControl];
         _collectionView.delegate = self;
         [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cellIdentifier"];
         _collectionView.dataSource = self;
         _collectionView.backgroundColor = [UIColor whiteColor];
+        [_collectionView setBounces:YES];
+        [_collectionView setAlwaysBounceVertical:YES];
     }
     return _collectionView;
 }
@@ -127,12 +132,20 @@
     
     if(info)
     {
-        UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, cell.bounds.size.width, cell.bounds.size.height)] ;
+        UIImageView * imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, cell.bounds.size.width, cell.bounds.size.height)] ;
         imageView.image  = [[[UIImage alloc] initWithContentsOfFile:info.thumbnailPath] autorelease];
+
+        PHFetchResult * fetchResult = [PHAsset fetchAssetsWithLocalIdentifiers:@[info.imagePath] options:nil];
+        for (PHAsset * asset in fetchResult) {
+            [PHImageManager.defaultManager requestImageForAsset:asset targetSize:CGSizeMake(100, 100) contentMode:PHImageContentModeDefault options:nil resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+                imageView.image = result;
+            }];
+        }
+
         [cell addSubview:imageView];
         [cell setBackgroundView:imageView];
         [imageView release];
-        UILabel* labelUICollectionCell = [[UILabel alloc] initWithFrame:CGRectMake(0, 57, cell.bounds.size.width, 15)];
+        UILabel * labelUICollectionCell = [[UILabel alloc] initWithFrame:CGRectMake(0, 57, cell.bounds.size.width, 15)];
         labelUICollectionCell.text = info.name;
         labelUICollectionCell.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
         labelUICollectionCell.textColor = [UIColor whiteColor];
@@ -186,9 +199,16 @@
     if (info)
     {
         [cell.textLabel setText: info.name];
-        UIImage * thumbImage = [[UIImage alloc] initWithContentsOfFile:info.thumbnailPath];
-        cell.imageView.image = thumbImage;
-        [thumbImage autorelease];
+        PHFetchResult * fetchResult = [PHAsset fetchAssetsWithLocalIdentifiers:@[info.imagePath] options:nil];
+        PHImageRequestOptions * option = [PHImageRequestOptions new];
+        option.synchronous = YES;
+        for (PHAsset * asset in fetchResult)
+        {
+            [PHImageManager.defaultManager requestImageForAsset:asset targetSize:CGSizeMake(100, 100) contentMode:PHImageContentModeDefault options:option resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+                 cell.imageView.image = result;
+            }];
+        }
+        [option release];
     }
     return [cell autorelease];
 }
@@ -232,5 +252,10 @@
         [self.view bringSubviewToFront:self.collectionView];
         _viewStyle = ViewTile;
     }
+}
+- (void)_refreshCollectionView:(UIRefreshControl *) sender {
+    _travelInfoArray = nil;
+    [self.collectionView reloadData];
+    [sender endRefreshing];
 }
 @end
