@@ -12,8 +12,8 @@
 
 + (instancetype)sharedUtils;
 
--(NSString *)getCurrentTime;
+- (NSString *)getCurrentTime;
 
--(NSString *)generateGUID;
+- (NSString *)generateGUID;
 
 @end
