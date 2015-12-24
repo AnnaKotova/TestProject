@@ -61,7 +61,7 @@
 
 #pragma mark Properties Setters and Getters
 
-- (int) padding
+- (int)padding
 {
     return 5;
 }
@@ -84,7 +84,8 @@
     return _mapButton;
 }
 
-- (UIButton *)listButton {
+- (UIButton *)listButton
+{
     if(!_listButton)
     {
         _listButton = [UIButton buttonWithType: UIButtonTypeCustom];
@@ -105,7 +106,7 @@
 
 #pragma mark Private Section
 
--(void)_buttonAction:(UIButton *) sender
+-(void)_buttonAction:(UIButton *)sender
 {
     if(sender == _mapButton)
     {

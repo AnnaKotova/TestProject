@@ -324,9 +324,12 @@
 
         for(PHAsset * asset in fetchResult)
         {
-            [PHImageManager.defaultManager requestPlayerItemForVideo:asset options:nil resultHandler:^(AVPlayerItem * _Nullable playerItem, NSDictionary * _Nullable info) {
-                _mediaAVPlayer = [[AVPlayer alloc] initWithPlayerItem:playerItem];
-            }];
+            [PHImageManager.defaultManager requestPlayerItemForVideo:asset
+                                                             options:nil
+                                                       resultHandler:^(AVPlayerItem * _Nullable playerItem, NSDictionary * _Nullable info)
+                                                                    {
+                                                                        _mediaAVPlayer = [[AVPlayer alloc] initWithPlayerItem:playerItem];
+                                                                    }];
         }
         [self.sliderView setHidden:YES];
     }
@@ -391,21 +394,28 @@
         {
             i = 0;
         }
+        
         UIScrollView * currentScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(offset ,0, CGRectGetWidth(self.imageSiderScrollView.layer.bounds), CGRectGetHeight(self.imageSiderScrollView.layer.bounds))];
         currentScrollView.contentSize = currentScrollView.bounds.size;
         currentScrollView.maximumZoomScale = 6.0;
         currentScrollView.minimumZoomScale = 0.5;
         currentScrollView.delegate = self;
+        
         UIImageView * imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0 ,0, CGRectGetWidth(self.imageSiderScrollView.layer.bounds), CGRectGetHeight(self.imageSiderScrollView.layer.bounds))];
-       
         PHFetchResult * fetchResult = [PHAsset fetchAssetsWithLocalIdentifiers:@[((TravelItem *)self.travelArray[i]).imagePath] options:nil];
 
         for(PHAsset * asset in fetchResult)
         {
-            [PHImageManager.defaultManager requestImageForAsset:asset targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeDefault options:nil resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
-                imageView.image = result;
-            }];
+            [PHImageManager.defaultManager requestImageForAsset:asset
+                                                     targetSize:PHImageManagerMaximumSize
+                                                    contentMode:PHImageContentModeDefault
+                                                        options:nil
+                                                  resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info)
+                                                                {
+                                                                    imageView.image = result;
+                                                                }];
         }
+        
         [currentScrollView addSubview:imageView];
         [_scrollViews addObject:currentScrollView];
         [currentScrollView autorelease];
@@ -431,9 +441,9 @@
 {
     return self.currentOffset == 0 ? self.countOfTravelItems - 1 : self.currentOffset - 1;
 }
-- (TravelItem *)_getTravelItemFromDataSource : (NSInteger) offset
+
+- (TravelItem *)_getTravelItemFromDataSource:(NSInteger) offset
 {
-    
     if(offset < 0)
     {
         offset = self.countOfTravelItems - 1;

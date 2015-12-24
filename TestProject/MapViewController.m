@@ -15,7 +15,6 @@
 @property (nonatomic, retain) NSArray * travelItemCollection;
 @property (nonatomic, retain) MKMapView * mapView;
 @property (nonatomic, retain) CLLocationManager * locationManager;
-//@property (nonatomic, retain) UIButton * mapTypeButton;
 @property (nonatomic, retain) UIToolbar * toolbar;
 
 @property (nonatomic) int _mapHeight;
@@ -41,8 +40,6 @@
     [super viewDidLoad];
     
     [self.view addSubview:self.mapView];
-    //[self.view addSubview:self.mapTypeButton];
-    //[self.view bringSubviewToFront:self.mapTypeButton];
     UIBarButtonItem * barbutton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"New", nil)
                                                                   style:UIBarButtonItemStyleDone
                                                                  target:self
@@ -80,7 +77,6 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-
     [super viewWillAppear: animated];
     [self.navigationController setNavigationBarHidden: NO];
     _travelItemCollection = nil;
@@ -95,23 +91,22 @@
 
 - (MKMapView *)mapView
 {
-    if(!_mapView){
+    if(!_mapView)
+    {
         _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
         [_mapView setShowsUserLocation: YES];
         
         [_mapView setZoomEnabled: YES];
         _mapView.delegate = self;
         [_mapView setShowsScale: YES];
-        //[_mapView setScrollEnabled: YES];
-        
     }
     return _mapView;
 }
 
-
 - (CLLocationManager *)locationManager
 {
-    if(!_locationManager) {
+    if(!_locationManager)
+    {
         _locationManager = [[[CLLocationManager alloc] init] autorelease];
         _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
         _locationManager.delegate = self;
@@ -119,28 +114,15 @@
     return _locationManager;
 }
 
-
 - (NSArray *)travelItemCollection
 {
     if(!_travelItemCollection) _travelItemCollection = [DataSource.sharedDataSource getTravelItemCollectionByPage:0];
     return _travelItemCollection;
 }
-- (int)_mapHeight {
+- (int)_mapHeight
+{
     return 70;
 }
-
-/*- (UIButton *)mapTypeButton
-{
-    if(!_mapTypeButton)
-    {
-        _mapTypeButton = [[UIButton alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 70, self.view.bounds.size.width,  70)];
-        [_mapTypeButton addTarget:self action:@selector(_chooseTypeButtonAction:) forControlEvents:UIControlEventAllTouchEvents];
-        [_mapTypeButton setTitle:@"Map Type: Standart" forState:UIControlStateNormal];
-        [_mapTypeButton setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.3]];
-        [_mapTypeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    }
-    return _mapTypeButton;
-}*/
 
 #pragma mark - MKMapViewDelegate
 
@@ -151,7 +133,7 @@
     {
         return nil;
     }
-    if( [annotation isKindOfClass:[AnnotationModel class]] )
+    if([annotation isKindOfClass:[AnnotationModel class]])
     {
         MKPinAnnotationView *annView=[[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"currentloc"] autorelease];
 
@@ -176,14 +158,14 @@
 }
 
 
--(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
     [self.locationManager startUpdatingLocation];
 }
 
--(void) locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
-    NSLog(@"%@",error);
+    NSLog(@"%@", error);
 }
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
@@ -194,48 +176,6 @@
 }
 
 #pragma mark - Private Section
-/*
-- (void)_chooseTypeButtonAction:(UIButton *)sender
-{
-    UIAlertController * chooseMapTypeAlert = [UIAlertController alertControllerWithTitle:@"choose map type"
-                                                                                 message:@""
-                                                                          preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    UIAlertAction * standartmaptypeAction = [UIAlertAction actionWithTitle: NSLocalizedString(@"Standart",nil)
-                                                                     style:UIAlertActionStyleDefault
-                                                                   handler:^(UIAlertAction * _Nonnull action)
-                                             {
-                                                 [self.mapView setMapType:MKMapTypeStandard];
-                                                 [_mapTypeButton setTitle:@"Map Type: Standart" forState:UIControlStateNormal];
-                                             }];
-    
-    UIAlertAction * hybridMapTypeAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Hybrid", nil)
-                                                                   style:UIAlertActionStyleDefault
-                                                                 handler:^(UIAlertAction * _Nonnull action)
-                                           {
-                                               [self.mapView setMapType:MKMapTypeHybrid];
-                                               [_mapTypeButton setTitle:@"Map Type: Hybrid" forState:UIControlStateNormal];
-                                           }];
-    
-    UIAlertAction * satelliteMapTypeAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Satellite", nil)
-                                                                      style:UIAlertActionStyleDefault
-                                                                    handler:^(UIAlertAction * _Nonnull action)
-                                              {
-                                                  [self.mapView setMapType:MKMapTypeSatellite];
-                                                  [_mapTypeButton setTitle:@"Map Type: Satellite"
-                                                                  forState:UIControlStateNormal];
-                                              }];
-    
-    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
-                                                            style:UIAlertActionStyleCancel
-                                                          handler:^(UIAlertAction * _Nonnull action) { }];
-    
-    [chooseMapTypeAlert addAction:standartmaptypeAction];
-    [chooseMapTypeAlert addAction:hybridMapTypeAction];
-    [chooseMapTypeAlert addAction:satelliteMapTypeAction];
-    [chooseMapTypeAlert addAction:cancelAction];
-    [self presentViewController:chooseMapTypeAlert animated:YES completion:nil];
-}*/
 
 - (void)_addAnotationsFromTravelCollectionToMap
 {
@@ -262,13 +202,16 @@
     [self.navigationController pushViewController: chooseController animated: YES];
     
 }
+
 - (void)_changeMapStyleBarButtonAction:(UIBarButtonItem *) sender
 {
-    for (UIBarButtonItem* item in [self.toolbar items]) {
+    for (UIBarButtonItem* item in [self.toolbar items])
+    {
         item.enabled = YES;
     }
     sender.enabled = NO;
-    switch (sender.tag) {
+    switch (sender.tag)
+    {
         case 1:
             [self.mapView setMapType:MKMapTypeStandard];
             break;

@@ -134,7 +134,7 @@
 {
     UICollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cellIdentifier" forIndexPath:indexPath];
     
-    TravelItem * info =(TravelItem *) self.travelInfoArray[indexPath.row];
+    TravelItem * info = (TravelItem *) self.travelInfoArray[indexPath.row];
     
     if(info)
     {
@@ -142,9 +142,14 @@
         PHFetchResult * fetchResult = [PHAsset fetchAssetsWithLocalIdentifiers:@[info.imagePath] options:nil];
         for (PHAsset * asset in fetchResult)
         {
-            [PHImageManager.defaultManager requestImageForAsset:asset targetSize:CGSizeMake(100, 100) contentMode:PHImageContentModeDefault options:nil resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
-                imageView.image = result;
-            }];
+            [PHImageManager.defaultManager requestImageForAsset:asset
+                                                     targetSize:CGSizeMake(100, 100)
+                                                    contentMode:PHImageContentModeDefault
+                                                        options:nil
+                                                  resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info)
+                                                                {
+                                                                    imageView.image = result;
+                                                                }];
         }
         [cell addSubview:imageView];
         [cell setBackgroundView:imageView];
@@ -171,7 +176,7 @@
 
 #pragma mark - UITableView Delegate
 
--(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(indexPath.row == self.travelInfoArray.count - 1 && self.travelInfoArray.count <= self.countOfTravelItems)
     {
@@ -181,12 +186,12 @@
     }
 }
 
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     NSLog(@"%f", scrollView.contentOffset.y);
 }
 
--(void)scrollViewDidScroll:(UIScrollView *)scrollView
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if(scrollView == self.tableView)
     {
@@ -247,9 +252,14 @@
         option.synchronous = YES;
         for (PHAsset * asset in fetchResult)
         {
-            [PHImageManager.defaultManager requestImageForAsset:asset targetSize:CGSizeMake(100, 100) contentMode:PHImageContentModeDefault options:option resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
-                 cell.imageView.image = result;
-            }];
+            [PHImageManager.defaultManager requestImageForAsset:asset
+                                                     targetSize:CGSizeMake(100, 100)
+                                                    contentMode:PHImageContentModeDefault
+                                                        options:option
+                                                  resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info)
+                                                                {
+                                                                    cell.imageView.image = result;
+                                                                }];
         }
         [option release];
     }
@@ -273,14 +283,14 @@
     }
 }
 
--(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     searchBar.text = @"";
     [searchBar resignFirstResponder];
     
 }
 
--(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     [self.travelInfoArray removeAllObjects];
     if([searchText isEqualToString:@""])
@@ -323,7 +333,8 @@
     }
 }
 
-- (void)_refreshCollectionView:(UIRefreshControl *) sender {
+- (void)_refreshCollectionView:(UIRefreshControl *) sender
+{
     [self.collectionView reloadData];
     [sender endRefreshing];
 }

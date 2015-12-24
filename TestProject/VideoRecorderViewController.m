@@ -55,7 +55,6 @@
     [super dealloc];
 }
 
-
 #pragma mark - ImagePicker delegates
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
@@ -94,11 +93,5 @@
          }
      }];
     [_videorecorderImagePickerController dismissViewControllerAnimated:YES completion:^{}];
-    
-    
 }
-
-
-
-
 @end

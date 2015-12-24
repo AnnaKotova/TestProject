@@ -84,7 +84,6 @@
     
     [self.view addSubview: self.imageNameTextField];
     [self.view setBackgroundColor: [UIColor whiteColor]];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -118,11 +117,6 @@
     self.imageNameTextField = nil;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
-}
-
 #pragma mark - Properties Setters and Getters
 
 - (UIImagePickerController *)picker
@@ -139,10 +133,8 @@
         {
             [_picker setSourceType: UIImagePickerControllerSourceTypePhotoLibrary];
         }
-        
         _picker.delegate = self;
     }
-    
     return _picker;
 }
 
@@ -179,7 +171,6 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
 {
- 
     UIImage * chosenImage = [info objectForKey:UIImagePickerControllerOriginalImage];
     self.pickedImageView.image = chosenImage;
     [picker dismissViewControllerAnimated: YES completion: NULL];

@@ -149,7 +149,8 @@
 {
     self.progressBar.progress+=(1.f/self.maxTime);
     [self.recordButton setTitle: [NSString stringWithFormat:@"Record  Time 00:00:%d",++self.ticks] forState:UIControlStateNormal];
-    if (self.progressBar.progress >= 1.0) {
+    if (self.progressBar.progress >= 1.0)
+    {
         [self.recordTimer invalidate];
         [self.audioRecorder stop];
     }
