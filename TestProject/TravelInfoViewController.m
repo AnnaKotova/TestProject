@@ -11,19 +11,24 @@
 @interface TravelInfoViewController () <AVAudioPlayerDelegate, UIScrollViewDelegate, UIScrollViewDelegate>
 {
     CGFloat _lastContentOffset;
-    NSInteger _nextIndex;
     NSMutableArray<__kindof UIScrollView *> * _scrollViews;
-    Boolean _isBackButtonClicked;
-    Boolean _isDeleteButtonClicked;
-    NSString * _projectPath;
+    BOOL _isBackButtonClicked;
+    BOOL _isDeleteButtonClicked;
+    BOOL _isScrolableView;
+    AVPlayer * _mediaAVPlayer;
+    NSInteger _modelCounter;
 }
 
-@property (nonatomic, retain) NSArray * model;
+@property (nonatomic) NSInteger countOfTravelItems;
+@property (nonatomic) NSInteger currentOffset;
+@property (nonatomic) TravelItem * travelItem;
+@property (nonatomic, retain) NSMutableArray * travelArray;
 @property (nonatomic, retain) UISlider * sliderView;
 @property (nonatomic, retain) AVAudioPlayer * audioPlayer;
 @property (nonatomic, retain) UIButton * playButton;
 @property (nonatomic, retain) NSTimer * playTimer;
 @property (nonatomic, retain) UIScrollView * imageSiderScrollView;
+@property (nonatomic, copy) NSString * projectPath;
 
 
 @property (nonatomic) NSInteger currentIndex;
@@ -36,7 +41,7 @@
 
 - (void)dealloc
 {
-    [_model release];
+    [self.travelArray release];
     [_scrollViews release];
     [super dealloc];
 }
@@ -45,9 +50,11 @@
 {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self _setupViewValues];
-    [self _setupScrollView];
+    
+
     [self.view addSubview:self.imageSiderScrollView];
+    
+    
     
     UIBarButtonItem* delete = [[UIBarButtonItem alloc] initWithTitle:@"Delete"
                                                                style:UIBarButtonItemStyleDone
@@ -62,6 +69,16 @@
     [self.view addSubview:self.sliderView];
     [self.view addSubview:self.playButton];
     [self.sliderView becomeFirstResponder];
+    if (_isScrolableView)
+    {
+        self.countOfTravelItems = [DataSource.sharedDataSource getCountOfTravelItems];
+        [self.travelArray addObject:[self _getTravelItemFromDataSource:self.currentOffset - 1]];
+        [self.travelArray addObject:[self _getTravelItemFromDataSource:self.currentOffset]];
+        [self.travelArray addObject:[self _getTravelItemFromDataSource:self.currentOffset + 1]];
+    }
+    
+    [self _setupViewValues];
+    [self _setupScrollView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -74,10 +91,26 @@
     self = [super init];
     if(self)
     {
-        self.currentIndex = index;
+        self.currentOffset = index;
+        _isScrolableView = YES;
         NSArray * dirPaths;
         dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        _projectPath = dirPaths[0];
+        self.projectPath = dirPaths[0];
+        _modelCounter = 3;
+        self.currentIndex = 1;
+    }
+    return self;
+}
+
+- (instancetype)initWithTravelModel:(TravelItem *) model
+{
+    self = [super init];
+    if(self)
+    {
+        _modelCounter = 1;
+        [self.travelArray addObject:model];
+        self.currentIndex = 0;
+        _isScrolableView = NO;
     }
     return self;
 }
@@ -101,12 +134,16 @@
     if(!_imageSiderScrollView)
     {
         _imageSiderScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0 ,0 , CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds))];
-        _imageSiderScrollView.contentSize = CGSizeMake(CGRectGetWidth(_imageSiderScrollView.bounds) * 3, CGRectGetHeight(_imageSiderScrollView.bounds));
+        _imageSiderScrollView.contentSize = CGSizeMake(CGRectGetWidth(_imageSiderScrollView.bounds) * _modelCounter, CGRectGetHeight(_imageSiderScrollView.bounds));
         _imageSiderScrollView.showsVerticalScrollIndicator = NO;
         _imageSiderScrollView.delegate = self;
         _imageSiderScrollView.pagingEnabled = YES;
         _imageSiderScrollView.autoresizesSubviews = NO;
         _imageSiderScrollView.clipsToBounds = NO;
+        if(!_isScrolableView)
+        {
+            _imageSiderScrollView.scrollEnabled = NO;
+        }
     }
     return _imageSiderScrollView;
 }
@@ -125,92 +162,102 @@
 }
 
 
-- (NSArray *)model
+- (NSMutableArray *)travelArray
 {
-    if(!_model)
+    if(!_travelArray)
     {
-        _model = [[DataSource.sharedDataSource getTravelItemCollection] retain];
+        _travelArray = [[[NSMutableArray alloc] init] retain];
     }
-    return _model;
+    return _travelArray;
 }
 
 #pragma mark - UIScroll Delegate
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    if (_isBackButtonClicked || _isDeleteButtonClicked)
-    {
-        return;
-    }
-    
     if(self.imageSiderScrollView == scrollView)
     {
         if(scrollView.contentOffset.x == 0)
         {
-         [self _setPreviousIndex];
-        for (NSInteger i = 0 ; i < _scrollViews.count; i++)
-        {
-            UIScrollView * scrView = _scrollViews[i];
-            UIImageView * imageView = [scrView subviews].firstObject;
-            CGRect frameRectangel = scrView.frame;
-            switch ((int)frameRectangel .origin.x)
+            //[self _setPreviousIndex];
+            self.currentOffset = [self _getPreviousOffset];
+            TravelItem * item = [self _getTravelItemFromDataSource:self.currentOffset - 1];
+            for (NSInteger i = 0 ; i < _scrollViews.count; i++)
             {
-                case 0:
-                    frameRectangel.origin.x = 320;
-                    break;
-                case 320:
-                    frameRectangel.origin.x = 640;
-                    break;
-                case 640:
-                    frameRectangel.origin.x = 0;
-                    PHFetchResult * fetchResult = [PHAsset fetchAssetsWithLocalIdentifiers:@[((TravelItem *)self.model[_nextIndex]).imagePath] options:nil];
+                UIScrollView * scrView = _scrollViews[i];
+                UIImageView * imageView = [scrView subviews].firstObject;
+                CGRect frameRectangel = scrView.frame;
+                switch ((int)frameRectangel .origin.x)
+                {
+                    case 0:
+                        frameRectangel.origin.x = 320;
+                        break;
+                    case 320:
+                        frameRectangel.origin.x = 640;
+                        break;
+                    case 640:
+                        [self.travelArray removeObjectAtIndex:0];
+                        [self.travelArray insertObject:item atIndex:0];
+                        frameRectangel.origin.x = 0;
+                        PHFetchResult * fetchResult = [PHAsset fetchAssetsWithLocalIdentifiers:@[item.imagePath] options:nil];
 
-                    for(PHAsset * asset in fetchResult)
-                    {
-                        [PHImageManager.defaultManager requestImageForAsset:asset targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeDefault options:nil resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
-                            imageView.image = result;
-                        }];
-                    }
-                    break;
+                        for(PHAsset * asset in fetchResult)
+                        {
+                            [PHImageManager.defaultManager requestImageForAsset:asset
+                                                                     targetSize:PHImageManagerMaximumSize
+                                                                    contentMode:PHImageContentModeDefault
+                                                                        options:nil
+                                                                  resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info)
+                            {
+                                imageView.image = result;
+                            }];
+                        }
+                        break;
+                }
+                scrView.frame = frameRectangel;
             }
-            scrView.frame = frameRectangel;
         }
-        self.title = ((TravelItem *)self.model[self.currentIndex]).name;
-    }
-    if (scrollView.contentOffset.x == 640)
-    {
-        [self _setNextIndex];
-        for (NSInteger i = 0 ; i < _scrollViews.count; i++)
+        else if (scrollView.contentOffset.x == 640)
         {
-            UIScrollView * scrView = _scrollViews[i];
-            UIImageView * imageView = [scrView subviews].firstObject;
-            CGRect frameRectangel = scrView.frame;
-            switch ((int)frameRectangel .origin.x)
+            self.currentOffset = [self _getNextOffset];
+            TravelItem * item = [self _getTravelItemFromDataSource:self.currentOffset + 1];
+            for (NSInteger i = 0 ; i < _scrollViews.count; i++)
             {
-                case 640:
-                    frameRectangel.origin.x = 320;
-                    break;
-                case 320:
-                    frameRectangel.origin.x = 0;
-                    break;
-                case 0:
-                    self.title = ((TravelItem *)self.model[self.currentIndex]).name;
-                    PHFetchResult * fetchResult = [PHAsset fetchAssetsWithLocalIdentifiers:@[((TravelItem *)self.model[_nextIndex]).imagePath] options:nil];
+                UIScrollView * scrView = _scrollViews[i];
+                UIImageView * imageView = [scrView subviews].firstObject;
+                CGRect frameRectangel = scrView.frame;
+                switch ((int)frameRectangel .origin.x)
+                {
+                    case 640:
+                        frameRectangel.origin.x = 320;
+                        break;
+                    case 320:
+                        frameRectangel.origin.x = 0;
+                        break;
+                    case 0:
+                        [self.travelArray removeObjectAtIndex:2];
+                        [self.travelArray addObject:item];
+                        self.title = ((TravelItem *)self.travelArray[self.currentIndex]).name;
+                        PHFetchResult * fetchResult = [PHAsset fetchAssetsWithLocalIdentifiers:@[item.imagePath] options:nil];
 
-                    for(PHAsset * asset in fetchResult)
-                    {
-                        [PHImageManager.defaultManager requestImageForAsset:asset targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeDefault options:nil resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
-                            imageView.image = result;
-                        }];
-                    }
-                    frameRectangel.origin.x = 640;
-                    break;
+                        for(PHAsset * asset in fetchResult)
+                        {
+                            [PHImageManager.defaultManager requestImageForAsset:asset
+                                                                     targetSize:PHImageManagerMaximumSize
+                                                                    contentMode:PHImageContentModeDefault
+                                                                        options:nil
+                                                                  resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+                                imageView.image = result;
+                            }];
+                        }
+                        frameRectangel.origin.x = 640;
+                        break;
+                }
+                scrView.frame = frameRectangel;
             }
-            scrView.frame = frameRectangel;
         }
-    }
-    [scrollView setContentOffset:CGPointMake(320, 0)];
-    [self _setupViewValues];
+        [self _setupViewValues];
+        [scrollView setContentOffset:CGPointMake(320, 0)];
     }
 }
 
@@ -225,19 +272,23 @@
 {
     _isDeleteButtonClicked = true;
     self.imageSiderScrollView.scrollEnabled = NO;
-    [DataSource.sharedDataSource removeTravelItem:(TravelItem *)self.model[self.currentIndex]];
+    [DataSource.sharedDataSource removeTravelItem:(TravelItem *)self.travelArray[self.currentIndex]];
     [self.navigationController popViewControllerAnimated:YES];
     [DataSource.sharedDataSource saveContexChanges];
-    NSString * soundFilePath = [_projectPath stringByAppendingPathComponent:((TravelItem *)self.model[self.currentIndex]).soundPath];
+    NSString * soundFilePath = [self.projectPath stringByAppendingPathComponent:((TravelItem *)self.travelArray[self.currentIndex]).soundPath];
     [[NSFileManager defaultManager] removeItemAtPath:soundFilePath error:nil];
 }
 
 - (void)_setupViewValues
 {
     if(self.currentIndex < 0 )
-        self.currentIndex = self.model.count - 1;
-    else if (self.currentIndex >= self.model.count)
+    {
+        self.currentIndex = self.countOfTravelItems - 1;
+    }
+    else if (self.currentIndex >= self.countOfTravelItems)
+    {
         self.currentIndex = 0;
+    }
     
     [self.playTimer invalidate];
     
@@ -245,23 +296,47 @@
     {
         [self.audioPlayer stop];
     }
-    
-    TravelItem * displayModel = (TravelItem *)self.model[self.currentIndex];
+    self.audioPlayer = nil;
+    TravelItem * displayModel = (TravelItem *)self.travelArray[self.currentIndex];
     [self setTitle:displayModel.name];
-    
-   
-    NSString * soundFilePath = [_projectPath stringByAppendingPathComponent:displayModel.soundPath];
-    
-    NSData * soundData = [NSData dataWithContentsOfFile:soundFilePath];
-    self.audioPlayer =[[[AVAudioPlayer alloc] initWithData:soundData error:nil] autorelease];
-    [self.audioPlayer setDelegate:self];
-    
-    self.sliderView.maximumValue = self.audioPlayer.duration;
-    self.sliderView.value = 0.0f;
-    if (!self.audioPlayer) {
-        self.playButton.enabled = NO;
-        self.sliderView.enabled = NO;
+    [self.playButton setHidden:NO];
+    if (displayModel.soundPath != nil)
+    {
+        NSString * soundFilePath = [self.projectPath stringByAppendingPathComponent:displayModel.soundPath];
+        
+        NSData * soundData = [NSData dataWithContentsOfFile:soundFilePath];
+        self.audioPlayer =[[[AVAudioPlayer alloc] initWithData:soundData error:nil] autorelease];
+        [self.audioPlayer setDelegate:self];
+        
+        self.sliderView.maximumValue = self.audioPlayer.duration;
+        self.sliderView.value = 0.0f;
+        if (!self.audioPlayer)
+        {
+            self.playButton.enabled = NO;
+            self.sliderView.enabled = NO;
+        }
+        [self.sliderView becomeFirstResponder];
+        [self.sliderView setHidden:NO];
     }
+    else if( displayModel.videoUrl != nil)
+    {
+        PHFetchResult * fetchResult = [PHAsset fetchAssetsWithLocalIdentifiers:@[displayModel.videoUrl] options:nil];
+
+        for(PHAsset * asset in fetchResult)
+        {
+            [PHImageManager.defaultManager requestPlayerItemForVideo:asset options:nil resultHandler:^(AVPlayerItem * _Nullable playerItem, NSDictionary * _Nullable info) {
+                _mediaAVPlayer = [[AVPlayer alloc] initWithPlayerItem:playerItem];
+            }];
+        }
+        [self.sliderView setHidden:YES];
+    }
+    else
+    {
+        [self.playButton setHidden:YES];
+        [self.sliderView setHidden:YES];
+    }
+   
+    
 }
 
 - (void)_updateTimeTimerAction:(NSTimer *) sender
@@ -282,13 +357,20 @@
             self.sliderView.value = 0.0f;
         self.playTimer = [NSTimer scheduledTimerWithTimeInterval: 1.0
                                                           target: self
-                                                        selector:@selector(_updateTimeTimerAction:)
+                                                        selector: @selector(_updateTimeTimerAction:)
                                                         userInfo: nil
                                                          repeats: YES];
         
         self.audioPlayer.currentTime = self.sliderView.value;
         [self.audioPlayer play];
         
+    }
+    else
+    {
+        AVPlayerViewController * playerController = [[AVPlayerViewController alloc] init];
+        playerController.player = _mediaAVPlayer;
+        [self presentViewController:playerController animated:YES completion:nil];
+        [playerController release];
     }
 }
 
@@ -298,14 +380,14 @@
     int offset = 0;
     int counter = 0;
     
-    for(NSInteger i = self.currentIndex - 1 ;counter < 3 ; i++, counter++)
+    for(NSInteger i = 0 ;counter < _modelCounter ; i++, counter++)
     {
         if(i < 0)
         {
-            i = self.model.count - 1;
+            i = self.countOfTravelItems - 1;
         }
         
-        if(i >= self.model.count)
+        if(i >= self.countOfTravelItems)
         {
             i = 0;
         }
@@ -316,7 +398,7 @@
         currentScrollView.delegate = self;
         UIImageView * imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0 ,0, CGRectGetWidth(self.imageSiderScrollView.layer.bounds), CGRectGetHeight(self.imageSiderScrollView.layer.bounds))];
        
-        PHFetchResult * fetchResult = [PHAsset fetchAssetsWithLocalIdentifiers:@[((TravelItem *)self.model[i]).imagePath] options:nil];
+        PHFetchResult * fetchResult = [PHAsset fetchAssetsWithLocalIdentifiers:@[((TravelItem *)self.travelArray[i]).imagePath] options:nil];
 
         for(PHAsset * asset in fetchResult)
         {
@@ -334,25 +416,33 @@
     {
         [self.imageSiderScrollView addSubview:_scrollViews[i]];
     }
-    
-    [self.imageSiderScrollView setContentOffset:CGPointMake(320,0) animated:NO];
+    if(_isScrolableView )
+    {
+        [self.imageSiderScrollView setContentOffset:CGPointMake(320,0) animated:NO];
+    }
 }
 
-- (void)_setPreviousIndex
+- (NSInteger)_getNextOffset
 {
-    NSInteger index = self.currentIndex == 0 ? self.model.count - 1 : self.currentIndex - 1;
-    self.currentIndex = index;
-    index--;
-    _nextIndex = index < 0 ? self.model.count - 1 : index;
-    NSLog(@"current index: %d next Index:%d",self.currentIndex, _nextIndex);
+    return self.currentOffset == self.countOfTravelItems - 1  ? 0 : self.currentOffset + 1;
 }
-- (void)_setNextIndex
+
+-(NSInteger)_getPreviousOffset
 {
-    NSInteger index = self.currentIndex == self.model.count - 1  ? 0 : self.currentIndex + 1;
-    self.currentIndex = index;
-    index++;
-    _nextIndex = index > self.model.count - 1  ? 0 : index;
-    NSLog(@"current index: %d next Index:%d",self.currentIndex, _nextIndex);
+    return self.currentOffset == 0 ? self.countOfTravelItems - 1 : self.currentOffset - 1;
+}
+- (TravelItem *)_getTravelItemFromDataSource : (NSInteger) offset
+{
+    
+    if(offset < 0)
+    {
+        offset = self.countOfTravelItems - 1;
+    }
+    if(offset >= self.countOfTravelItems)
+    {
+        offset = 0;
+    }
+    return [DataSource.sharedDataSource getTravelItem:offset];
 }
 
 @end

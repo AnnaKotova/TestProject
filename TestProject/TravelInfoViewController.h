@@ -11,10 +11,12 @@
 #import <Foundation/Foundation.h>
 #import "DataSource.h"
 #import <Photos/Photos.h>
-
+@import AVKit;
 
 @interface TravelInfoViewController : UIViewController
 
 - (instancetype)initWithCurrentIndex:(NSInteger) index;
+
+- (instancetype)initWithTravelModel:(TravelItem *) model;
 
 @end

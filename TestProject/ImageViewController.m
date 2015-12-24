@@ -9,6 +9,7 @@
 #import "ImageViewController.h"
 #import "SoundRecordingViewController.h"
 #import "MapViewController.h"
+#include "VideoRecorderViewController.h"
 
 @interface ImageViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 {
@@ -115,7 +116,11 @@
     [super viewDidUnload];
     self.pickedImageView = nil;
     self.imageNameTextField = nil;
-    
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    // Return YES for supported orientations
+    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
 
 #pragma mark - Properties Setters and Getters
@@ -183,7 +188,6 @@
         [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^
                                                             {
                                                                PHAssetChangeRequest* assetChangeRequest = [PHAssetChangeRequest creationRequestForAssetFromImage:[info valueForKey:UIImagePickerControllerOriginalImage]];
-                                                                //[[assetChangerequest placeholderForCreatedAsset] ]
                                                                 self.travelItemModel.imagePath = [[assetChangeRequest placeholderForCreatedAsset] localIdentifier];
                                                             }
                                           completionHandler:^(BOOL success, NSError *error)
@@ -197,7 +201,6 @@
     else
     {
         self.travelItemModel.imagePath = [[[[info objectForKey:UIImagePickerControllerReferenceURL] query] componentsSeparatedByString:@"&"][0] substringFromIndex:3];
-        //self.travelItemModel.imagePath = [[info objectForKey:UIImagePickerControllerReferenceURL] absoluteString];
     }
     
     [self.view addSubview: self.pickedImageView];
@@ -223,7 +226,6 @@
 {
     [self.navigationController popViewControllerAnimated: YES];
     [[NSFileManager defaultManager] removeItemAtPath:self.travelItemModel.soundPath error:nil];
-    [[NSFileManager defaultManager] removeItemAtPath:self.travelItemModel.thumbnailPath error:nil];
     [DataSource.sharedDataSource removeTravelItem:self.travelItemModel];
     [DataSource.sharedDataSource saveContexChanges];    
 }
@@ -236,9 +238,51 @@
 - (void)_nextButtonAction:(UIBarButtonItem *) sender
 {
     self.travelItemModel.name = self.imageNameTextField.text;
-    SoundRecordingViewController * soundContrl = [[[SoundRecordingViewController alloc] initWithModel: self.travelItemModel] autorelease];
-   [self.navigationController pushViewController:soundContrl animated:YES];
-    [self _keyboardWillHide];
+    UIAlertController * alert = [UIAlertController alertControllerWithTitle: @"" message: @"" preferredStyle: UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
+                                                            style:UIAlertActionStyleCancel
+                                                          handler:^(UIAlertAction * _Nonnull action)
+                                    {
+                                        [alert dismissViewControllerAnimated:YES completion:nil];
+                                    }];
+    [alert addAction:cancelAction];
+    
+    UIAlertAction * saveNowAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Save Now", nil)
+                                                                     style:UIAlertActionStyleDefault
+                                                                   handler:^(UIAlertAction* _Nonnull action)
+                                             {
+                                                 [DataSource.sharedDataSource saveContexChanges];
+                                                 NSArray * array = [self.navigationController viewControllers];
+                                                 [self.navigationController popToViewController:[array objectAtIndex:1] animated:YES];
+                                                 [self _keyboardWillHide];
+                                             }];
+    [alert addAction: saveNowAction];
+    
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        UIAlertAction * showRecordVideoAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Recording Video", nil)
+                                                                    style:UIAlertActionStyleDefault
+                                                                  handler:^(UIAlertAction * _Nonnull action)
+                                            {
+                                                VideoRecorderViewController * videoRecorder = [[[VideoRecorderViewController alloc] initWithModel:self.travelItemModel] autorelease];
+                                                [self.navigationController pushViewController:videoRecorder animated:YES];
+                                                [self _keyboardWillHide];
+                                            }];
+        [alert addAction:showRecordVideoAction];
+    }
+    
+    UIAlertAction * showRecordAudioAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Recording Sound", nil)
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:^(UIAlertAction* _Nonnull action)
+                                         {
+                                             SoundRecordingViewController * soundContrl = [[[SoundRecordingViewController alloc] initWithModel: self.travelItemModel] autorelease];
+                                             [self.navigationController pushViewController:soundContrl animated:YES];
+                                             [self _keyboardWillHide];
+                                         }];
+    [alert addAction: showRecordAudioAction];
+    
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)_keyboardWillShow
@@ -259,22 +303,4 @@
     [UIView commitAnimations];
 }
 
--(void)_createThumbnail
-{
-    CGSize thumbnailSize = CGSizeMake(79, 79);
-    UIGraphicsBeginImageContext(thumbnailSize);
-    [self.pickedImageView.image drawInRect:CGRectMake(0, 0, thumbnailSize.width, thumbnailSize.height)];
-    UIImage* thumbnailImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    NSString* thumbnailPath = [self.travelItemModel.imagePath stringByReplacingOccurrencesOfString:@".jpg" withString:@"-thb.jpg"];
-
-    if(![UIImageJPEGRepresentation(thumbnailImage, 1.0) writeToFile: thumbnailPath atomically: YES] )
-    {
-        NSLog(@"File isn't saved");
-    }
-    else
-    {
-        self.travelItemModel.thumbnailPath = thumbnailPath;
-    }
-}
 @end

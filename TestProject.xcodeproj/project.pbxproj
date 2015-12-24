@@ -36,7 +36,6 @@
 		CE8655971C21B64700CBBD62 /* TravelItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8655951C21B64700CBBD62 /* TravelItem.m */; };
 		CEAD2AD61C20617F00E47554 /* Localization.strings in Resources */ = {isa = PBXBuildFile; fileRef = CEAD2AD81C20617F00E47554 /* Localization.strings */; };
 		CECF2DE91C29328C0092D6FD /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = CECF2DE81C29328C0092D6FD /* Utils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		CECF2DEC1C2942400092D6FD /* TravelItem+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = CECF2DEB1C2942400092D6FD /* TravelItem+CoreDataProperties.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -87,8 +86,6 @@
 		CEAC1C4A1C215AB400DE152C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localization.strings; sourceTree = "<group>"; };
 		CECF2DE71C29328C0092D6FD /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
 		CECF2DE81C29328C0092D6FD /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
-		CECF2DEA1C2942400092D6FD /* TravelItem+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TravelItem+CoreDataProperties.h"; sourceTree = "<group>"; };
-		CECF2DEB1C2942400092D6FD /* TravelItem+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TravelItem+CoreDataProperties.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,8 +110,6 @@
 		74193B801C0AF1250044EDD6 = {
 			isa = PBXGroup;
 			children = (
-				CECF2DEA1C2942400092D6FD /* TravelItem+CoreDataProperties.h */,
-				CECF2DEB1C2942400092D6FD /* TravelItem+CoreDataProperties.m */,
 				74193B8B1C0AF1250044EDD6 /* TestProject */,
 				74193B951C0AF1250044EDD6 /* Main.storyboard */,
 				74193B8A1C0AF1250044EDD6 /* Products */,
@@ -292,7 +287,6 @@
 				74193B911C0AF1250044EDD6 /* AppDelegate.m in Sources */,
 				74193C111C0EEBC30044EDD6 /* TravelInfoViewController.m in Sources */,
 				CE8655911C21B60300CBBD62 /* CoreDataModel.xcdatamodeld in Sources */,
-				CECF2DEC1C2942400092D6FD /* TravelItem+CoreDataProperties.m in Sources */,
 				CE0ED3F51C28552700C928A4 /* VideoRecorderViewController.m in Sources */,
 				CE8655971C21B64700CBBD62 /* TravelItem.m in Sources */,
 				74193BD91C0E15F60044EDD6 /* BaseViewController.m in Sources */,

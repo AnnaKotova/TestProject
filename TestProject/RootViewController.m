@@ -9,7 +9,7 @@
 #import "RootViewController.h"
 #include "MapViewController.h"
 #include "ListViewController.h"
-#include "VideoRecorderViewController.h"
+
 
 @interface RootViewController()
 
@@ -44,14 +44,30 @@
     [super viewDidUnload];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    if (UIInterfaceOrientationIsLandscape(interfaceOrientation))
+    {
+        self.mapButton.frame = CGRectMake(self.padding, self.view.frame.size.height / 2  - 20, self.view.bounds.size.width / 2 - self.padding * 2, 40);
+        self.listButton.frame = CGRectMake(self.mapButton.bounds.size.width , self.view.frame.size.height / 2  - 20, self.view.bounds.size.width / 2 - self.padding, 40);
+    }
+    else
+    {
+        self.mapButton.frame = CGRectMake(0.0 + self.padding, 210.0, self.view.bounds.size.width - self.padding * 2, 40.0);
+        self.listButton.frame = CGRectMake(0.0+self.padding, 260.0, self.view.bounds.size.width - self.padding * 2, 40.0);
+    }
+    return true;
+}
 
 #pragma mark Properties Setters and Getters
 
-- (int) padding {
+- (int) padding
+{
     return 5;
 }
 
-- (UIButton *)mapButton {
+- (UIButton *)mapButton
+{
     if(!_mapButton)
     {
         _mapButton = [UIButton buttonWithType: UIButtonTypeCustom];
@@ -94,10 +110,8 @@
     if(sender == _mapButton)
     {
         self.navigationItem.title = NSLocalizedString(@"Back",nil);
-        /*MapViewController * mapController = [[[MapViewController alloc] init] autorelease];
-        [self.navigationController pushViewController: mapController animated: YES];*/
-        VideoRecorderViewController * videoRecorder = [[[VideoRecorderViewController alloc] init] autorelease];
-        [self.navigationController pushViewController:videoRecorder animated:YES];
+        MapViewController * mapController = [[[MapViewController alloc] init] autorelease];
+        [self.navigationController pushViewController: mapController animated: YES];
     }
     else
     {

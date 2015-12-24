@@ -10,6 +10,8 @@
 #import "BaseViewController.h"
 #import <MobileCoreServices/UTCoreTypes.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import <AVFoundation/AVFoundation.h>
+#import <Photos/Photos.h>
 @import AVKit;
 
 @interface VideoRecorderViewController : BaseViewController

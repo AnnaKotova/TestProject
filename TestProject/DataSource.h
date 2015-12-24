@@ -16,10 +16,16 @@
 
 -(TravelItem*) createNewTravelItem;
 
--(NSArray*) getTravelItemCollection;
+- (NSArray *)getTravelItemCollection:(NSString *) predicate;
+
+- (NSArray *)getTravelItemCollectionByPage:(NSInteger) currentPage;
+
+- (TravelItem *)getTravelItem:(NSInteger) offset;
 
 -(void) removeTravelItem:(TravelItem *) item;
 
 -(void) saveContexChanges;
+
+-(NSInteger) getCountOfTravelItems;
 
 @end

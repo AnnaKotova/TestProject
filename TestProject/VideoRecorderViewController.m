@@ -11,13 +11,14 @@
 
 @interface VideoRecorderViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 {
-    UIImagePickerController * _videorecorderImagePickerController;
-    AVPlayerViewController * _mediaPlayer;
+    UIImagePickerController * _videorecorderImagePickerController;    
 }
 
 @end
 
 @implementation VideoRecorderViewController
+
+#pragma mark - ViewController Life Cycle
 
 - (instancetype)initWithModel:(TravelItem *)travelItemModel
 {
@@ -29,8 +30,10 @@
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
+
     _videorecorderImagePickerController = [[UIImagePickerController alloc] init];
     _videorecorderImagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
     NSArray * mediaTypes = [[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];
@@ -39,14 +42,13 @@
     _videorecorderImagePickerController.allowsEditing = NO;
     _videorecorderImagePickerController.delegate = self;
     [self presentViewController: _videorecorderImagePickerController animated: NO completion: NULL];
-    
-    _mediaPlayer = [[AVPlayerViewController alloc] init];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
+
 - (void)dealloc
 {
     [_videorecorderImagePickerController release];
@@ -54,25 +56,49 @@
 }
 
 
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    [DataSource.sharedDataSource removeTravelItem:self.travelItemModel];
+#pragma mark - ImagePicker delegates
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
     [self.navigationController popViewControllerAnimated:YES];
 }
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info  {
-    NSURL * url = [info objectForKey:UIImagePickerControllerMediaURL];
-    UISaveVideoAtPathToSavedPhotosAlbum([url absoluteString],nil,nil,nil);
-    self.travelItemModel.videoUrl = [url absoluteString];
-    [_videorecorderImagePickerController dismissViewControllerAnimated:YES completion:^{}];
-    //_mediaPlayer
-}
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
+{
+    NSURL * url = [info objectForKey:UIImagePickerControllerMediaURL];
+    
+    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^
+     {
+         PHAssetChangeRequest* assetChangeRequest = [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:url];
+         self.travelItemModel.videoUrl = [[assetChangeRequest placeholderForCreatedAsset] localIdentifier];
+         UIAlertController * alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Saved",nil)
+                                                                         message:@""
+                                                                  preferredStyle:UIAlertControllerStyleAlert];
+         
+         UIAlertAction * okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil)
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * _Nonnull action)
+                                     {
+                                         [DataSource.sharedDataSource saveContexChanges];
+                                         NSArray * array = [self.navigationController viewControllers];
+                                         [self.navigationController popToViewController:[array objectAtIndex:1] animated:YES];
+                                     }];
+         [alert addAction:okAction];
+         [self presentViewController:alert animated:YES completion:nil];
+     }
+                completionHandler:^(BOOL success, NSError *error)
+     {
+         if (!success)
+         {
+             NSLog(@"Image From Camera not saved !!");
+         }
+     }];
+    [_videorecorderImagePickerController dismissViewControllerAnimated:YES completion:^{}];
+    
+    
 }
-*/
+
+
+
 
 @end

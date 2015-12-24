@@ -9,15 +9,19 @@
 #import "ListViewController.h"
 #import "TravelInfoViewController.h"
 
-@interface ListViewController () <UITableViewDelegate, UITableViewDataSource, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+@interface ListViewController () <UITableViewDelegate, UITableViewDataSource, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UISearchBarDelegate>
 {
     UserViewStyle _viewStyle;
 }
 
 
 @property (nonatomic, retain) UITableView * tableView;
-@property (nonatomic, retain) NSArray * travelInfoArray;//TravelInfo from CoreData
-@property (nonatomic, retain)UICollectionView * collectionView;
+@property (nonatomic, retain) NSMutableArray * travelInfoArray; //TravelInfo from CoreData
+@property (nonatomic, retain) UICollectionView * collectionView;
+@property (nonatomic, retain) UISearchBar * searchBar;
+@property (nonatomic) BOOL isHaveSearchFilter;
+@property (nonatomic) NSInteger currentPage;
+@property (nonatomic) NSInteger countOfTravelItems;
 
 @end
 
@@ -36,6 +40,14 @@
                                                                                 target:self action:@selector(_changeStyleBarButtonItemAction)] autorelease];
     _viewStyle = ViewTile;
     self.navigationItem.rightBarButtonItem = changeStyleBarButtonItem;
+    
+    self.searchBar = [[[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, 30)] autorelease];
+    self.searchBar.delegate = self;
+    [self.searchBar setShowsCancelButton:YES];
+    [self.searchBar setEnablesReturnKeyAutomatically:YES];
+    self.isHaveSearchFilter = false;
+    self.countOfTravelItems = [DataSource.sharedDataSource getCountOfTravelItems];
+    self.currentPage = 0;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -48,15 +60,6 @@
     else if(_viewStyle == ViewTile)
     {
         [self.collectionView reloadData];
-    }
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear: animated];
-    if(self.travelInfoArray)
-    {
-        self.travelInfoArray = nil;
     }
 }
 
@@ -75,6 +78,7 @@
         _tableView = [[[UITableView alloc] initWithFrame:self.view.frame] autorelease];
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        _tableView.pagingEnabled = YES;
         UIRefreshControl *refreshControl = [[[UIRefreshControl alloc] init] autorelease];
         [refreshControl addTarget:self action:@selector(_refreshTableView:) forControlEvents:UIControlEventValueChanged];
         [self.tableView addSubview:refreshControl];
@@ -86,17 +90,19 @@
 {
     if(!_travelInfoArray)
     {
-        _travelInfoArray = [[DataSource.sharedDataSource getTravelItemCollection] retain];
+        _travelInfoArray = [[NSMutableArray arrayWithArray:[DataSource.sharedDataSource getTravelItemCollectionByPage:self.currentPage]] retain];
     }
     return _travelInfoArray;
 }
 
 - (UICollectionView *)collectionView
 {
-    if (!_collectionView) {
-        UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    if (!_collectionView)
+    {
+        UICollectionViewFlowLayout * flowLayout = [[UICollectionViewFlowLayout alloc] init];
         flowLayout.itemSize = CGSizeMake(72, 72);
-        _collectionView = [[[UICollectionView alloc] initWithFrame:CGRectMake(0, self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height, self.view.bounds.size.width, self.view.bounds.size.height) collectionViewLayout:flowLayout ] retain];
+        _collectionView = [[[UICollectionView alloc] initWithFrame:CGRectMake(0, self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height, self.view.bounds.size.width, self.view.bounds.size.height)
+                                              collectionViewLayout:flowLayout ] retain];
         [flowLayout autorelease];
         UIRefreshControl * refreshControl = [[[UIRefreshControl alloc] init] autorelease];
         [refreshControl addTarget:self action:@selector(_refreshCollectionView:) forControlEvents:UIControlEventValueChanged];
@@ -133,15 +139,13 @@
     if(info)
     {
         UIImageView * imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, cell.bounds.size.width, cell.bounds.size.height)] ;
-        imageView.image  = [[[UIImage alloc] initWithContentsOfFile:info.thumbnailPath] autorelease];
-
         PHFetchResult * fetchResult = [PHAsset fetchAssetsWithLocalIdentifiers:@[info.imagePath] options:nil];
-        for (PHAsset * asset in fetchResult) {
+        for (PHAsset * asset in fetchResult)
+        {
             [PHImageManager.defaultManager requestImageForAsset:asset targetSize:CGSizeMake(100, 100) contentMode:PHImageContentModeDefault options:nil resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
                 imageView.image = result;
             }];
         }
-
         [cell addSubview:imageView];
         [cell setBackgroundView:imageView];
         [imageView release];
@@ -165,18 +169,56 @@
     [self.navigationController pushViewController:tivController animated:YES];
 }
 
-
 #pragma mark - UITableView Delegate
+
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(indexPath.row == self.travelInfoArray.count - 1 && self.travelInfoArray.count <= self.countOfTravelItems)
+    {
+        self.currentPage++;
+        [self.travelInfoArray addObjectsFromArray:[DataSource.sharedDataSource getTravelItemCollectionByPage:self.currentPage]];
+        [self.tableView reloadData];
+    }
+}
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    NSLog(@"%f", scrollView.contentOffset.y);
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if(scrollView == self.tableView)
+    {
+        CGFloat yPos = - scrollView.contentOffset.y;
+        if (yPos > 0)
+        {
+            if(!self.tableView.tableHeaderView)
+            {
+                self.tableView.tableHeaderView = self.searchBar;
+            }
+        }
+    }
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    TravelInfoViewController * tivController = [[[TravelInfoViewController alloc] initWithCurrentIndex:indexPath.row] autorelease];
+    TravelInfoViewController * tivController;
+    if(self.isHaveSearchFilter)
+    {
+        tivController = [[TravelInfoViewController alloc] initWithTravelModel:(TravelItem *) self.travelInfoArray[indexPath.row]];
+    }
+    else
+    {
+       tivController = [[[TravelInfoViewController alloc] initWithCurrentIndex:indexPath.row] autorelease];
+    }
+    
     [self.navigationController pushViewController:tivController animated:YES];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.travelInfoArray.count;
+        return self.travelInfoArray.count;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)theTableView
@@ -195,7 +237,8 @@
     }
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
-    TravelItem * info =(TravelItem *) self.travelInfoArray[indexPath.row];
+    TravelItem * info = (TravelItem *) self.travelInfoArray[indexPath.row];
+
     if (info)
     {
         [cell.textLabel setText: info.name];
@@ -230,14 +273,40 @@
     }
 }
 
+-(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    searchBar.text = @"";
+    [searchBar resignFirstResponder];
+    
+}
+
+-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    [self.travelInfoArray removeAllObjects];
+    if([searchText isEqualToString:@""])
+    {
+        for (NSInteger i = 0; i <=  self.currentPage; i++) {
+            [self.travelInfoArray addObjectsFromArray:[DataSource.sharedDataSource getTravelItemCollectionByPage:i]];
+        }
+        self.isHaveSearchFilter = NO;
+    }
+    else
+    {
+        NSString * predicateRequest = [NSString stringWithFormat:@"(name contains[c] '%@')",searchText];
+        [self.travelInfoArray addObjectsFromArray:[DataSource.sharedDataSource getTravelItemCollection:predicateRequest]];
+        self.isHaveSearchFilter = YES;
+    }
+    [self.tableView reloadData];
+}
+
 #pragma mark - Private Section
 
 - (void)_refreshTableView:(UIRefreshControl *) refreshControl
 {
-    _travelInfoArray = nil;
     [self.tableView reloadData];
     [refreshControl endRefreshing];
 }
+
 - (void)_changeStyleBarButtonItemAction
 {
     if(_viewStyle == ViewTile)
@@ -253,8 +322,8 @@
         _viewStyle = ViewTile;
     }
 }
+
 - (void)_refreshCollectionView:(UIRefreshControl *) sender {
-    _travelInfoArray = nil;
     [self.collectionView reloadData];
     [sender endRefreshing];
 }

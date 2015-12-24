@@ -35,7 +35,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    UIBarButtonItem* doneButton = [[[UIBarButtonItem alloc] initWithTitle: NSLocalizedString(@"Done",nil)
+    UIBarButtonItem * doneButton = [[[UIBarButtonItem alloc] initWithTitle: NSLocalizedString(@"Done",nil)
                                                                     style: UIBarButtonItemStyleDone
                                                                    target:self
                                                                    action: @selector(_doneButtonAction:)] autorelease];
@@ -61,7 +61,7 @@
         NSString * soundFilePath = [docsDir stringByAppendingPathComponent:fileName];
         self.travelItemModel.soundPath = fileName;
         
-        NSURL *soundFileURL = [NSURL fileURLWithPath:soundFilePath];
+        NSURL * soundFileURL = [NSURL fileURLWithPath:soundFilePath];
         
         NSDictionary *recordSettings = [NSDictionary
                                         dictionaryWithObjectsAndKeys:
@@ -123,7 +123,7 @@
 
 - (void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag
 {
-    NSData* data = [NSData dataWithContentsOfFile: self.travelItemModel.soundPath];
+    NSData * data = [NSData dataWithContentsOfFile: self.travelItemModel.soundPath];
     [data writeToFile:self.travelItemModel.soundPath atomically: YES];
     [self.navigationItem.rightBarButtonItem setEnabled:YES];
 }

@@ -1,3 +1,4 @@
+
 //
 //  DataSource.m
 //  TestProject
@@ -46,11 +47,50 @@
                                                        inManagedObjectContext: self.coreController.managedObjectContext];
 }
 
-- (NSArray *)getTravelItemCollection
+- (NSArray *)getTravelItemCollection:(NSString *) predicate
 {
     NSFetchRequest * inf = [NSFetchRequest fetchRequestWithEntityName: @"TravelInfo"];
+    if(predicate)
+    {
+        NSPredicate * fetchPredicate = [NSPredicate predicateWithFormat:predicate];
+        [inf setPredicate:fetchPredicate];
+    }
     NSArray * arr = [self.coreController.managedObjectContext executeFetchRequest: inf error: nil];
     return arr;
+}
+
+- (NSArray *)getTravelItemCollectionByPage:(NSInteger) currentPage
+{
+    [self saveContexChanges];
+    NSInteger pageSize = 10;
+    NSFetchRequest * inf = [NSFetchRequest fetchRequestWithEntityName: @"TravelInfo"];
+    inf.fetchBatchSize = pageSize;
+    inf.fetchOffset = pageSize * currentPage;
+    inf.fetchLimit = pageSize;
+    NSArray * arr = [self.coreController.managedObjectContext executeFetchRequest: inf error: nil];
+    return arr;
+}
+
+- (TravelItem *)getTravelItem:(NSInteger) offset
+{
+    [self saveContexChanges];
+    NSInteger pageSize = 1;
+    NSFetchRequest * inf = [NSFetchRequest fetchRequestWithEntityName: @"TravelInfo"];
+    inf.fetchBatchSize = pageSize;
+    inf.fetchOffset = offset;
+    inf.fetchLimit = pageSize;
+    TravelItem * item = (TravelItem *)[[self.coreController.managedObjectContext executeFetchRequest: inf error: nil] firstObject];
+    NSLog(@"Name: %@ Offset: %d", item.name, offset);
+    return item;
+}
+
+- (NSInteger) getCountOfTravelItems
+{
+    NSFetchRequest * inf = [NSFetchRequest fetchRequestWithEntityName: @"TravelInfo"];
+    [inf setIncludesSubentities:NO];
+    NSError * err;
+    NSUInteger count = [self.coreController.managedObjectContext countForFetchRequest:inf error:&err];
+    return count;
 }
 
 - (void)removeTravelItem:(TravelItem *) item
